@@ -1,0 +1,30 @@
+// src/lib/query-keys.ts
+import type { ProductFilters } from '@/features/catalog/types/catalog-types';
+export const QUERY_KEYS = {
+  products: (filters?: ProductFilters) =>
+    filters ? (['products', filters] as const) : (['products'] as const),
+  product: (slug: string) => ['product', slug] as const,
+  cart: ['cart'] as const,
+  wishlist: ['wishlist'] as const,
+  addresses: ['addresses'] as const,
+  orders: ['orders'] as const,
+  order: (id: string) => ['order', id] as const,
+  notifications: ['notifications'] as const,
+  accountReviews: ['account-reviews'] as const,
+  adminStats: ['admin-stats'] as const,
+  adminProducts: ['admin-products'] as const,
+  adminOrders: ['admin-orders'] as const,
+  adminUsers: ['admin-users'] as const,
+  adminCategories: ['admin-categories'] as const,
+  adminBrands: ['admin-brands'] as const,
+  adminCoupons: ['admin-coupons'] as const,
+  adminInventory: ['admin-inventory'] as const,
+  adminReviews: ['admin-reviews'] as const,
+  adminProduct: (id: string) => ['admin-product', id] as const,
+  adminProductOptions: ['admin-product-options'] as const,
+  adminHomeSettings: ['admin-home-settings'] as const,
+  adminOrder: (id: string) => ['admin-order', id] as const,
+  adminUser: (id: string) => ['admin-user', id] as const,
+  searchSuggestions: (term: string) => ['search-suggestions', term] as const,
+  compareProduct: (slug: string) => ['compare-product', slug] as const,
+} as const;

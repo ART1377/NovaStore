@@ -1,0 +1,506 @@
+/* src/app/globals.css */
+@import 'tailwindcss';
+@import '@daypicker/react/style.css';
+
+@font-face {
+  font-family: IRANSansXFaNum;
+  src: url('/fonts/IranSans/IRANSansXFaNum-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: IRANSansXFaNum;
+  src: url('/fonts/IranSans/IRANSansXFaNum-Medium.ttf') format('truetype');
+  font-weight: 500;
+  font-display: swap;
+}
+@font-face {
+  font-family: IRANSansXFaNum;
+  src: url('/fonts/IranSans/IRANSansXFaNum-DemiBold.ttf') format('truetype');
+  font-weight: 600;
+  font-display: swap;
+}
+@font-face {
+  font-family: IRANSansXFaNum;
+  src: url('/fonts/IranSans/IRANSansXFaNum-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-display: swap;
+}
+@font-face {
+  font-family: Dana;
+  src: url('/fonts/Fa-DanaFont/Dana-Light.ttf') format('truetype');
+  font-weight: 300;
+  font-display: swap;
+}
+@font-face {
+  font-family: Dana;
+  src: url('/fonts/Fa-DanaFont/Dana-Medium.ttf') format('truetype');
+  font-weight: 500;
+  font-display: swap;
+}
+@font-face {
+  font-family: Dana;
+  src: url('/fonts/Fa-DanaFont/Dana-DemiBold.ttf') format('truetype');
+  font-weight: 600;
+  font-display: swap;
+}
+@font-face {
+  font-family: Dana;
+  src: url('/fonts/Fa-DanaFont/Dana-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-display: swap;
+}
+
+
+/* NovaStore hero motion + depth */
+.nova-hero {
+  background:
+    radial-gradient(circle at 76% 46%, color-mix(in srgb, var(--nova-primary) 12%, transparent), transparent 34%),
+    radial-gradient(circle at 18% 12%, color-mix(in srgb, var(--nova-accent) 8%, transparent), transparent 28%),
+    var(--nova-surface);
+}
+.nova-hero-grid {
+  position: absolute;
+  inset: 0;
+  opacity: .35;
+  background-image: linear-gradient(color-mix(in srgb, var(--nova-primary) 5%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in srgb, var(--nova-primary) 5%, transparent) 1px, transparent 1px);
+  background-size: 56px 56px;
+  mask-image: linear-gradient(to bottom, black, transparent 78%);
+}
+.nova-hero-orb {
+  position: absolute;
+  border-radius: 999px;
+  filter: blur(8px);
+  pointer-events: none;
+}
+.nova-hero-orb-one {
+  top: 3%;
+  right: 12%;
+  width: 180px;
+  height: 180px;
+  background: color-mix(in srgb, var(--nova-accent) 16%, transparent);
+  animation: nova-orb-float 8s ease-in-out infinite;
+}
+.nova-hero-orb-two {
+  bottom: 6%;
+  left: 4%;
+  width: 220px;
+  height: 220px;
+  background: color-mix(in srgb, var(--nova-primary) 13%, transparent);
+  animation: nova-orb-float 10s ease-in-out -2s infinite reverse;
+}
+.nova-hero-glow {
+  position: absolute;
+  top: 9%;
+  right: 30%;
+  width: 260px;
+  height: 260px;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--nova-primary) 10%, transparent);
+  filter: blur(70px);
+}
+.nova-hero-backdrop {
+  transform: rotate(-4deg);
+  box-shadow: 0 45px 100px -54px color-mix(in srgb, var(--nova-ink) 70%, transparent);
+}
+.nova-hero-visual:hover .nova-hero-backdrop {
+  transform: rotate(-3deg) scale(1.01);
+  transition: transform .7s cubic-bezier(.2,.8,.2,1);
+}
+.nova-hero-product {
+  filter: drop-shadow(0 34px 26px rgba(0,0,0,.24));
+  animation: nova-product-float 6.5s ease-in-out infinite;
+}
+.nova-hero-ring {
+  animation: nova-ring-pulse 5.5s ease-in-out infinite;
+}
+.nova-hero-ring-delay {
+  animation-delay: -2.4s;
+}
+.nova-hero-float {
+  animation: nova-card-float 5.5s ease-in-out infinite;
+}
+.nova-hero-float-delay {
+  animation-delay: -2.1s;
+}
+@keyframes nova-product-float {
+  0%, 100% { transform: translateY(0) rotate(.4deg); }
+  50% { transform: translateY(-10px) rotate(-.6deg); }
+}
+@keyframes nova-card-float {
+  0%, 100% { transform: translate3d(0,0,0); }
+  50% { transform: translate3d(0,-8px,0); }
+}
+@keyframes nova-ring-pulse {
+  0%, 100% { transform: scale(1); opacity: .65; }
+  50% { transform: scale(1.035); opacity: 1; }
+}
+@keyframes nova-orb-float {
+  0%, 100% { transform: translate3d(0,0,0); }
+  50% { transform: translate3d(12px,-16px,0); }
+}
+@media (max-width: 1023px) {
+  .nova-hero-visual { max-width: 620px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .nova-hero-product,
+  .nova-hero-ring,
+  .nova-hero-float,
+  .nova-hero-orb-one,
+  .nova-hero-orb-two {
+    animation: none !important;
+  }
+}
+
+/* Tailwind v4 CSS-first design tokens. These theme variables generate
+   utilities such as bg-nova-primary, text-nova-ink, border-nova-line, etc. */
+@theme inline {
+  --font-nova: IRANSansXFaNum, Dana, sans-serif;
+  --color-nova-primary: var(--nova-primary);
+  --color-nova-ink: var(--nova-ink);
+  --color-nova-accent: var(--nova-accent);
+  --color-nova-soft: var(--nova-soft);
+  --color-nova-surface: var(--nova-surface);
+  --color-nova-paper: var(--nova-paper);
+  --color-nova-cream: var(--nova-cream);
+  --color-nova-line: var(--nova-line);
+  --color-nova-line-strong: var(--nova-line-strong);
+  --color-nova-hover: var(--nova-hover);
+  --color-nova-muted: var(--nova-muted);
+  --color-nova-bg-alt: var(--nova-bg-alt);
+  --color-nova-danger: var(--nova-danger);
+  --color-nova-danger-soft: var(--nova-danger-soft);
+  --color-nova-danger-border: var(--nova-danger-border);
+}
+
+:root {
+  --nova-ink: #17324d;
+  --nova-primary: #577399;
+  --nova-accent: #fe5f55;
+  --nova-soft: #d8e2dc;
+  --nova-surface: #f7f0e3;
+  --nova-paper: #ffffff;
+  --nova-cream: #f7f0e3;
+  --nova-line: #d8e0e5;
+  --nova-line-strong: #b9c5cf;
+  --nova-hover: #eef2ef;
+  --nova-muted: #64748b;
+  --nova-bg-alt: #f3f7f8;
+  --nova-danger: #d92d20;
+  --nova-danger-soft: #fff1f0;
+  --nova-danger-border: #f0a39d;
+}
+
+/* Runtime themes: changing html[data-theme] instantly updates every
+   Tailwind v4 utility backed by the tokens above. */
+html[data-theme='classic'] {
+  --nova-ink: #17324d;
+  --nova-primary: #577399;
+  --nova-accent: #fe5f55;
+  --nova-soft: #d8e2dc;
+  --nova-surface: #f7f0e3;
+  --nova-paper: #fff;
+  --nova-cream: #f7f0e3;
+  --nova-line: #d8e0e5;
+  --nova-line-strong: #b9c5cf;
+  --nova-hover: #eef2ef;
+  --nova-muted: #64748b;
+  --nova-bg-alt: #f3f7f8;
+}
+html[data-theme='sunset'] {
+  --nova-ink: #df301c;
+  --nova-primary: #00b7cd;
+  --nova-accent: #ff9100;
+  --nova-soft: #fff1d1;
+  --nova-surface: #fff1d1;
+  --nova-paper: #fff;
+  --nova-cream: #fff1d1;
+  --nova-line: #c9e3e7;
+  --nova-line-strong: #edb7ad;
+  --nova-hover: #fff1df;
+  --nova-muted: #7a5b45;
+  --nova-bg-alt: #f4fbfb;
+}
+html[data-theme='violet'] {
+  --nova-ink: #1e104e;
+  --nova-primary: #452e5a;
+  --nova-accent: #ff653f;
+  --nova-soft: #ffc85c;
+  --nova-surface: #fff;
+  --nova-paper: #fff;
+  --nova-cream: #faf8ff;
+  --nova-line: #e5dded;
+  --nova-line-strong: #cfc4dc;
+  --nova-hover: #fff0eb;
+  --nova-muted: #6f6480;
+  --nova-bg-alt: #f7f3ff;
+}
+html[data-theme='teal'] {
+  --nova-ink: #007979;
+  --nova-primary: #24b1b1;
+  --nova-accent: #e37434;
+  --nova-soft: #ffe2af;
+  --nova-surface: #fffaf1;
+  --nova-paper: #fff;
+  --nova-cream: #fffaf1;
+  --nova-line: #d8eeee;
+  --nova-line-strong: #a8d9d9;
+  --nova-hover: #effafa;
+  --nova-muted: #557777;
+  --nova-bg-alt: #f6fbfb;
+}
+html[data-theme='sage'] {
+  --nova-ink: #677e61;
+  --nova-primary: #73976a;
+  --nova-accent: #bd4444;
+  --nova-soft: #f1dec4;
+  --nova-surface: #fffaf5;
+  --nova-paper: #fff;
+  --nova-cream: #fffaf5;
+  --nova-line: #e7dfd4;
+  --nova-line-strong: #c6cbbd;
+  --nova-hover: #fff1ef;
+  --nova-muted: #687564;
+  --nova-bg-alt: #f8f7f2;
+}
+html[data-theme='meadow'] {
+  --nova-ink: #689d4b;
+  --nova-primary: #91ae6e;
+  --nova-accent: #d96868;
+  --nova-soft: #f2f2f2;
+  --nova-surface: #fbfcf8;
+  --nova-paper: #fff;
+  --nova-cream: #fbfcf8;
+  --nova-line: #e5eadf;
+  --nova-line-strong: #c7d4b7;
+  --nova-hover: #fff1f1;
+  --nova-muted: #64735c;
+  --nova-bg-alt: #f5f8f1;
+}
+html[data-theme='slate'] {
+  --nova-ink: #2d3142;
+  --nova-primary: #4f5d75;
+  --nova-accent: #ef8354;
+  --nova-soft: #bfc0c0;
+  --nova-surface: #fff;
+  --nova-paper: #fff;
+  --nova-cream: #f7f7f8;
+  --nova-line: #d8d9da;
+  --nova-line-strong: #bfc0c0;
+  --nova-hover: #f0f1f2;
+  --nova-muted: #667085;
+  --nova-bg-alt: #f3f4f6;
+}
+html[data-theme='sapphire'] {
+  --nova-ink: #5465ff;
+  --nova-primary: #788bff;
+  --nova-accent: #5465ff;
+  --nova-soft: #bfd7ff;
+  --nova-surface: #f8faff;
+  --nova-paper: #fff;
+  --nova-cream: #f8faff;
+  --nova-line: #d8e3ff;
+  --nova-line-strong: #9bb1ff;
+  --nova-hover: #eef2ff;
+  --nova-muted: #6673b8;
+  --nova-bg-alt: #f1f5ff;
+}
+html[data-theme='berry'] {
+  --nova-ink: #1d3557;
+  --nova-primary: #457b9d;
+  --nova-accent: #e63946;
+  --nova-soft: #a8dadc;
+  --nova-surface: #f9fdfb;
+  --nova-paper: #fff;
+  --nova-cream: #f9fdfb;
+  --nova-line: #d5e8e8;
+  --nova-line-strong: #a8dadc;
+  --nova-hover: #eef7f7;
+  --nova-muted: #59718b;
+  --nova-bg-alt: #f2f8fa;
+}
+html[data-theme='ink'] {
+  --nova-ink: #04151f;
+  --nova-primary: #183a37;
+  --nova-accent: #c44900;
+  --nova-soft: #efd6ac;
+  --nova-surface: #fffaf2;
+  --nova-paper: #fff;
+  --nova-cream: #fffaf2;
+  --nova-line: #e7d9c2;
+  --nova-line-strong: #c8b395;
+  --nova-hover: #fff1df;
+  --nova-muted: #5d6d6b;
+  --nova-bg-alt: #f7f1e7;
+}
+html[data-theme='lava'] {
+  --nova-ink: #003049;
+  --nova-primary: #669bbc;
+  --nova-accent: #c1121f;
+  --nova-soft: #fdf0d5;
+  --nova-surface: #fffaf0;
+  --nova-paper: #fff;
+  --nova-cream: #fffaf0;
+  --nova-line: #eadfc8;
+  --nova-line-strong: #c7d8df;
+  --nova-hover: #fff1e8;
+  --nova-muted: #587184;
+  --nova-bg-alt: #f5f8fa;
+}
+
+html {
+  direction: rtl;
+  scroll-behavior: smooth;
+  scrollbar-gutter: stable both-edges;
+}
+
+@media (min-width: 1280px) {
+  .admin-sidebar {
+    height: calc(100vh - 6rem);
+    contain: layout paint;
+  }
+
+  .admin-main {
+    min-width: 0;
+    contain: layout;
+  }
+}
+body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  background: linear-gradient(
+    180deg,
+    var(--nova-surface) 0%,
+    var(--nova-bg-alt) 42%,
+    var(--nova-surface) 100%
+  );
+  color: var(--nova-ink);
+  font-family: var(--font-nova);
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+button,
+a {
+  cursor: pointer;
+}
+input,
+textarea,
+select {
+  font-family: inherit;
+}
+* {
+  box-sizing: border-box;
+}
+::selection {
+  background: var(--nova-soft);
+  color: var(--nova-ink);
+}
+img {
+  max-width: 100%;
+}
+button,
+input,
+textarea,
+select {
+  min-width: 0;
+}
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline: 3px solid color-mix(in srgb, var(--nova-primary) 28%, transparent);
+  outline-offset: 2px;
+}
+::placeholder {
+  color: var(--nova-muted);
+}
+@media (max-width: 640px) {
+  h1 {
+    letter-spacing: -0.025em;
+  }
+  .container,
+  .max-w-7xl {
+    max-width: 100%;
+  }
+}
+.nova-accent {
+  color: var(--nova-accent);
+}
+.nova-accent-bg {
+  background: var(--nova-primary);
+}
+.nova-paper {
+  background: var(--nova-paper);
+}
+.nova-shell {
+  background: var(--nova-cream);
+}
+.nova-divider {
+  border-color: var(--nova-line);
+}
+.nova-noise {
+  position: relative;
+  isolation: isolate;
+}
+.nova-noise:before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0.28;
+  background-image: radial-gradient(
+    rgba(17, 24, 39, 0.05) 0.7px,
+    transparent 0.7px
+  );
+  background-size: 7px 7px;
+}
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto !important;
+  }
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+.range-input {
+  pointer-events: none;
+}
+.range-input::-webkit-slider-thumb {
+  pointer-events: auto;
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border: 2px solid var(--nova-surface);
+  border-radius: 999px;
+  background: var(--nova-primary);
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.2);
+}
+.range-input::-moz-range-thumb {
+  pointer-events: auto;
+  width: 18px;
+  height: 18px;
+  border: 2px solid var(--nova-surface);
+  border-radius: 999px;
+  background: var(--nova-primary);
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.2);
+}
+.range-input:focus-visible::-webkit-slider-thumb {
+  outline: 3px solid color-mix(in srgb, var(--nova-primary) 28%, transparent);
+  outline-offset: 3px;
+}
+.range-input:focus-visible::-moz-range-thumb {
+  outline: 3px solid color-mix(in srgb, var(--nova-primary) 28%, transparent);
+  outline-offset: 3px;
+}
