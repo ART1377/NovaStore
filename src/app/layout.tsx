@@ -6,6 +6,15 @@ import { Footer } from '@/components/layout/footer';
 import { AppProviders } from '@/providers/app-providers';
 import { CompareBar } from '@/features/compare/components/compare-bar';
 import { siteConfig } from '@/lib/site';
+import { themes, THEME_STORAGE_KEY, DEFAULT_THEME_ID } from '@/lib/themes';
+
+const themeBootstrapScript = `(function(){try{var t=localStorage.getItem(${JSON.stringify(
+  THEME_STORAGE_KEY,
+)});var ok=${JSON.stringify(themes.map((theme) => theme.id))}.indexOf(t)>=0;document.documentElement.dataset.theme=ok?t:${JSON.stringify(
+  DEFAULT_THEME_ID,
+)};}catch(e){document.documentElement.dataset.theme=${JSON.stringify(
+  DEFAULT_THEME_ID,
+)};}})();`;
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
@@ -45,11 +54,7 @@ export default function RootLayout({
   return (
     <html lang="fa" dir="rtl" suppressHydrationWarning>
       <head>
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `(function(){try{var t=localStorage.getItem('novastore-theme');var ok=['classic','sunset','violet','teal','sage','meadow','slate','sapphire','berry','ink','lava'].indexOf(t)>=0;document.documentElement.dataset.theme=ok?t:'classic'}catch(e){document.documentElement.dataset.theme='classic'}})()`,
-          }}
-        />
+        <script dangerouslySetInnerHTML={{ __html: themeBootstrapScript }} />
       </head>
       <body className="flex min-h-screen flex-col">
         <AppProviders>

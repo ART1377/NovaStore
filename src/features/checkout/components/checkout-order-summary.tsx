@@ -38,7 +38,7 @@ export function CheckoutOrderSummary({
               >
                 <div className="min-w-0">
                   <p className="leading-6 font-bold">{item.product.name}</p>
-                  <p className="text-muted-foreground text-xs">
+                  <p className="text-nova-muted text-xs">
                     {item.variant?.name} × {item.quantity}
                   </p>
                 </div>
@@ -50,7 +50,7 @@ export function CheckoutOrderSummary({
               </div>
             ))}
           </div>
-          <div className="bg-border my-5 h-px" />
+          <div className="bg-nova-line my-5 h-px" />
           <div className="space-y-3 text-sm">
             <CheckoutPriceRow label="جمع کالاها" value={subtotal} />
             <CheckoutPriceRow
@@ -60,12 +60,12 @@ export function CheckoutOrderSummary({
             />
             <CheckoutPriceRow label="هزینه ارسال" value={shippingCost} />
           </div>
-          <div className="bg-border my-5 h-px" />
+          <div className="bg-nova-line my-5 h-px" />
           <div className="flex items-center justify-between">
             <span className="font-bold">مبلغ قابل پرداخت</span>
             <span className="text-2xl font-black">{formatPrice(total)}</span>
           </div>
-          <div className="bg-muted/60 text-muted-foreground mt-4 rounded-2xl p-3 text-xs leading-6">
+          <div className="bg-nova-hover/70 text-nova-muted mt-4 rounded-2xl p-3 text-xs leading-6">
             پرداخت این نسخه آزمایشی است؛ قیمت، موجودی، تخفیف و هزینه ارسال در
             سمت سرور دوباره بررسی می‌شوند.
           </div>

@@ -69,3 +69,7 @@ export const themes: ThemeDefinition[] = [
     colors: ['#780000', '#c1121f', '#fdf0d5', '#003049', '#669bbc'],
   },
 ];
+
+export const THEME_STORAGE_KEY = 'novastore-theme';
+export const THEME_CHANGE_EVENT = 'novastore-theme-change';
+export const DEFAULT_THEME_ID: ThemeId = 'classic';

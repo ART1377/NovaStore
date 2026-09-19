@@ -25,7 +25,22 @@ import { OrderInfo } from './order-info';
 import { AdminDetailSkeleton } from './admin-detail-skeleton';
 import { QueryError } from '@/components/shared/query-state';
 export function AdminOrderDetail({ id }: { id: string }) {
-  const { data, isLoading, error, update, status, payment, shipping, tracking, trackingError, setStatus, setPayment, setShipping, setTracking, submitUpdate } = useAdminOrderDetail(id);
+  const {
+    data,
+    isLoading,
+    error,
+    update,
+    status,
+    payment,
+    shipping,
+    tracking,
+    trackingError,
+    setStatus,
+    setPayment,
+    setShipping,
+    setTracking,
+    submitUpdate,
+  } = useAdminOrderDetail(id);
 
   if (isLoading) return <AdminDetailSkeleton />;
   if (error || !data)
@@ -138,7 +153,9 @@ export function AdminOrderDetail({ id }: { id: string }) {
                     onChange={(e) => setStatus(e.target.value as OrderStatus)}
                   >
                     {ORDER_STATUSES.map((s) => (
-                      <option key={s} value={s}>{ORDER_STATUS_LABELS[s]}</option>
+                      <option key={s} value={s}>
+                        {ORDER_STATUS_LABELS[s]}
+                      </option>
                     ))}
                   </Select>
                 </label>
@@ -152,7 +169,9 @@ export function AdminOrderDetail({ id }: { id: string }) {
                     }
                   >
                     {PAYMENT_STATUSES.map((s) => (
-                      <option key={s} value={s}>{PAYMENT_STATUS_LABELS[s]}</option>
+                      <option key={s} value={s}>
+                        {PAYMENT_STATUS_LABELS[s]}
+                      </option>
                     ))}
                   </Select>
                 </label>
@@ -166,7 +185,9 @@ export function AdminOrderDetail({ id }: { id: string }) {
                     }
                   >
                     {SHIPPING_STATUSES.map((s) => (
-                      <option key={s} value={s}>{SHIPPING_STATUS_LABELS[s]}</option>
+                      <option key={s} value={s}>
+                        {SHIPPING_STATUS_LABELS[s]}
+                      </option>
                     ))}
                   </Select>
                 </label>
@@ -176,10 +197,8 @@ export function AdminOrderDetail({ id }: { id: string }) {
                     کد رهگیری
                   </span>
                   <Input
-                    value={tracking || data.shipment?.trackingNumber || ''}
-                    onChange={(e) => {
-                      setTracking(e.target.value);
-                    }}
+                    value={tracking}
+                    onChange={(e) => setTracking(e.target.value)}
                     placeholder="اختیاری"
                     aria-invalid={!!trackingError}
                   />

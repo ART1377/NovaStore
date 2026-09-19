@@ -4,24 +4,14 @@ import { z } from 'zod';
 import { db } from '@/lib/prisma';
 import { requireAdmin } from '@/lib/auth';
 import { pusherServer } from '@/lib/pusher';
-import { ORDER_STATUS_LABELS } from '@/constants/constants';
+import {
+  ORDER_STATUSES,
+  PAYMENT_STATUSES,
+  SHIPPING_STATUSES,
+  ORDER_STATUS_LABELS,
+} from '@/constants/constants';
 import { apiErrorResponse } from '@/lib/api-error';
 
-const ORDER_STATUSES = [
-  'PENDING',
-  'PAID',
-  'PROCESSING',
-  'SHIPPED',
-  'DELIVERED',
-  'CANCELLED',
-] as const;
-const PAYMENT_STATUSES = ['PENDING', 'PAID', 'FAILED', 'REFUNDED'] as const;
-const SHIPPING_STATUSES = [
-  'PENDING',
-  'SHIPPED',
-  'DELIVERED',
-  'RETURNED',
-] as const;
 const schema = z.object({
   orderId: z.string(),
   orderStatus: z.enum(ORDER_STATUSES).optional(),
@@ -130,12 +120,25 @@ export async function PATCH(req: Request) {
           orderNumber: order.orderNumber,
           status: order.orderStatus,
         };
-        const admins = await db.user.findMany({ where: { role: 'ADMIN' }, select: { id: true } });
+        const admins = await db.user.findMany({
+          where: { role: 'ADMIN' },
+          select: { id: true },
+        });
         await Promise.all([
-          pusherServer.trigger(`private-user-${old.userId}`, 'notification', payload),
-          ...admins.filter((admin) => admin.id !== old.userId).map((admin) =>
-            pusherServer!.trigger(`private-user-${admin.id}`, 'notification', payload),
+          pusherServer.trigger(
+            `private-user-${old.userId}`,
+            'notification',
+            payload,
           ),
+          ...admins
+            .filter((admin) => admin.id !== old.userId)
+            .map((admin) =>
+              pusherServer!.trigger(
+                `private-user-${admin.id}`,
+                'notification',
+                payload,
+              ),
+            ),
         ]);
       } catch {
         // Realtime delivery must not make a successful order update fail.

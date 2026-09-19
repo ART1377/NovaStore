@@ -2,27 +2,34 @@
 'use client';
 import { useEffect, useRef, useState, useSyncExternalStore } from 'react';
 import { Check, Palette } from 'lucide-react';
-import { themes, type ThemeId } from '@/lib/themes';
+import {
+  themes,
+  type ThemeId,
+  THEME_STORAGE_KEY,
+  THEME_CHANGE_EVENT,
+  DEFAULT_THEME_ID,
+} from '@/lib/themes';
 import { useCloseOnOutsideInteraction } from '@/hooks/use-close-on-outside-interaction';
-const STORAGE_KEY = 'novastore-theme';
-const EVENT = 'novastore-theme-change';
 
 function readStoredTheme(): ThemeId {
-  const saved = window.localStorage.getItem(STORAGE_KEY) as ThemeId | null;
-  return themes.some((item) => item.id === saved) ? saved! : 'classic';
+  const saved = window.localStorage.getItem(
+    THEME_STORAGE_KEY,
+  ) as ThemeId | null;
+  return themes.some((item) => item.id === saved) ? saved! : DEFAULT_THEME_ID;
 }
 
 function subscribe(callback: () => void) {
-  window.addEventListener(EVENT, callback);
-  return () => window.removeEventListener(EVENT, callback);
+  window.addEventListener(THEME_CHANGE_EVENT, callback);
+  return () => window.removeEventListener(THEME_CHANGE_EVENT, callback);
 }
 
 export function ThemeSwitcher() {
   const theme = useSyncExternalStore(
     subscribe,
     readStoredTheme,
-    () => 'classic' as ThemeId,
+    () => DEFAULT_THEME_ID,
   );
+
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
   useEffect(() => {
@@ -30,8 +37,8 @@ export function ThemeSwitcher() {
   }, [theme]);
   useCloseOnOutsideInteraction(ref, open, () => setOpen(false));
   const change = (next: ThemeId) => {
-    localStorage.setItem(STORAGE_KEY, next);
-    window.dispatchEvent(new Event(EVENT));
+    localStorage.setItem(THEME_STORAGE_KEY, next);
+    window.dispatchEvent(new Event(THEME_CHANGE_EVENT));
     setOpen(false);
   };
   return (

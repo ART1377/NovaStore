@@ -4,24 +4,12 @@ import { revalidatePath } from 'next/cache';
 import { db } from '@/lib/prisma';
 import { requireAdmin } from '@/lib/auth';
 import { apiErrorResponse } from '@/lib/api-error';
-import { cloudinary } from '@/lib/cloudinary';
 import { validateProductCategoryAndBrand } from '@/lib/admin-product-relations';
 import {
   resolveProductImages,
   updateProductSchema,
 } from '@/features/admin/validation/product.schema';
-
-function publicIdFromCloudinaryUrl(url: string) {
-  const marker = '/upload/';
-  const index = url.indexOf(marker);
-  if (index === -1) return null;
-  const path = url.slice(index + marker.length);
-  const parts = path.split('/');
-  while (parts[0] && /^(v\d+|q_auto|f_auto|fl_[^/]+)$/.test(parts[0]))
-    parts.shift();
-  const joined = parts.join('/');
-  return joined.replace(/\.[a-z0-9]+$/i, '') || null;
-}
+import { cloudinary, publicIdFromCloudinaryUrl } from '@/lib/cloudinary';
 
 export async function GET(
   _: Request,
@@ -115,7 +103,10 @@ export async function PATCH(
           brandId: body.brandId,
           status: body.status,
           featured: body.featured,
-          publishedAt: body.status === 'PUBLISHED' ? new Date() : null,
+          publishedAt:
+            body.status === 'PUBLISHED'
+              ? (existing.publishedAt ?? new Date())
+              : null,
         },
       });
       const incomingIds = new Set(

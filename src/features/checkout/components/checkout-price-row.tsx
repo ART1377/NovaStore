@@ -12,7 +12,7 @@ export function CheckoutPriceRow({
 }) {
   return (
     <div className="flex justify-between gap-4">
-      <span className="text-muted-foreground">{label}</span>
+      <span className="text-nova-muted">{label}</span>
       <span className={positive ? 'font-bold text-emerald-600' : 'font-medium'}>
         {value < 0 ? `− ${formatPrice(Math.abs(value))}` : formatPrice(value)}
       </span>

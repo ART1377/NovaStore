@@ -16,7 +16,6 @@ import { HomeProductSection } from './home-product-section';
 import { HomeSectionHeader } from './home-section-header';
 import { HomeHero } from './home-hero';
 import { HomeTrustItem } from './home-trust-item';
-import { getCategoryLabel } from '../utils/category-label';
 
 export function HomePage({ data }: { data: HomePageData }) {
   const { hero, featured, newest, discounted, categories, best } = data;
@@ -64,7 +63,7 @@ export function HomePage({ data }: { data: HomePageData }) {
                 />
               </div>
               <span className="text-sm font-black text-[#1d2636]">
-                {getCategoryLabel(c.name)}
+                {c.name}
               </span>
               <span className="text-nova-muted mt-1 block text-[11px]">
                 مشاهده محصولات

@@ -1,6 +1,5 @@
 // src/app/api/admin/categories/[id]/route.ts
 import { db } from '@/lib/prisma';
-import { slugify } from '@/lib/utils';
 import {
   handleResourceDelete,
   handleResourceUpdate,
@@ -21,11 +20,7 @@ export async function PATCH(
       update: (id, data) =>
         db.category.update({
           where: { id },
-          data: {
-            name: data.name,
-            slug: `${slugify(data.name)}-${id.slice(-6)}`,
-            isActive: data.isActive,
-          },
+          data: { name: data.name, isActive: data.isActive },
         }),
     },
     {

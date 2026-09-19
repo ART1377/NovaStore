@@ -8,6 +8,7 @@ export type CheckoutPayload = {
   addressId: string;
   shippingMethod: ShippingMethod;
   couponCode?: string;
+  idempotencyKey: string;
 };
 
 export const checkoutService = {

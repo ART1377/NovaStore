@@ -105,7 +105,7 @@ export function ReviewThread({
         </div>
 
         {replyOpen && replyCount > 0 ? (
-          <div className="border-nova-line bg-nova-hover/35 mt-3 max-h-60 scrollbar-thin space-y-2 overflow-y-auto overscroll-contain rounded-2xl border p-2 pl-1">
+          <div className="border-nova-line bg-nova-hover/35 mt-3 max-h-60 space-y-2 overflow-y-auto overscroll-contain rounded-2xl border p-2 pl-1">
             {replies.map((item) => (
               <div key={item.id} className="bg-nova-surface rounded-xl p-3">
                 <div className="flex flex-wrap items-center gap-2">

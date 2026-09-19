@@ -60,16 +60,24 @@ export async function POST(request: Request) {
     });
     const existing = await db.wishlistItem.findUnique({
       where: { wishlistId_productId: { wishlistId: wishlist.id, productId } },
+      select: { id: true },
     });
     const nextWished = wished ?? !existing;
 
-    if (nextWished && !existing)
-      await db.wishlistItem.create({
-        data: { wishlistId: wishlist.id, productId },
+    if (nextWished) {
+      // upsert is race-safe: two concurrent adds converge to one row.
+      await db.wishlistItem.upsert({
+        where: {
+          wishlistId_productId: { wishlistId: wishlist.id, productId },
+        },
+        update: {},
+        create: { wishlistId: wishlist.id, productId },
       });
-    if (!nextWished && existing)
-      await db.wishlistItem.delete({ where: { id: existing.id } });
-
+    } else {
+      await db.wishlistItem.deleteMany({
+        where: { wishlistId: wishlist.id, productId },
+      });
+    }
     return NextResponse.json({ wished: nextWished });
   } catch (error) {
     const result = apiErrorResponse(error, 'به‌روزرسانی علاقه‌مندی انجام نشد.');

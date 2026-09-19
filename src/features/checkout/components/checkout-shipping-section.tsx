@@ -59,14 +59,18 @@ export function CheckoutShippingSection({
                 type="button"
                 disabled={isFreeUnavailable}
                 onClick={() => onChange(option.id)}
-                className={`rounded-2xl border p-4 text-right transition ${isSelected ? 'border-primary bg-primary/5 ring-primary/10 ring-2' : 'hover:border-foreground/20'} ${isFreeUnavailable ? 'cursor-not-allowed opacity-45' : ''}`}
+                className={`rounded-2xl border p-4 text-right transition ${
+                  isSelected
+                    ? 'border-nova-primary bg-nova-hover ring-nova-primary/15 ring-2'
+                    : 'hover:border-nova-line-strong'
+                } ${isFreeUnavailable ? 'cursor-not-allowed opacity-45' : ''}`}
               >
                 <div className="flex items-start justify-between gap-3">
                   <span className="text-xl">{option.icon}</span>
-                  {isSelected && <Check className="text-primary size-5" />}
+                  {isSelected && <Check className="text-nova-primary size-5" />}
                 </div>
                 <p className="mt-3 font-bold">{option.title}</p>
-                <p className="text-muted-foreground mt-1 text-xs">
+                <p className="text-nova-muted mt-1 text-xs">
                   {option.description}
                 </p>
                 <p className="mt-3 text-sm font-black">{formatPrice(price)}</p>
@@ -75,7 +79,7 @@ export function CheckoutShippingSection({
           })}
         </div>
         {!hasFreeShipping && (
-          <p className="text-muted-foreground mt-3 text-xs">
+          <p className="text-nova-muted mt-3 text-xs">
             برای فعال شدن ارسال رایگان، مبلغ نهایی کالاها باید حداقل{' '}
             {formatPrice(FREE_SHIPPING_THRESHOLD)} باشد.
           </p>

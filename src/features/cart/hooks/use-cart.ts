@@ -24,10 +24,10 @@ export function useCart() {
 
 export function useCartItem(productId: string, variantId?: string) {
   const { data: cart } = useCart();
-  return cart?.items.find(
-    (item) =>
-      item.productId === productId &&
-      (!variantId || item.variantId === variantId),
+  return cart?.items.find((item) =>
+    variantId
+      ? item.productId === productId && item.variantId === variantId
+      : item.productId === productId && !item.variantId,
   );
 }
 

@@ -10,24 +10,10 @@ import { zodFieldErrors, type FieldErrors } from '@/lib/form-errors';
 import { useCreateCheckoutAddress } from '../hooks/use-checkout-actions';
 import { CheckoutSectionTitle } from './checkout-section-title';
 import type { CheckoutAddress } from '../types/checkout-types';
+import { addressSchema } from '@/features/account/validation/address.schema';
+import { numericInputValue } from '@/lib/utils';
 
 type NewAddress = Omit<CheckoutAddress, 'id' | 'isDefault'>;
-
-const addressSchema = z.object({
-  title: z.string().trim().min(2, 'عنوان آدرس حداقل ۲ کاراکتر باشد.'),
-  recipient: z.string().trim().min(2, 'نام گیرنده حداقل ۲ کاراکتر باشد.'),
-  phone: z
-    .string()
-    .trim()
-    .regex(/^(?:\+98|0098|0)?9\d{9}$/, 'شماره موبایل معتبر وارد کنید.'),
-  city: z.string().trim().min(2, 'شهر را وارد کنید.'),
-  state: z.string().trim().min(2, 'استان را وارد کنید.'),
-  postalCode: z
-    .string()
-    .trim()
-    .regex(/^\d{10}$/, 'کد پستی باید ۱۰ رقم باشد.'),
-  street: z.string().trim().min(5, 'آدرس کامل حداقل ۵ کاراکتر باشد.'),
-});
 
 const EMPTY_ADDRESS: NewAddress = {
   title: 'خانه',
@@ -66,7 +52,11 @@ export function CheckoutAddressSection({
   const selected = addresses.find((address) => address.id === addressId);
 
   const addAddress = () => {
-    const parsed = addressSchema.safeParse(newAddress);
+    const parsed = addressSchema.safeParse({
+      ...newAddress,
+      phone: numericInputValue(newAddress.phone),
+      postalCode: numericInputValue(newAddress.postalCode),
+    });
     if (!parsed.success) {
       setErrors(zodFieldErrors(parsed.error));
       return;
@@ -122,18 +112,22 @@ export function CheckoutAddressSection({
               key={address.id}
               type="button"
               onClick={() => onSelectAddress(address.id)}
-              className={`rounded-2xl border p-4 text-right transition ${addressId === address.id ? 'border-primary bg-primary/5 ring-primary/10 ring-2' : 'hover:border-foreground/20'}`}
+              className={`rounded-2xl border p-4 text-right transition ${
+                addressId === address.id
+                  ? 'border-nova-primary bg-nova-hover ring-nova-primary/15 ring-2'
+                  : 'hover:border-nova-line-strong'
+              }`}
             >
               <div className="flex items-center justify-between gap-3">
                 <span className="font-bold">{address.title}</span>
                 {addressId === address.id && (
-                  <Check className="text-primary size-5" />
+                  <Check className="text-nova-primary size-5" />
                 )}
               </div>
               <p className="mt-2 text-sm font-medium">
                 {address.recipient} · {address.phone}
               </p>
-              <p className="text-muted-foreground mt-1 text-xs leading-6">
+              <p className="text-nova-muted mt-1 text-xs leading-6">
                 {address.state}، {address.city}، {address.street} · کدپستی{' '}
                 {address.postalCode}
               </p>
@@ -149,12 +143,12 @@ export function CheckoutAddressSection({
         <button
           type="button"
           onClick={() => setShowForm((value) => !value)}
-          className="hover:bg-muted mt-4 flex w-full items-center justify-center gap-2 rounded-2xl border border-dashed px-4 py-3 text-sm font-bold transition"
+          className="hover:bg-nova-hover mt-4 flex w-full items-center justify-center gap-2 rounded-2xl border border-dashed px-4 py-3 text-sm font-bold transition"
         >
           <Plus className="size-4" /> افزودن آدرس جدید
         </button>
         {showForm && (
-          <div className="bg-muted/50 mt-4 rounded-2xl p-4">
+          <div className="bg-nova-hover/60 mt-4 rounded-2xl p-4">
             <div className="grid gap-3 md:grid-cols-2">
               {(Object.keys(EMPTY_ADDRESS) as Array<keyof NewAddress>).map(
                 (field) => (

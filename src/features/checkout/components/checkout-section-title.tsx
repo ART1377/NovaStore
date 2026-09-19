@@ -8,7 +8,7 @@ export function CheckoutSectionTitle({
 }) {
   return (
     <div className="flex items-center gap-3">
-      <span className="bg-primary text-primary-foreground flex size-8 items-center justify-center rounded-full text-sm font-black">
+      <span className="bg-nova-primary grid size-8 place-items-center rounded-full text-sm font-black text-white">
         {number}
       </span>
       <h2 className="text-lg font-black">{title}</h2>
