@@ -55,7 +55,7 @@ export const ProductCard = memo(function ProductCard({
             </span>
           ) : null}
           {variant?.stock && variant.stock <= 5 ? (
-            <span className="bg-nova-surface/92 rounded-full px-2.5 py-1 text-[10px] font-bold text-[#b42318] shadow-sm backdrop-blur">
+            <span className="bg-nova-surface/90 text-nova-danger rounded-full px-2.5 py-1 text-[10px] font-bold shadow-sm backdrop-blur">
               موجودی محدود
             </span>
           ) : null}
@@ -64,7 +64,7 @@ export const ProductCard = memo(function ProductCard({
           <button
             type="button"
             onClick={() => setQuickViewOpen(true)}
-            className="bg-nova-surface text-nova-ink min-w-0 flex-1 rounded-2xl shadow-lg transition hover:bg-white"
+            className="bg-nova-surface text-nova-ink hover:bg-nova-paper min-w-0 flex-1 rounded-2xl shadow-lg transition"
           >
             <span className="flex h-9 items-center justify-center gap-1.5 px-3 text-sm font-semibold">
               مشاهده سریع <ArrowUpLeft size={14} />
@@ -93,7 +93,9 @@ export const ProductCard = memo(function ProductCard({
       <div className="flex min-w-0 flex-1 flex-col p-4 sm:p-5">
         <div className="text-nova-muted flex min-w-0 items-center justify-between gap-3 text-[11px]">
           <div className="flex min-w-0 items-center gap-1.5 truncate">
-            <span className="truncate">{product.brand?.name ?? 'بدون برند'}</span>
+            <span className="truncate">
+              {product.brand?.name ?? 'بدون برند'}
+            </span>
             <span aria-hidden="true">/</span>
             <span className="truncate">{product.category.name}</span>
           </div>

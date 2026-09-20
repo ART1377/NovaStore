@@ -8,9 +8,12 @@ import { formatPrice } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
 import { EmptyState, ProductImagePlaceholder } from '@/components/shared';
+import { getClientErrorMessage } from '@/lib/client-error';
+import { QueryError } from '@/components/shared/query-state';
 export function WishlistPage() {
-  const { data, isLoading } = useWishlist();
+  const { data, isLoading, isError, error, refetch } = useWishlist();
   const { remove, moveToCart } = useWishlistActions();
+
   if (isLoading)
     return (
       <main className="mx-auto max-w-7xl px-4 py-10">
@@ -29,6 +32,19 @@ export function WishlistPage() {
         </div>
       </main>
     );
+  if (isError) {
+    return (
+      <main className="mx-auto max-w-7xl px-4 py-10">
+        <QueryError
+          message={getClientErrorMessage(
+            error,
+            'دریافت علاقه‌مندی‌ها انجام نشد.',
+          )}
+          onRetry={() => refetch()}
+        />
+      </main>
+    );
+  }
   const items = data?.items ?? [];
   return (
     <main className="mx-auto max-w-7xl px-4 py-10">

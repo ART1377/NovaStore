@@ -15,7 +15,20 @@ import { ProductImagePlaceholder } from '@/components/shared/product-image-place
 import { AdminPageHeader } from './admin-page-header';
 export function InventoryPage() {
   const inventory = useInventoryPage();
-  const { data, list, isLoading, update, search, filter, stockErrors, total, out, low, setSearch, setFilter, saveStock } = inventory;
+  const {
+    list,
+    isLoading,
+    update,
+    search,
+    filter,
+    stockErrors,
+    total,
+    out,
+    low,
+    setSearch,
+    setFilter,
+    saveStock,
+  } = inventory;
 
   if (isLoading)
     return <AdminListSkeleton rows={6} withToolbar={false} withStats />;

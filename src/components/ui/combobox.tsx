@@ -80,13 +80,13 @@ export function Combobox({
         className="border-nova-line bg-nova-surface text-nova-ink hover:border-nova-primary focus-visible:ring-nova-accent/30 flex h-full min-h-11 w-full items-center justify-between gap-3 rounded-xl border px-3 text-sm transition outline-none focus-visible:ring-2"
       >
         {selected ? (
-          renderSelected?.(selected) ?? (
+          (renderSelected?.(selected) ?? (
             <span className="min-w-0 flex-1 truncate text-right">
               {selected.label}
             </span>
-          )
+          ))
         ) : (
-          <span className="min-w-0 flex-1 truncate text-right text-nova-muted">
+          <span className="text-nova-muted min-w-0 flex-1 truncate text-right">
             {placeholder}
           </span>
         )}
@@ -98,6 +98,17 @@ export function Combobox({
               onClick={(event) => {
                 event.stopPropagation();
                 onChange('');
+                setOpen(false);
+                setQuery('');
+              }}
+              onKeyDown={(event) => {
+                if (event.key === 'Enter' || event.key === ' ') {
+                  event.preventDefault();
+                  event.stopPropagation();
+                  onChange('');
+                  setOpen(false);
+                  setQuery('');
+                }
               }}
               className="text-nova-muted hover:bg-nova-soft rounded-full p-1"
               aria-label="پاک کردن انتخاب"
@@ -156,7 +167,9 @@ export function Combobox({
                     })}
                   </span>
                 ) : (
-                  <span className="min-w-0 flex-1 truncate">{option.label}</span>
+                  <span className="min-w-0 flex-1 truncate">
+                    {option.label}
+                  </span>
                 )}
                 {option.value === value && (
                   <Check size={15} className="text-nova-accent shrink-0" />

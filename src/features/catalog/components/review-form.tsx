@@ -28,7 +28,7 @@ export function ReviewForm({
   if (!session) {
     return (
       <Card>
-        <CardContent className="py-5 text-sm text-zinc-500">
+        <CardContent className="text-nova-muted py-5 text-sm">
           برای ثبت امتیاز و نظر، ابتدا وارد حساب کاربری شوید.
         </CardContent>
       </Card>
@@ -41,12 +41,11 @@ export function ReviewForm({
     <Card>
       <CardContent>
         <h3 className="font-black">تجربه خرید شما</h3>
-        <p className="mt-1 text-sm text-zinc-500">
+        <p className="text-nova-muted mt-1 text-sm">
           فقط خریداران این محصول می‌توانند امتیاز ثبت کنند.
         </p>
-
-        <div className="mt-5 rounded-2xl bg-zinc-50 p-4">
-          <p className="text-xs font-semibold text-zinc-500">امتیاز شما</p>
+        <div className="bg-nova-hover/50 mt-5 rounded-2xl p-4">
+          <p className="text-nova-muted text-xs font-semibold">امتیاز شما</p>
           <div className="mt-3 flex flex-row-reverse justify-end gap-1">
             {Array.from({ length: 5 }, (_, index) => index + 1).map((value) => (
               <button
@@ -62,14 +61,14 @@ export function ReviewForm({
                   size={28}
                   className={
                     value <= displayedRating
-                      ? 'fill-amber-400 text-amber-400'
-                      : 'text-zinc-300'
+                      ? 'fill-nova-accent text-nova-accent'
+                      : 'text-nova-line'
                   }
                 />
               </button>
             ))}
           </div>
-          <p className="mt-2 text-xs text-zinc-500">
+          <p className="text-nova-muted mt-2 text-xs">
             {rating ? `${formatNumber(rating)} از ۵` : 'یک امتیاز انتخاب کنید'}
           </p>
         </div>

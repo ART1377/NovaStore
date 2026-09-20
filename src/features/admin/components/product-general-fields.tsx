@@ -7,8 +7,8 @@ import { Combobox } from '@/components/ui/combobox';
 import { Checkbox } from '@/components/ui/checkbox';
 import { PRODUCT_STATUS_LABELS } from '@/constants/constants';
 import type { FieldErrors } from '@/lib/form-errors';
-import { AdminFormField } from './admin-form-field';
 import type { FormState } from '../types/product-editor-types';
+import { FormField } from '@/components/ui/form-field';
 
 type CatalogOption = { id: string; name: string; isActive: boolean };
 
@@ -33,14 +33,14 @@ export function ProductGeneralFields({
   return (
     <Card>
       <CardContent className="space-y-5">
-        <AdminFormField label="نام محصول" error={errors.name}>
+        <FormField label="نام محصول" error={errors.name}>
           <Input
             value={form.name}
             onChange={(event) => setFormValue('name', event.target.value)}
             placeholder="مثلاً آیفون ۱۶ پرو"
           />
-        </AdminFormField>
-        <AdminFormField label="توضیحات" error={errors.description}>
+        </FormField>
+        <FormField label="توضیحات" error={errors.description}>
           <textarea
             value={form.description}
             onChange={(event) =>
@@ -49,26 +49,23 @@ export function ProductGeneralFields({
             className="focus:border-nova-primary min-h-40 w-full rounded-xl border p-3 text-sm leading-7 outline-none"
             placeholder="توضیحات کامل محصول..."
           />
-        </AdminFormField>
+        </FormField>
         <div className="grid gap-4 sm:grid-cols-2">
-          <AdminFormField label="قیمت" error={errors.price}>
+          <FormField label="قیمت" error={errors.price}>
             <NumericInput
               value={form.price}
               onValueChange={(value) => setFormValue('price', value)}
               placeholder="مثلاً 1,320,000"
             />
-          </AdminFormField>
-          <AdminFormField
-            label="قیمت قبل از تخفیف"
-            error={errors.compareAtPrice}
-          >
+          </FormField>
+          <FormField label="قیمت قبل از تخفیف" error={errors.compareAtPrice}>
             <NumericInput
               value={form.compareAtPrice}
               onValueChange={(value) => setFormValue('compareAtPrice', value)}
               placeholder="مثلاً 1,500,000"
             />
-          </AdminFormField>
-          <AdminFormField label="دسته‌بندی" error={errors.categoryId}>
+          </FormField>
+          <FormField label="دسته‌بندی" error={errors.categoryId}>
             <Combobox
               value={form.categoryId}
               onChange={(value) => setFormValue('categoryId', value)}
@@ -81,8 +78,8 @@ export function ProductGeneralFields({
                 label: option.name + (option.isActive ? '' : ' (غیرفعال)'),
               }))}
             />
-          </AdminFormField>
-          <AdminFormField label="برند">
+          </FormField>
+          <FormField label="برند">
             <Combobox
               value={form.brandId}
               onChange={(value) => setFormValue('brandId', value)}
@@ -94,8 +91,8 @@ export function ProductGeneralFields({
                 label: option.name + (option.isActive ? '' : ' (غیرفعال)'),
               }))}
             />
-          </AdminFormField>
-          <AdminFormField label="وضعیت">
+          </FormField>
+          <FormField label="وضعیت">
             <Select
               value={form.status}
               onChange={(event) =>
@@ -111,7 +108,7 @@ export function ProductGeneralFields({
                 </option>
               ))}
             </Select>
-          </AdminFormField>
+          </FormField>
         </div>
         <Checkbox
           checked={form.featured}

@@ -10,24 +10,38 @@ import { EmptyState } from '@/components/shared/empty-state';
 import { ProductImagePlaceholder } from '@/components/shared/product-image-placeholder';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
+import { Skeleton } from '@/components/ui/skeleton';
+import { getClientErrorMessage } from '@/lib/client-error';
+import { QueryError } from '@/components/shared/query-state';
+
 export function CartPage() {
-  const { data, isLoading } = useCart();
+  const { data, isLoading, isError, error, refetch } = useCart();
   if (isLoading)
     return (
       <main className="mx-auto max-w-7xl px-4 py-10">
         <div className="space-y-3">
-          <div className="bg-nova-soft h-10 w-48 animate-pulse rounded-2xl" />
+          <Skeleton className="h-10 w-48 rounded-2xl" />
           <div className="grid gap-3">
-            {[1, 2, 3].map((item) => (
-              <div
-                key={item}
-                className="bg-nova-soft h-28 animate-pulse rounded-3xl"
-              />
+            {Array.from({ length: 3 }).map((_, index) => (
+              <Skeleton key={index} className="h-28 rounded-3xl" />
             ))}
           </div>
         </div>
       </main>
     );
+  if (isError) {
+    return (
+      <main className="mx-auto max-w-7xl px-4 py-10">
+        <QueryError
+          message={getClientErrorMessage(
+            error,
+            'دریافت اطلاعات سبد خرید انجام نشد.',
+          )}
+          onRetry={() => refetch()}
+        />
+      </main>
+    );
+  }
   const items = data?.items ?? [];
   const subtotal = items.reduce(
     (sum, item) =>

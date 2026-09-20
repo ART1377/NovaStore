@@ -8,6 +8,7 @@ import { QUERY_KEYS } from '@/lib/query-keys';
 import { getClientErrorMessage } from '@/lib/client-error';
 import { adminService } from '../api/admin.api';
 import type {
+  AdminCoupon,
   AdminCouponPayload,
   AdminProductPayload,
   AdminResourceKind,
@@ -17,26 +18,24 @@ import type {
 const showError = (error: unknown, fallback: string) =>
   toast.error(getClientErrorMessage(error, fallback));
 
-/**
- * Wraps useMutation with the invalidate-then-toast flow every admin
- * mutation in this file needs, so each hook below only has to declare
- * *what* changed, not repeat the plumbing for reporting it.
- */
 function useAdminMutation<TVariables, TData>({
   mutationFn,
   invalidateKeys,
   successMessage,
   errorFallback,
+  onSuccessExtra,
 }: {
   mutationFn: (variables: TVariables) => Promise<TData>;
   invalidateKeys: (variables: TVariables) => QueryKey[];
   successMessage: string | ((variables: TVariables) => string);
   errorFallback: string;
+  onSuccessExtra?: (data: TData, variables: TVariables) => void;
 }) {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn,
-    onSuccess: (_data, variables) => {
+    onSuccess: (data, variables) => {
+      onSuccessExtra?.(data, variables);
       invalidateKeys(variables).forEach(
         (queryKey) => void queryClient.invalidateQueries({ queryKey }),
       );
@@ -54,6 +53,7 @@ export function useAdminStats() {
   return useQuery({
     queryKey: QUERY_KEYS.adminStats,
     queryFn: adminService.getStats,
+    staleTime: 60_000,
   });
 }
 
@@ -61,6 +61,7 @@ export function useAdminProducts() {
   return useQuery({
     queryKey: QUERY_KEYS.adminProducts,
     queryFn: adminService.getProducts,
+    staleTime: 30_000,
   });
 }
 
@@ -97,7 +98,10 @@ export function useAdminProductActions() {
   });
   const restore = useAdminMutation({
     mutationFn: (id: string) => adminService.restoreProduct(id),
-    invalidateKeys: () => [QUERY_KEYS.adminProducts, QUERY_KEYS.adminHomeSettings],
+    invalidateKeys: () => [
+      QUERY_KEYS.adminProducts,
+      QUERY_KEYS.adminHomeSettings,
+    ],
     successMessage: 'محصول با موفقیت از آرشیو خارج شد.',
     errorFallback: 'بازگردانی محصول انجام نشد.',
   });
@@ -149,7 +153,12 @@ export function useAdminOrderActions() {
       QUERY_KEYS.adminOrders,
       QUERY_KEYS.adminStats,
       QUERY_KEYS.orders,
-      ...(variables.orderId ? [QUERY_KEYS.adminOrder(variables.orderId), QUERY_KEYS.order(variables.orderId)] : []),
+      ...(variables.orderId
+        ? [
+            QUERY_KEYS.adminOrder(variables.orderId),
+            QUERY_KEYS.order(variables.orderId),
+          ]
+        : []),
     ],
     successMessage: 'جزئیات سفارش با موفقیت به‌روزرسانی شد.',
     errorFallback: 'تغییر وضعیت سفارش انجام نشد.',
@@ -224,48 +233,73 @@ export function useAdminCoupons() {
   });
 }
 
+type CouponUpdatePayload = {
+  code?: string;
+  type?: AdminCoupon['type'];
+  value?: number;
+  minOrder?: number;
+  usageLimit?: number | null;
+  expiresAt?: string | null;
+  isActive?: boolean;
+};
+
 export function useAdminCouponActions() {
   const queryClient = useQueryClient();
-  const create = useMutation({
-    mutationFn: (payload: AdminCouponPayload) => adminService.createCoupon(payload),
-    onSuccess: (coupon) => {
-      queryClient.setQueryData<AdminCoupon[]>(QUERY_KEYS.adminCoupons, (current = []) => [coupon, ...current]);
-      void queryClient.invalidateQueries({ queryKey: QUERY_KEYS.adminCoupons });
-      toast.success('کد تخفیف با موفقیت ایجاد شد.');
-    },
-    onError: (error) => showError(error, 'ساخت کد تخفیف انجام نشد.'),
+
+  const patchCouponCache = (
+    updater: (current: AdminCoupon[]) => AdminCoupon[],
+  ) => {
+    queryClient.setQueryData<AdminCoupon[]>(
+      QUERY_KEYS.adminCoupons,
+      (current = []) => updater(current),
+    );
+  };
+
+  const create = useAdminMutation({
+    mutationFn: (payload: AdminCouponPayload) =>
+      adminService.createCoupon(payload),
+    invalidateKeys: () => [QUERY_KEYS.adminCoupons],
+    successMessage: 'کد تخفیف با موفقیت ایجاد شد.',
+    errorFallback: 'ساخت کد تخفیف انجام نشد.',
+    onSuccessExtra: (coupon) =>
+      patchCouponCache((current) => [coupon, ...current]),
   });
-  const update = useMutation({
-    mutationFn: ({ id, payload }: { id: string; payload: { code?: string; type?: AdminCoupon['type']; value?: number; minOrder?: number; usageLimit?: number | null; expiresAt?: string | null; isActive?: boolean } }) =>
-      adminService.updateCoupon(id, payload),
-    onSuccess: (coupon) => {
-      queryClient.setQueryData<AdminCoupon[]>(QUERY_KEYS.adminCoupons, (current = []) =>
-        current.map((item) => item.id === coupon.id ? coupon : item),
-      );
-      void queryClient.invalidateQueries({ queryKey: QUERY_KEYS.adminCoupons });
-      toast.success('کد تخفیف با موفقیت به‌روزرسانی شد.');
-    },
-    onError: (error) => showError(error, 'ذخیره تغییرات انجام نشد.'),
+
+  const update = useAdminMutation({
+    mutationFn: ({
+      id,
+      payload,
+    }: {
+      id: string;
+      payload: CouponUpdatePayload;
+    }) => adminService.updateCoupon(id, payload),
+    invalidateKeys: () => [QUERY_KEYS.adminCoupons],
+    successMessage: 'کد تخفیف با موفقیت به‌روزرسانی شد.',
+    errorFallback: 'ذخیره تغییرات انجام نشد.',
+    onSuccessExtra: (coupon) =>
+      patchCouponCache((current) =>
+        current.map((item) => (item.id === coupon.id ? coupon : item)),
+      ),
   });
-  const remove = useMutation({
-    mutationFn: (id: string) => adminService.deleteCoupon(id),
-    onSuccess: (_, id) => {
-      queryClient.setQueryData<AdminCoupon[]>(QUERY_KEYS.adminCoupons, (current = []) => current.filter((item) => item.id !== id));
-      void queryClient.invalidateQueries({ queryKey: QUERY_KEYS.adminCoupons });
-      toast.success('کد تخفیف با موفقیت حذف شد.');
-    },
-    onError: (error) => showError(error, 'حذف کد تخفیف انجام نشد.'),
-  });
-  const deactivate = useMutation({
+
+  const deactivate = useAdminMutation({
     mutationFn: (id: string) => adminService.deactivateCoupon(id),
-    onSuccess: (coupon) => {
-      queryClient.setQueryData<AdminCoupon[]>(QUERY_KEYS.adminCoupons, (current = []) =>
-        current.map((item) => item.id === coupon.id ? coupon : item),
-      );
-      void queryClient.invalidateQueries({ queryKey: QUERY_KEYS.adminCoupons });
-      toast.success('کد تخفیف غیرفعال شد.');
-    },
-    onError: (error) => showError(error, 'غیرفعال‌سازی کد تخفیف انجام نشد.'),
+    invalidateKeys: () => [QUERY_KEYS.adminCoupons],
+    successMessage: 'کد تخفیف غیرفعال شد.',
+    errorFallback: 'غیرفعال‌سازی کد تخفیف انجام نشد.',
+    onSuccessExtra: (coupon) =>
+      patchCouponCache((current) =>
+        current.map((item) => (item.id === coupon.id ? coupon : item)),
+      ),
+  });
+
+  const remove = useAdminMutation({
+    mutationFn: (id: string) => adminService.deleteCoupon(id),
+    invalidateKeys: () => [QUERY_KEYS.adminCoupons],
+    successMessage: 'کد تخفیف با موفقیت حذف شد.',
+    errorFallback: 'حذف کد تخفیف انجام نشد.',
+    onSuccessExtra: (_, id) =>
+      patchCouponCache((current) => current.filter((item) => item.id !== id)),
   });
 
   return { create, update, deactivate, remove };

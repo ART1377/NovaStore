@@ -81,7 +81,7 @@ export async function GET(request: Request) {
         ? { price: 'asc' }
         : query.sort === 'price-desc'
           ? { price: 'desc' }
-          : query.sort === 'popular' || query.sort === 'rating'
+          : query.sort === 'popular'
             ? { reviews: { _count: 'desc' } }
             : { createdAt: 'desc' };
 
@@ -120,20 +120,34 @@ export async function GET(request: Request) {
           _count: { _all: true },
         })
       : [];
+      
     const ratingMap = new Map(
       ratingGroups.map((item) => [
         item.productId,
         { average: item._avg.rating ?? 0, count: item._count._all },
       ]),
     );
-    const productsWithRatings = products.map((product) => ({
+    let productsWithRatings = products.map((product) => ({
       ...product,
       ratingAverage: ratingMap.get(product.id)?.average ?? 0,
       ratingCount: ratingMap.get(product.id)?.count ?? product._count.reviews,
     }));
 
+    if (query.rating) {
+      const threshold = query.rating;
+      productsWithRatings = productsWithRatings.filter(
+        (product) => product.ratingAverage >= threshold,
+      );
+    }
+    const sorted =
+      query.sort === 'rating'
+        ? [...productsWithRatings].sort(
+            (a, b) => b.ratingAverage - a.ratingAverage,
+          )
+        : productsWithRatings;
+
     return NextResponse.json({
-      products: productsWithRatings,
+      products: sorted,
       total,
       page: query.page,
       pageSize: PRODUCTS_PAGE_SIZE,

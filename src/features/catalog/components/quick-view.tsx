@@ -26,7 +26,8 @@ export function QuickView({ product, onClose }: QuickViewProps) {
   const cartQuantity = cartItem?.quantity ?? 0;
   const isAvailable = Boolean(variant && variant.stock > 0);
   const rating = viewProduct.ratingAverage ?? 0;
-  const ratingCount = viewProduct.ratingCount ?? viewProduct._count?.reviews ?? 0;
+  const ratingCount =
+    viewProduct.ratingCount ?? viewProduct._count?.reviews ?? 0;
   const discounted = Boolean(
     viewProduct.compareAtPrice &&
     viewProduct.compareAtPrice > (variant?.price ?? viewProduct.price),
@@ -49,7 +50,7 @@ export function QuickView({ product, onClose }: QuickViewProps) {
 
   return createPortal(
     <div
-      className="fixed inset-0 z-[120] overflow-y-auto bg-slate-950/55 p-3 backdrop-blur-sm sm:p-5"
+      className="bg-nova-ink/70 fixed inset-0 z-120 overflow-y-auto p-3 backdrop-blur-sm sm:p-5"
       role="dialog"
       aria-modal="true"
       aria-label={`مشاهده سریع ${viewProduct.name}`}
@@ -65,7 +66,7 @@ export function QuickView({ product, onClose }: QuickViewProps) {
           <button
             type="button"
             onClick={onClose}
-            className="absolute top-3 left-3 z-20 grid size-10 place-items-center rounded-2xl border border-white/70 bg-white/90 text-slate-700 shadow-md backdrop-blur transition hover:bg-white"
+            className="border-nova-line bg-nova-paper/95 text-nova-ink hover:bg-nova-paper absolute top-3 left-3 z-20 grid size-10 place-items-center rounded-2xl border shadow-md backdrop-blur transition"
             aria-label="بستن"
           >
             <X size={19} />

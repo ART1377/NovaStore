@@ -19,6 +19,8 @@ export function useCart() {
     queryKey: QUERY_KEYS.cart,
     queryFn: cartService.get,
     enabled: !!session,
+    staleTime: 0,
+    refetchOnWindowFocus: true,
   });
 }
 

@@ -39,7 +39,9 @@ export function ProductImageGallery({
     (index: number) => {
       if (!items.length) return;
       const nextIndex = (index + items.length) % items.length;
-      setDirection(nextIndex > activeIndex ? 1 : nextIndex < activeIndex ? -1 : 0);
+      setDirection(
+        nextIndex > activeIndex ? 1 : nextIndex < activeIndex ? -1 : 0,
+      );
       setActiveIndex(nextIndex);
     },
     [activeIndex, items.length],
@@ -52,7 +54,9 @@ export function ProductImageGallery({
   );
 
   useEffect(() => {
-    setActiveIndex((current) => Math.min(current, Math.max(items.length - 1, 0)));
+    setActiveIndex((current) =>
+      Math.min(current, Math.max(items.length - 1, 0)),
+    );
   }, [items.length]);
 
   useEffect(() => {
@@ -60,7 +64,8 @@ export function ProductImageGallery({
 
     const previousOverflow = document.body.style.overflow;
     const previousPaddingRight = document.body.style.paddingRight;
-    const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+    const scrollbarWidth =
+      window.innerWidth - document.documentElement.clientWidth;
 
     document.body.style.overflow = 'hidden';
     if (scrollbarWidth > 0) {
@@ -140,7 +145,7 @@ export function ProductImageGallery({
             <>
               <GalleryArrow direction="previous" onClick={goPrevious} />
               <GalleryArrow direction="next" onClick={goNext} />
-              <div className="absolute bottom-3 left-1/2 -translate-x-1/2 rounded-full bg-black/55 px-3 py-1 text-[11px] font-semibold text-white backdrop-blur">
+              <div className="bg-nova-ink/70 absolute bottom-3 left-1/2 -translate-x-1/2 rounded-full px-3 py-1 text-[11px] font-semibold text-white backdrop-blur">
                 {formatNumber(activeIndex + 1)} / {formatNumber(items.length)}
               </div>
             </>
@@ -149,7 +154,7 @@ export function ProductImageGallery({
           <button
             type="button"
             onClick={() => setLightboxOpen(true)}
-            className="absolute right-3 bottom-3 rounded-full border border-white/70 bg-white/90 p-2.5 text-zinc-700 opacity-0 shadow-sm transition group-hover:opacity-100 hover:bg-white focus-visible:opacity-100"
+            className="border-nova-line bg-nova-paper/95 text-nova-ink hover:bg-nova-paper absolute right-3 bottom-3 rounded-full border p-2.5 opacity-0 shadow-sm transition group-hover:opacity-100 focus-visible:opacity-100"
             aria-label="نمایش بزرگ تصویر"
           >
             <Expand size={15} />
@@ -157,7 +162,7 @@ export function ProductImageGallery({
         </div>
 
         {items.length > 1 ? (
-          <div className="grid grid-cols-5 gap-2 sm:grid-cols-6">
+          <div className="grid grid-cols-5 gap-2 sm:grid-cols-6 mt-3">
             {items.map((image, index) => (
               <motion.button
                 key={image.id}
@@ -166,10 +171,10 @@ export function ProductImageGallery({
                 whileHover={reducedMotion ? undefined : { y: -2 }}
                 whileTap={reducedMotion ? undefined : { scale: 0.97 }}
                 className={cn(
-                  'relative aspect-square overflow-hidden rounded-xl border bg-zinc-100 transition',
+                  'bg-nova-hover relative aspect-square overflow-hidden rounded-xl border transition',
                   index === activeIndex
-                    ? 'border-zinc-950 ring-2 ring-zinc-950/10'
-                    : 'border-zinc-200 hover:border-zinc-400',
+                    ? 'border-nova-ink ring-nova-ink/10 ring-2'
+                    : 'border-nova-line hover:border-nova-line-strong',
                 )}
                 aria-label={`تصویر ${index + 1}`}
                 aria-current={index === activeIndex}
@@ -205,7 +210,8 @@ export function ProductImageGallery({
                   exit={reducedMotion ? undefined : { opacity: 0 }}
                   transition={{ duration: 0.2 }}
                   onMouseDown={(event) => {
-                    if (event.target === event.currentTarget) setLightboxOpen(false);
+                    if (event.target === event.currentTarget)
+                      setLightboxOpen(false);
                   }}
                 >
                   <motion.div
@@ -289,9 +295,7 @@ export function ProductImageGallery({
                               key={`lightbox-${image.id}`}
                               type="button"
                               onClick={() => goTo(index)}
-                              whileHover={
-                                reducedMotion ? undefined : { y: -2 }
-                              }
+                              whileHover={reducedMotion ? undefined : { y: -2 }}
                               whileTap={
                                 reducedMotion ? undefined : { scale: 0.96 }
                               }

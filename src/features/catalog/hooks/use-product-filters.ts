@@ -2,8 +2,9 @@
 'use client';
 
 import { useEffect, useMemo, useState } from 'react';
-import type { CatalogOption, ProductFilters as FilterState } from '../types/catalog-types';
+import type { ProductFilters as FilterState } from '../types/catalog-types';
 import { PRICE_FILTER_RANGE } from '@/constants/constants';
+import { toEnglishDigits } from '@/lib/utils';
 
 type UseProductFiltersParams = {
   filters: FilterState;
@@ -30,15 +31,13 @@ export function useProductFilters({
   }, [filters.minPrice, filters.maxPrice]);
 
   const parsedMin = useMemo(
-    () => Math.max(PRICE_MIN, Math.min(Number(minPrice || PRICE_MIN), PRICE_MAX)),
+    () =>
+      Math.max(PRICE_MIN, Math.min(Number(minPrice || PRICE_MIN), PRICE_MAX)),
     [minPrice],
   );
   const parsedMax = useMemo(
     () =>
-      Math.max(
-        parsedMin,
-        Math.min(Number(maxPrice || PRICE_MAX), PRICE_MAX),
-      ),
+      Math.max(parsedMin, Math.min(Number(maxPrice || PRICE_MAX), PRICE_MAX)),
     [maxPrice, parsedMin],
   );
 
@@ -64,7 +63,7 @@ export function useProductFilters({
   };
 
   const handlePriceInput = (key: 'min' | 'max', value: string) => {
-    const normalized = value.replace(/\D/g, '');
+    const normalized = toEnglishDigits(value).replace(/[^0-9]/g, '');
     if (key === 'min') setMinPrice(normalized);
     else setMaxPrice(normalized);
   };

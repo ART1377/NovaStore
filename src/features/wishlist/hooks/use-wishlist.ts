@@ -20,6 +20,7 @@ export function useWishlist() {
     queryFn: wishlistService.get,
     enabled: status === 'authenticated' && !!session?.user,
     staleTime: 30_000,
+    refetchOnWindowFocus: false,
   });
 }
 

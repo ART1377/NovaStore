@@ -15,7 +15,7 @@ export const SUGGESTION_GC_TIME_MS = 5 * 60_000;
 export const NOTIFICATION_POLL_INTERVAL_MS = 30_000;
 export const API_TIMEOUT_MS = 12_000;
 export const LOW_STOCK_THRESHOLD = 5;
-export const FREE_SHIPPING_THRESHOLD = 10_000;
+export const FREE_SHIPPING_THRESHOLD = 20_000_000;
 export const RELATED_PRODUCT_LIMIT = 4;
 export const SEARCH_SUGGESTION_LIMIT = 6;
 export const PRODUCT_GRID_SKELETON_COUNT = 8;
@@ -39,11 +39,13 @@ export const HOME_PLACEMENT_LIMITS = {
 export const HOME_PLACEMENT_SLOTS = Object.keys(HOME_PLACEMENT_LIMITS) as Array<
   keyof typeof HOME_PLACEMENT_LIMITS
 >;
+
 export const SHIPPING_COSTS = {
-  STANDARD: 790,
-  EXPRESS: 1490,
+  STANDARD: 799,
+  EXPRESS: 1499,
   FREE: 0,
 } as const;
+
 export const PRICE_FILTER_RANGE = {
   MIN: 0,
   MAX: 1_000_000_000,

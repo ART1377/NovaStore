@@ -36,7 +36,11 @@ export function WishlistToggle({
       aria-label={wished ? 'حذف از علاقه‌مندی‌ها' : 'افزودن به علاقه‌مندی‌ها'}
       aria-pressed={wished}
       title={wished ? 'حذف از علاقه‌مندی‌ها' : 'افزودن به علاقه‌مندی‌ها'}
-      className={`rounded-2xl border p-2.5 transition hover:bg-[#f2efe8] disabled:cursor-wait disabled:opacity-50 ${wished ? 'text-nova-danger border-[#ffd2d2] bg-[#fff2f2]' : 'bg-nova-surface text-nova-ink border-[#e0dacf]'} ${className}`}
+      className={`hover:bg-nova-hover rounded-2xl border p-2.5 transition disabled:cursor-wait disabled:opacity-50 ${
+        wished
+          ? 'text-nova-danger border-nova-danger-border bg-nova-danger-soft'
+          : 'bg-nova-surface text-nova-ink border-nova-line-strong'
+      } ${className}`}
     >
       <Heart
         size={16}

@@ -6,7 +6,7 @@ import { Input } from '@/components/ui/input';
 import { NumericInput } from '@/components/ui/numeric-input';
 import { formatNumber } from '@/lib/utils';
 import type { FieldErrors } from '@/lib/form-errors';
-import { AdminFormField } from './admin-form-field';
+import { FormField } from '@/components/ui/form-field';
 import { emptyVariant, type Variant } from '../types/product-editor-types';
 import { totalVariantStock } from '../utils/product-editor-utils';
 
@@ -56,7 +56,7 @@ export function ProductVariantsEditor({
               className="bg-nova-hover/60 rounded-2xl border p-4"
             >
               <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
-                <AdminFormField
+                <FormField
                   label="SKU"
                   error={errors[`variants.${index}.sku`]}
                 >
@@ -66,8 +66,8 @@ export function ProductVariantsEditor({
                       setVariantValue(index, 'sku', event.target.value)
                     }
                   />
-                </AdminFormField>
-                <AdminFormField
+                </FormField>
+                <FormField
                   label="عنوان"
                   error={errors[`variants.${index}.name`]}
                 >
@@ -77,8 +77,8 @@ export function ProductVariantsEditor({
                       setVariantValue(index, 'name', event.target.value)
                     }
                   />
-                </AdminFormField>
-                <AdminFormField
+                </FormField>
+                <FormField
                   label="قیمت اختصاصی"
                   error={errors[`variants.${index}.price`]}
                 >
@@ -89,8 +89,8 @@ export function ProductVariantsEditor({
                     }
                     placeholder="اختیاری"
                   />
-                </AdminFormField>
-                <AdminFormField
+                </FormField>
+                <FormField
                   label="رنگ"
                   error={errors[`variants.${index}.color`]}
                 >
@@ -100,8 +100,8 @@ export function ProductVariantsEditor({
                       setVariantValue(index, 'color', event.target.value)
                     }
                   />
-                </AdminFormField>
-                <AdminFormField
+                </FormField>
+                <FormField
                   label="سایز"
                   error={errors[`variants.${index}.size`]}
                 >
@@ -111,8 +111,8 @@ export function ProductVariantsEditor({
                       setVariantValue(index, 'size', event.target.value)
                     }
                   />
-                </AdminFormField>
-                <AdminFormField
+                </FormField>
+                <FormField
                   label="موجودی"
                   error={errors[`variants.${index}.stock`]}
                 >
@@ -122,7 +122,7 @@ export function ProductVariantsEditor({
                       setVariantValue(index, 'stock', value)
                     }
                   />
-                </AdminFormField>
+                </FormField>
               </div>
               {variants.length > 1 && (
                 <Button

@@ -11,6 +11,7 @@ export function useNotifications() {
     queryKey: QUERY_KEYS.notifications,
     queryFn: notificationsService.get,
     enabled: !!session,
+    staleTime: 30_000,
   });
   const read = useMutation({
     mutationFn: notificationsService.read,
