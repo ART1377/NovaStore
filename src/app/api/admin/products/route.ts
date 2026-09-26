@@ -1,18 +1,18 @@
 // src/app/api/admin/products/route.ts
-import { NextResponse } from 'next/server';
-import { revalidatePath } from 'next/cache';
-import { db } from '@/lib/prisma';
-import { requireAdmin } from '@/lib/auth';
-import { slugify } from '@/lib/utils';
-import { apiErrorResponse } from '@/lib/api-error';
-import { validateProductCategoryAndBrand } from '@/lib/admin-product-relations';
+import { ADMIN_LIST_PAGE_SIZE } from '@/constants/constants';
 import {
   createProductSchema,
   resolveProductImages,
 } from '@/features/admin/validation/product.schema';
+import { validateProductCategoryAndBrand } from '@/lib/admin-product-relations';
+import { apiErrorResponse } from '@/lib/api-error';
+import { requireAdmin } from '@/lib/auth';
+import { db } from '@/lib/prisma';
+import { slugify } from '@/lib/utils';
 import type { Prisma } from '@prisma/client';
+import { revalidatePath } from 'next/cache';
+import { NextResponse } from 'next/server';
 import { z } from 'zod';
-import { ADMIN_LIST_PAGE_SIZE } from '@/constants/constants';
 
 const listQuerySchema = z.object({
   page: z.coerce.number().int().min(1).max(1000).default(1),

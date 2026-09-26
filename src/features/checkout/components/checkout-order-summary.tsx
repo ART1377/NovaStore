@@ -1,10 +1,10 @@
 // src/features/checkout/components/checkout-order-summary.tsx
-import { ChevronLeft } from 'lucide-react';
-import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { formatPrice } from '@/lib/utils';
-import { CheckoutPriceRow } from './checkout-price-row';
+import { Card, CardContent } from '@/components/ui/card';
 import type { Cart } from '@/features/cart/types/cart-types';
+import { formatPrice } from '@/lib/utils';
+import { ChevronLeft } from 'lucide-react';
+import { CheckoutPriceRow } from './checkout-price-row';
 
 export function CheckoutOrderSummary({
   cart,

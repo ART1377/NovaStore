@@ -1,6 +1,6 @@
 // src/app/not-found.tsx
-import Link from 'next/link';
 import { Button } from '@/components/ui/button';
+import Link from 'next/link';
 export default function NotFound() {
   return (
     <main className="mx-auto max-w-2xl px-4 py-24 text-center">

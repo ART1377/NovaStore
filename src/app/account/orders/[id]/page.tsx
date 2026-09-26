@@ -1,8 +1,8 @@
 // src/app/account/orders/[id]/page.tsx
-import { redirect } from 'next/navigation';
-import { getAuthSession } from '@/lib/auth';
 import { getAccountOrder } from '@/features/orders/api/orders-server.api';
 import { OrderTrackingPage } from '@/features/orders/components/order-tracking-page';
+import { getAuthSession } from '@/lib/auth';
+import { redirect } from 'next/navigation';
 
 export default async function Page({
   params,

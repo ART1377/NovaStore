@@ -1,13 +1,13 @@
 // src/app/layout.tsx
-import type { Metadata, Viewport } from 'next';
-import './globals.css';
-import { Header } from '@/components/layout/header';
 import { Footer } from '@/components/layout/footer';
-import { AppProviders } from '@/providers/app-providers';
+import { Header } from '@/components/layout/header';
+import { ThemeColorSync } from '@/components/layout/theme-color-sync';
 import { CompareBar } from '@/features/compare/components/compare-bar';
 import { siteConfig } from '@/lib/site';
-import { themes, THEME_STORAGE_KEY, DEFAULT_THEME_ID } from '@/lib/themes';
-import { ThemeColorSync } from '@/components/layout/theme-color-sync';
+import { DEFAULT_THEME_ID, THEME_STORAGE_KEY, themes } from '@/lib/themes';
+import { AppProviders } from '@/providers/app-providers';
+import type { Metadata, Viewport } from 'next';
+import './globals.css';
 
 const themeBootstrapScript = `(function(){try{var t=localStorage.getItem(${JSON.stringify(
   THEME_STORAGE_KEY,

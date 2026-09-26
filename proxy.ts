@@ -1,9 +1,15 @@
 // proxy.ts
+import { db } from '@/lib/prisma';
 import { getToken } from 'next-auth/jwt';
 import { NextResponse, type NextRequest } from 'next/server';
-import { db } from '@/lib/prisma';
 
-const PROTECTED_PATHS = ['/account', '/cart', '/checkout', '/notifications', '/admin'];
+const PROTECTED_PATHS = [
+  '/account',
+  '/cart',
+  '/checkout',
+  '/notifications',
+  '/admin',
+];
 
 function matchesPath(pathname: string, path: string) {
   return pathname === path || pathname.startsWith(`${path}/`);
@@ -12,7 +18,9 @@ function matchesPath(pathname: string, path: string) {
 export async function proxy(request: NextRequest) {
   const pathname = request.nextUrl.pathname;
   const isAdminRoute = matchesPath(pathname, '/admin');
-  const isProtectedRoute = PROTECTED_PATHS.some((path) => matchesPath(pathname, path));
+  const isProtectedRoute = PROTECTED_PATHS.some((path) =>
+    matchesPath(pathname, path),
+  );
 
   if (!isProtectedRoute) return NextResponse.next();
 
@@ -23,14 +31,22 @@ export async function proxy(request: NextRequest) {
 
   if (!token) {
     const loginUrl = new URL('/login', request.url);
-    loginUrl.searchParams.set('callbackUrl', `${request.nextUrl.pathname}${request.nextUrl.search}`);
+    loginUrl.searchParams.set(
+      'callbackUrl',
+      `${request.nextUrl.pathname}${request.nextUrl.search}`,
+    );
     return NextResponse.redirect(loginUrl);
   }
 
   // Admin pages are role-protected at the routing boundary. A non-admin never
   // reaches the Admin Layout/Page, regardless of what the client renders.
   if (isAdminRoute) {
-    const userId = typeof token.sub === 'string' ? token.sub : typeof token.id === 'string' ? token.id : null;
+    const userId =
+      typeof token.sub === 'string'
+        ? token.sub
+        : typeof token.id === 'string'
+          ? token.id
+          : null;
 
     if (!userId) {
       return NextResponse.redirect(new URL('/login', request.url));

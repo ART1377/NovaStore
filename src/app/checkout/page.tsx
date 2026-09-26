@@ -1,6 +1,6 @@
 // src/app/checkout/page.tsx
-import type { Metadata } from 'next';
 import { CheckoutPage } from '@/features/checkout/components/checkout-page';
+import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: 'تکمیل سفارش',

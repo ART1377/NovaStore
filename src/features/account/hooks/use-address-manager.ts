@@ -1,15 +1,15 @@
 // src/features/account/hooks/use-address-manager.ts
 'use client';
 
-import { useState } from 'react';
-import toast from 'react-hot-toast';
-import { useAddresses } from './use-addresses';
-import { useAddressActions } from './use-address-actions';
-import type { Address } from '../types/address';
 import type { FieldErrors } from '@/lib/form-errors';
 import { zodFieldErrors } from '@/lib/form-errors';
-import { addressSchemaWithDefault } from '../validation/address.schema';
 import { numericInputValue } from '@/lib/utils';
+import { useState } from 'react';
+import toast from 'react-hot-toast';
+import type { Address } from '../types/address';
+import { addressSchemaWithDefault } from '../validation/address.schema';
+import { useAddressActions } from './use-address-actions';
+import { useAddresses } from './use-addresses';
 
 type AddressForm = Omit<Address, 'id'>;
 
@@ -58,11 +58,16 @@ export function useAddressManager() {
     });
     setErrors({});
     requestAnimationFrame(() => {
-      document.getElementById('address-form')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      document
+        .getElementById('address-form')
+        ?.scrollIntoView({ behavior: 'smooth', block: 'start' });
     });
   };
 
-  const setField = <K extends keyof AddressForm>(key: K, value: AddressForm[K]) => {
+  const setField = <K extends keyof AddressForm>(
+    key: K,
+    value: AddressForm[K],
+  ) => {
     setForm((current) => ({ ...current, [key]: value }));
     setErrors((current) => {
       const next = { ...current };
@@ -72,7 +77,11 @@ export function useAddressManager() {
   };
 
   const submit = () => {
-    const normalizedForm = { ...form, phone: numericInputValue(form.phone), postalCode: numericInputValue(form.postalCode) };
+    const normalizedForm = {
+      ...form,
+      phone: numericInputValue(form.phone),
+      postalCode: numericInputValue(form.postalCode),
+    };
     const parsed = addressSchemaWithDefault.safeParse(normalizedForm);
     if (!parsed.success) {
       setErrors(zodFieldErrors(parsed.error));
@@ -91,7 +100,9 @@ export function useAddressManager() {
   };
 
   const scrollToForm = () =>
-    document.getElementById('address-form')?.scrollIntoView({ behavior: 'smooth' });
+    document
+      .getElementById('address-form')
+      ?.scrollIntoView({ behavior: 'smooth' });
 
   return {
     addresses: data,

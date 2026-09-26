@@ -1,9 +1,9 @@
 // src/app/api/admin/products/[id]/restore/route.ts
-import { NextResponse } from 'next/server';
-import { revalidatePath } from 'next/cache';
-import { db } from '@/lib/prisma';
-import { requireAdmin } from '@/lib/auth';
 import { apiErrorResponse } from '@/lib/api-error';
+import { requireAdmin } from '@/lib/auth';
+import { db } from '@/lib/prisma';
+import { revalidatePath } from 'next/cache';
+import { NextResponse } from 'next/server';
 
 export async function POST(
   _: Request,
@@ -21,7 +21,10 @@ export async function POST(
       return NextResponse.json({ error: 'محصول پیدا نشد.' }, { status: 404 });
 
     if (existing.status !== 'ARCHIVED')
-      return NextResponse.json({ error: 'این محصول آرشیو نشده است.' }, { status: 400 });
+      return NextResponse.json(
+        { error: 'این محصول آرشیو نشده است.' },
+        { status: 400 },
+      );
 
     const product = await db.product.update({
       where: { id },

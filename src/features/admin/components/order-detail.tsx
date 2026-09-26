@@ -1,29 +1,29 @@
 // src/features/admin/components/order-detail.tsx
 'use client';
-import Link from 'next/link';
-import { ArrowRight, PackageCheck, Save, Truck, UserRound } from 'lucide-react';
-import { useAdminOrderDetail } from '../hooks/use-admin-order-detail';
-import { Card, CardContent } from '@/components/ui/card';
+import { QueryError } from '@/components/shared/query-state';
 import { Button } from '@/components/ui/button';
-import { Select } from '@/components/ui/select';
+import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
-import { formatPrice, formatDateTime } from '@/lib/utils';
-import {
-  ORDER_STATUSES,
-  PAYMENT_STATUSES,
-  SHIPPING_STATUSES,
-  ORDER_STATUS_LABELS,
-  PAYMENT_STATUS_LABELS,
-  SHIPPING_STATUS_LABELS,
-} from '@/constants/constants';
+import { Select } from '@/components/ui/select';
 import type {
   OrderStatus,
   PaymentStatus,
   ShippingStatus,
 } from '@/constants/constants';
-import { OrderInfo } from './order-info';
+import {
+  ORDER_STATUS_LABELS,
+  ORDER_STATUSES,
+  PAYMENT_STATUS_LABELS,
+  PAYMENT_STATUSES,
+  SHIPPING_STATUS_LABELS,
+  SHIPPING_STATUSES,
+} from '@/constants/constants';
+import { formatDateTime, formatPrice } from '@/lib/utils';
+import { ArrowRight, PackageCheck, Save, Truck, UserRound } from 'lucide-react';
+import Link from 'next/link';
+import { useAdminOrderDetail } from '../hooks/use-admin-order-detail';
 import { AdminDetailSkeleton } from './admin-detail-skeleton';
-import { QueryError } from '@/components/shared/query-state';
+import { OrderInfo } from './order-info';
 export function AdminOrderDetail({ id }: { id: string }) {
   const {
     data,

@@ -1,11 +1,11 @@
 // src/components/shared/use-cloudinary-upload.ts
 'use client';
 
-import { useState } from 'react';
-import toast from 'react-hot-toast';
 import api from '@/lib/api-client';
 import { getClientErrorMessage } from '@/lib/client-error';
 import { formatNumber } from '@/lib/utils';
+import { useState } from 'react';
+import toast from 'react-hot-toast';
 import type { CloudinaryImageValue } from './cloudinary-types';
 
 export function useCloudinaryUpload(
@@ -46,11 +46,17 @@ export function useCloudinaryUpload(
             public_id: string;
             bytes: number;
           };
-          return { url: result.secure_url, publicId: result.public_id, bytes: result.bytes };
+          return {
+            url: result.secure_url,
+            publicId: result.public_id,
+            bytes: result.bytes,
+          };
         }),
       );
       onChange(multiple ? [...value, ...uploaded] : uploaded.slice(0, 1));
-      toast.success(`${formatNumber(uploaded.length)} تصویر با موفقیت در Cloudinary ذخیره شد.`);
+      toast.success(
+        `${formatNumber(uploaded.length)} تصویر با موفقیت در Cloudinary ذخیره شد.`,
+      );
     } catch (error) {
       toast.error(getClientErrorMessage(error, 'آپلود تصویر ناموفق بود.'));
     } finally {
@@ -63,7 +69,10 @@ export function useCloudinaryUpload(
     if (!image) return;
     setDeletingIndex(index);
     try {
-      if (image.publicId || /(?:res\.cloudinary\.com|cloudinary\.com)/i.test(image.url)) {
+      if (
+        image.publicId ||
+        /(?:res\.cloudinary\.com|cloudinary\.com)/i.test(image.url)
+      ) {
         await api.delete('/cloudinary/image', {
           data: { publicId: image.publicId ?? null, url: image.url },
         });
@@ -72,13 +81,16 @@ export function useCloudinaryUpload(
       toast.success(
         index === 0 && next.length
           ? 'تصویر اصلی حذف شد؛ تصویر بعدی به‌عنوان اصلی انتخاب شد.'
-          : image.publicId || /(?:res\.cloudinary\.com|cloudinary\.com)/i.test(image.url)
+          : image.publicId ||
+              /(?:res\.cloudinary\.com|cloudinary\.com)/i.test(image.url)
             ? 'تصویر و فایل Cloudinary با موفقیت حذف شدند.'
             : 'تصویر محصول با موفقیت حذف شد.',
       );
       onChange(next);
     } catch (error) {
-      toast.error(getClientErrorMessage(error, 'حذف تصویر از Cloudinary ناموفق بود.'));
+      toast.error(
+        getClientErrorMessage(error, 'حذف تصویر از Cloudinary ناموفق بود.'),
+      );
     } finally {
       setDeletingIndex(null);
     }

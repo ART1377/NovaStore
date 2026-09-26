@@ -1,29 +1,33 @@
 // src/features/catalog/components/products-page.tsx
 'use client';
 
-import { useEffect, useState } from 'react';
+import { QueryError } from '@/components/shared/query-state';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Skeleton } from '@/components/ui/skeleton';
+import { PRODUCT_GRID_SKELETON_COUNT } from '@/constants/constants';
+import { getClientErrorMessage } from '@/lib/client-error';
 import { motion, useReducedMotion } from 'framer-motion';
 import { PackageSearch, Search, Sparkles, X } from 'lucide-react';
+import { useSyncExternalStore } from 'react';
 import { useProducts } from '../hooks/use-catalog';
 import { useProductFiltersUrl } from '../hooks/use-product-filters-url';
-import { PRODUCT_GRID_SKELETON_COUNT } from '@/constants/constants';
-import { ProductGrid } from './product-grid';
 import { ProductFilters } from './product-filters';
+import { ProductGrid } from './product-grid';
 import { SearchSuggestions } from './search-suggestions';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
-import { Skeleton } from '@/components/ui/skeleton';
-import { Badge } from '@/components/ui/badge';
-import { getClientErrorMessage } from '@/lib/client-error';
-import { QueryError } from '@/components/shared/query-state';
+
+const subscribe = () => () => {};
+const getClientSnapshot = () => true;
+const getServerSnapshot = () => false;
 
 export function ProductsPage() {
   const reducedMotion = useReducedMotion() === true;
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+  const mounted = useSyncExternalStore(
+    subscribe,
+    getClientSnapshot,
+    getServerSnapshot,
+  );
 
   const {
     filters,
@@ -67,8 +71,15 @@ export function ProductsPage() {
       <motion.div
         className="border-nova-line bg-nova-surface mb-7 rounded-[30px] border p-5 shadow-[0_18px_50px_-38px_rgba(17,24,39,.4)] md:p-7"
         initial={{ opacity: 0, y: 24, scale: 0.985 }}
-        animate={mounted ? { opacity: 1, y: 0, scale: 1 } : { opacity: 0, y: 24, scale: 0.985 }}
-        transition={{ duration: reducedMotion ? 0 : 0.72, ease: [0.22, 1, 0.36, 1] }}
+        animate={
+          mounted
+            ? { opacity: 1, y: 0, scale: 1 }
+            : { opacity: 0, y: 24, scale: 0.985 }
+        }
+        transition={{
+          duration: reducedMotion ? 0 : 0.72,
+          ease: [0.22, 1, 0.36, 1],
+        }}
       >
         <div className="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
           <div>
@@ -116,7 +127,11 @@ export function ProductsPage() {
         className="mb-4 lg:hidden"
         initial={{ opacity: 0, y: 18 }}
         animate={mounted ? { opacity: 1, y: 0 } : { opacity: 0, y: 18 }}
-        transition={{ duration: reducedMotion ? 0 : 0.6, delay: reducedMotion ? 0 : 0.08, ease: [0.22, 1, 0.36, 1] }}
+        transition={{
+          duration: reducedMotion ? 0 : 0.6,
+          delay: reducedMotion ? 0 : 0.08,
+          ease: [0.22, 1, 0.36, 1],
+        }}
       >
         <ProductFilters
           filters={filters}
@@ -133,7 +148,11 @@ export function ProductsPage() {
           className="hidden lg:block"
           initial={{ opacity: 0, x: 24 }}
           animate={mounted ? { opacity: 1, x: 0 } : { opacity: 0, x: 24 }}
-          transition={{ duration: reducedMotion ? 0 : 0.65, delay: reducedMotion ? 0 : 0.16, ease: [0.22, 1, 0.36, 1] }}
+          transition={{
+            duration: reducedMotion ? 0 : 0.65,
+            delay: reducedMotion ? 0 : 0.16,
+            ease: [0.22, 1, 0.36, 1],
+          }}
         >
           <ProductFilters
             filters={filters}
@@ -149,7 +168,11 @@ export function ProductsPage() {
           className="min-w-0"
           initial={{ opacity: 0, y: 22 }}
           animate={mounted ? { opacity: 1, y: 0 } : { opacity: 0, y: 22 }}
-          transition={{ duration: reducedMotion ? 0 : 0.7, delay: reducedMotion ? 0 : 0.2, ease: [0.22, 1, 0.36, 1] }}
+          transition={{
+            duration: reducedMotion ? 0 : 0.7,
+            delay: reducedMotion ? 0 : 0.2,
+            ease: [0.22, 1, 0.36, 1],
+          }}
         >
           <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
             <div className="flex flex-wrap gap-2">
@@ -175,14 +198,19 @@ export function ProductsPage() {
 
           {isError ? (
             <QueryError
-              message={getClientErrorMessage(error, 'دریافت محصولات با مشکل مواجه شد.')}
+              message={getClientErrorMessage(
+                error,
+                'دریافت محصولات با مشکل مواجه شد.',
+              )}
               onRetry={() => refetch()}
             />
           ) : isLoading ? (
             <div className="grid grid-cols-2 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-              {Array.from({ length: PRODUCT_GRID_SKELETON_COUNT }).map((_, index) => (
-                <Skeleton key={index} className="aspect-[.78] rounded-3xl" />
-              ))}
+              {Array.from({ length: PRODUCT_GRID_SKELETON_COUNT }).map(
+                (_, index) => (
+                  <Skeleton key={index} className="aspect-[.78] rounded-3xl" />
+                ),
+              )}
             </div>
           ) : data?.products.length ? (
             <>

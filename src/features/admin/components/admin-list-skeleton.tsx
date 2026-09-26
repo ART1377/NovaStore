@@ -1,6 +1,6 @@
 // src/features/admin/components/admin-list-skeleton.tsx
-import { Skeleton } from '@/components/ui/skeleton';
 import { Card, CardContent } from '@/components/ui/card';
+import { Skeleton } from '@/components/ui/skeleton';
 
 /**
  * Row-based loading skeleton for admin list/table pages (products, orders,

@@ -38,6 +38,7 @@ export type Product = {
   ratingCount?: number;
   ratingDistribution?: Record<string, number>;
 };
+
 export type ProductFilters = {
   search?: string;
   category?: string;
@@ -45,7 +46,7 @@ export type ProductFilters = {
   minPrice?: string;
   maxPrice?: string;
   sort?: string;
-  page?: number;
+  page: number;
   available?: string;
   discounted?: string;
   rating?: string;

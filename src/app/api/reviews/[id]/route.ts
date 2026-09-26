@@ -1,9 +1,9 @@
 // src/app/api/reviews/[id]/route.ts
-import { NextResponse } from 'next/server';
-import { db } from '@/lib/prisma';
-import { requireUser } from '@/lib/auth';
-import { z } from 'zod';
 import { apiErrorResponse } from '@/lib/api-error';
+import { requireUser } from '@/lib/auth';
+import { db } from '@/lib/prisma';
+import { NextResponse } from 'next/server';
+import { z } from 'zod';
 const schema = z.object({
   rating: z.number().int().min(1).max(5),
   comment: z.string().min(3),

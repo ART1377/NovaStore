@@ -1,10 +1,10 @@
 // src/features/cart/components/product-cart-actions.tsx
 'use client';
 
-import { Minus, Plus, ShoppingBag, Trash2 } from 'lucide-react';
-import { useCartActions, useCartItem } from '../hooks/use-cart';
 import { Button } from '@/components/ui/button';
 import { cn, formatNumber } from '@/lib/utils';
+import { Minus, Plus, ShoppingBag, Trash2 } from 'lucide-react';
+import { useCartActions, useCartItem } from '../hooks/use-cart';
 
 type ProductCartActionsProps = {
   productId: string;

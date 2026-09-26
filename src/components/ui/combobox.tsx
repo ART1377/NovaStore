@@ -1,10 +1,10 @@
 // src/components/ui/combobox.tsx
 'use client';
 
+import { useCloseOnOutsideInteraction } from '@/hooks/use-close-on-outside-interaction';
+import { cn } from '@/lib/utils';
 import { Check, ChevronDown, Search, X } from 'lucide-react';
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { cn } from '@/lib/utils';
-import { useCloseOnOutsideInteraction } from '@/hooks/use-close-on-outside-interaction';
 
 export type ComboboxOption = {
   value: string;
@@ -65,11 +65,9 @@ export function Combobox({
   });
 
   useEffect(() => {
-    if (open) {
-      setActiveIndex(filtered.findIndex((option) => !option.disabled));
-      window.setTimeout(() => searchRef.current?.focus(), 0);
-    }
-  }, [open, filtered]);
+    if (!open) return;
+    window.setTimeout(() => searchRef.current?.focus(), 0);
+  }, [open]);
 
   // Keep the active option visible while arrowing through a long list.
   useEffect(() => {
@@ -124,7 +122,15 @@ export function Combobox({
         type="button"
         aria-haspopup="listbox"
         aria-expanded={open}
-        onClick={() => setOpen((current) => !current)}
+        onClick={() => {
+          setOpen((current) => {
+            const next = !current;
+            if (next) {
+              setActiveIndex(filtered.findIndex((option) => !option.disabled));
+            }
+            return next;
+          });
+        }}
         className="border-nova-line bg-nova-surface text-nova-ink hover:border-nova-primary focus-visible:ring-nova-accent/30 flex h-full min-h-11 w-full items-center justify-between gap-3 rounded-xl border px-3 text-sm transition outline-none focus-visible:ring-2"
       >
         {selected ? (

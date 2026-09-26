@@ -1,7 +1,7 @@
 // src/app/sitemap.ts
-import type { MetadataRoute } from 'next';
 import { db } from '@/lib/prisma';
 import { siteConfig } from '@/lib/site';
+import type { MetadataRoute } from 'next';
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const products = await db.product.findMany({
     where: { status: 'PUBLISHED' },

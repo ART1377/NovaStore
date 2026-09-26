@@ -1,12 +1,12 @@
 // src/features/account/components/profile-reviews-card.tsx
-import Link from 'next/link';
-import { Star } from 'lucide-react';
+import { EmptyState } from '@/components/shared/empty-state';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
-import { EmptyState } from '@/components/shared/empty-state';
 import { Skeleton } from '@/components/ui/skeleton';
-import { formatDate, formatNumber } from '@/lib/utils';
 import type { AccountReview } from '@/features/account/api/reviews.api';
+import { formatDate, formatNumber } from '@/lib/utils';
+import { Star } from 'lucide-react';
+import Link from 'next/link';
 
 const REVIEW_SKELETON_COUNT = 2;
 
@@ -57,7 +57,8 @@ export function ProfileReviewsCard({
                     </div>
                   </div>
                   <p className="text-nova-muted mt-2 text-xs">
-                    {formatDate(review.createdAt)} · {formatNumber(review.replies.length)} پاسخ
+                    {formatDate(review.createdAt)} ·{' '}
+                    {formatNumber(review.replies.length)} پاسخ
                   </p>
                   <p className="text-nova-primary mt-3 text-sm leading-7">
                     {review.comment}

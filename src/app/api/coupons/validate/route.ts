@@ -1,11 +1,11 @@
 // src/app/api/coupons/validate/route.ts
+import { apiErrorResponse } from '@/lib/api-error';
+import { requireUser } from '@/lib/auth';
+import { getCartWithSubtotal } from '@/lib/cart-subtotal';
+import { priceOrderWithCoupon } from '@/lib/coupon-pricing';
+import { db } from '@/lib/prisma';
 import { NextResponse } from 'next/server';
 import { z } from 'zod';
-import { db } from '@/lib/prisma';
-import { requireUser } from '@/lib/auth';
-import { apiErrorResponse } from '@/lib/api-error';
-import { priceOrderWithCoupon } from '@/lib/coupon-pricing';
-import { getCartWithSubtotal } from '@/lib/cart-subtotal';
 
 const schema = z.object({
   code: z.string().trim().min(3).max(50),

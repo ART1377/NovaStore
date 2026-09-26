@@ -1,9 +1,9 @@
 // src/app/api/auth/register/route.ts
-import { NextResponse } from 'next/server';
-import { hash } from 'bcryptjs';
-import { db } from '@/lib/prisma';
-import { apiErrorResponse } from '@/lib/api-error';
 import { registerSchema } from '@/features/account/validation/auth.schema';
+import { apiErrorResponse } from '@/lib/api-error';
+import { db } from '@/lib/prisma';
+import { hash } from 'bcryptjs';
+import { NextResponse } from 'next/server';
 export async function POST(req: Request) {
   try {
     const b = registerSchema.parse(await req.json());

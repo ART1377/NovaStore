@@ -1,12 +1,12 @@
 // src/app/api/admin/stats/route.ts
-import { NextResponse } from 'next/server';
-import { apiErrorResponse } from '@/lib/api-error';
-import { db } from '@/lib/prisma';
 import {
   ADMIN_DASHBOARD_RECENT_DAYS,
   LOW_STOCK_THRESHOLD,
 } from '@/constants/constants';
+import { apiErrorResponse } from '@/lib/api-error';
 import { requireAdmin } from '@/lib/auth';
+import { db } from '@/lib/prisma';
+import { NextResponse } from 'next/server';
 
 export async function GET() {
   try {

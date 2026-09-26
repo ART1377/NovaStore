@@ -1,6 +1,6 @@
 // src/features/admin/components/dashboard-metric.tsx
-import type { ReactNode } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
+import type { ReactNode } from 'react';
 
 type Props = {
   icon: ReactNode;

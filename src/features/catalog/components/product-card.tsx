@@ -1,19 +1,19 @@
 // src/features/catalog/components/product-card.tsx
 'use client';
 
-import Image from 'next/image';
-import { ProductImagePlaceholder } from './product-image-placeholder';
-import Link from 'next/link';
-import { Star, GitCompareArrows, ArrowUpLeft } from 'lucide-react';
-import toast from 'react-hot-toast';
-import { memo, useState } from 'react';
-import type { Product } from '../types/catalog-types';
+import { ProductCartActions } from '@/features/cart/components/product-cart-actions';
 import { useCartItem } from '@/features/cart/hooks/use-cart';
 import { useCompare } from '@/features/compare/hooks/use-compare';
-import { formatPrice } from '@/lib/utils';
-import { QuickView } from './quick-view';
 import { WishlistToggle } from '@/features/wishlist/components/wishlist-toggle';
-import { ProductCartActions } from '@/features/cart/components/product-cart-actions';
+import { formatPrice } from '@/lib/utils';
+import { ArrowUpLeft, GitCompareArrows, Star } from 'lucide-react';
+import Image from 'next/image';
+import Link from 'next/link';
+import { memo, useState } from 'react';
+import toast from 'react-hot-toast';
+import type { Product } from '../types/catalog-types';
+import { ProductImagePlaceholder } from './product-image-placeholder';
+import { QuickView } from './quick-view';
 
 export const ProductCard = memo(function ProductCard({
   product,

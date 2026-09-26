@@ -1,18 +1,18 @@
 // src/features/admin/components/orders-page.tsx
 'use client';
-import { Select } from '@/components/ui/select';
 import { SearchField } from '@/components/shared';
+import { QueryEmpty, QueryError } from '@/components/shared/query-state';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
+import { Select } from '@/components/ui/select';
+import { ORDER_STATUS_LABELS } from '@/constants/constants';
+import { formatDateTime, formatPrice } from '@/lib/utils';
+import { Eye, Truck } from 'lucide-react';
 import Link from 'next/link';
 import { useState } from 'react';
-import { Eye, Truck } from 'lucide-react';
-import { useAdminOrders, useAdminOrderActions } from '../hooks/use-admin';
-import { Card, CardContent } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { formatPrice, formatDateTime } from '@/lib/utils';
-import { ORDER_STATUS_LABELS } from '@/constants/constants';
+import { useAdminOrderActions, useAdminOrders } from '../hooks/use-admin';
 import { AdminListSkeleton } from './admin-list-skeleton';
-import { QueryEmpty, QueryError } from '@/components/shared/query-state';
 import { AdminPageHeader } from './admin-page-header';
 import { AdminPagination } from './admin-pagination';
 
@@ -31,8 +31,9 @@ export function AdminOrdersPage() {
   const [status, setStatus] = useState<'ALL' | Status>('ALL');
   const [page, setPage] = useState(1);
 
-  const { data, isLoading, isError, error, refetch, isFetching } =
-    useAdminOrders({ page });
+  const { data, isLoading, isError, refetch, isFetching } = useAdminOrders({
+    page,
+  });
   const { update } = useAdminOrderActions();
 
   const list = (data?.items ?? []).filter(

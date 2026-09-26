@@ -1,6 +1,6 @@
 // src/lib/form-errors.ts
-import { ZodError } from 'zod';
 import { ApiClientError } from '@/lib/api-client';
+import { ZodError } from 'zod';
 
 export type FieldErrors = Record<string, string>;
 

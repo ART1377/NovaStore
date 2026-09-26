@@ -1,17 +1,17 @@
 // src/features/admin/components/users-page.tsx
 'use client';
-import Link from 'next/link';
-import { useState } from 'react';
-import { useAdminUsers, useAdminUserActions } from '../hooks/use-admin';
-import { ShieldCheck, UserRound } from 'lucide-react';
-import { Card, CardContent } from '@/components/ui/card';
-import { Select } from '@/components/ui/select';
 import { SearchField } from '@/components/shared';
+import { QueryEmpty, QueryError } from '@/components/shared/query-state';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
+import { Select } from '@/components/ui/select';
 import { formatNumber } from '@/lib/utils';
+import { ShieldCheck, UserRound } from 'lucide-react';
+import Link from 'next/link';
+import { useState } from 'react';
+import { useAdminUserActions, useAdminUsers } from '../hooks/use-admin';
 import { AdminListSkeleton } from './admin-list-skeleton';
-import { QueryEmpty, QueryError } from '@/components/shared/query-state';
 import { AdminFilterGrid, AdminPageHeader } from './admin-page-header';
 import { AdminPagination } from './admin-pagination';
 
@@ -20,8 +20,9 @@ export function UsersPage() {
   const [role, setRole] = useState('ALL');
   const [page, setPage] = useState(1);
 
-  const { data, isLoading, isError, error, refetch, isFetching } =
-    useAdminUsers({ page });
+  const { data, isLoading, isError, refetch, isFetching } = useAdminUsers({
+    page,
+  });
   const { updateRole: update } = useAdminUserActions();
 
   const list = (data?.items ?? []).filter(

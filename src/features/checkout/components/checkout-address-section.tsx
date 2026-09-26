@@ -1,10 +1,10 @@
 // src/features/checkout/components/checkout-address-section.tsx
-import { useState } from 'react';
-import { Check, MapPin, Plus } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
-import { CheckoutSectionTitle } from './checkout-section-title';
-import { CheckoutNewAddressForm } from './checkout-new-address-form';
+import { Check, MapPin, Plus } from 'lucide-react';
+import { useState } from 'react';
 import type { CheckoutAddress } from '../types/checkout-types';
+import { CheckoutNewAddressForm } from './checkout-new-address-form';
+import { CheckoutSectionTitle } from './checkout-section-title';
 
 export function CheckoutAddressSection({
   addresses,

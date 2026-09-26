@@ -1,8 +1,8 @@
 // src/components/ui/range-slider.tsx
 'use client';
 
-import { useMemo } from 'react';
 import { cn } from '@/lib/utils';
+import { useMemo } from 'react';
 
 type RangeSliderProps = {
   min: number;

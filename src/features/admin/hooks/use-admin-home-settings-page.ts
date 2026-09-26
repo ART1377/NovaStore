@@ -2,9 +2,9 @@
 'use client';
 
 import { useEffect, useMemo, useRef, useState } from 'react';
+import type { AdminHomePlacementSlot } from '../types/admin-types';
 import { useAdminHomeActions, useAdminHomeSettings } from './use-admin';
 import { useDragReorder } from './use-drag-reorder';
-import type { AdminHomePlacementSlot } from '../types/admin-types';
 
 export const SLOT_META: Record<
   AdminHomePlacementSlot,

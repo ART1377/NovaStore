@@ -1,14 +1,14 @@
 // src/features/admin/components/product-general-fields.tsx
 import { Card, CardContent } from '@/components/ui/card';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Combobox } from '@/components/ui/combobox';
+import { FormField } from '@/components/ui/form-field';
 import { Input } from '@/components/ui/input';
 import { NumericInput } from '@/components/ui/numeric-input';
 import { Select } from '@/components/ui/select';
-import { Combobox } from '@/components/ui/combobox';
-import { Checkbox } from '@/components/ui/checkbox';
 import { PRODUCT_STATUS_LABELS } from '@/constants/constants';
 import type { FieldErrors } from '@/lib/form-errors';
 import type { FormState } from '../types/product-editor-types';
-import { FormField } from '@/components/ui/form-field';
 
 type CatalogOption = { id: string; name: string; isActive: boolean };
 

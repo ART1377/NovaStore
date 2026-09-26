@@ -1,11 +1,11 @@
 // src/app/api/addresses/route.ts
-import { NextResponse } from 'next/server';
-import { db } from '@/lib/prisma';
-import { requireUser } from '@/lib/auth';
-import { apiErrorResponse } from '@/lib/api-error';
 import { addressSchemaWithDefault } from '@/features/account/validation/address.schema';
 import { clearOtherDefaultAddresses } from '@/lib/address-defaults';
+import { apiErrorResponse } from '@/lib/api-error';
+import { requireUser } from '@/lib/auth';
+import { db } from '@/lib/prisma';
 import { numericInputValue } from '@/lib/utils';
+import { NextResponse } from 'next/server';
 
 export async function GET() {
   try {
@@ -25,7 +25,11 @@ export async function POST(req: Request) {
   try {
     const user = await requireUser();
     const raw = await req.json();
-    const body = addressSchemaWithDefault.parse({ ...raw, phone: numericInputValue(raw.phone ?? ''), postalCode: numericInputValue(raw.postalCode ?? '') });
+    const body = addressSchemaWithDefault.parse({
+      ...raw,
+      phone: numericInputValue(raw.phone ?? ''),
+      postalCode: numericInputValue(raw.postalCode ?? ''),
+    });
     const address = await db.$transaction(async (tx) => {
       if (body.isDefault) await clearOtherDefaultAddresses(tx, user.id);
       const created = await tx.address.create({

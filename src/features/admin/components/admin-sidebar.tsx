@@ -1,20 +1,20 @@
 // src/features/admin/components/admin-sidebar.tsx
 'use client';
 
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
 import {
+  Boxes,
+  Home,
   LayoutDashboard,
+  MessageSquareText,
   Package,
+  PanelsTopLeft,
   ShoppingCart,
-  Users,
   Tags,
   TicketPercent,
-  Home,
-  Boxes,
-  MessageSquareText,
-  PanelsTopLeft,
+  Users,
 } from 'lucide-react';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
 const links = [
   ['/admin', 'داشبورد', LayoutDashboard],
@@ -39,7 +39,7 @@ export function AdminSidebar() {
   const pathname = usePathname();
   return (
     <>
-      <aside className="admin-sidebar bg-nova-surface hidden w-60 min-w-60 max-w-60 shrink-0 self-start overflow-y-auto rounded-3xl border p-3 shadow-sm xl:sticky xl:top-24 xl:block">
+      <aside className="admin-sidebar bg-nova-surface hidden w-60 max-w-60 min-w-60 shrink-0 self-start overflow-y-auto rounded-3xl border p-3 shadow-sm xl:sticky xl:top-24 xl:block">
         <div className="border-b px-3 pb-4">
           <p className="text-nova-muted text-xs">نووا / مدیریت</p>
           <div className="mt-1 text-xl font-black">مرکز کنترل فروشگاه</div>

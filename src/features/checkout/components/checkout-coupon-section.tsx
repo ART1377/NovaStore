@@ -1,11 +1,11 @@
 // src/features/checkout/components/checkout-coupon-section.tsx
-import { Tag, X } from 'lucide-react';
-import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { formatPrice } from '@/lib/utils';
-import { CheckoutSectionTitle } from './checkout-section-title';
+import { Tag, X } from 'lucide-react';
 import type { CouponPreview } from '../types/checkout-types';
+import { CheckoutSectionTitle } from './checkout-section-title';
 
 export function CheckoutCouponSection({
   couponCode,

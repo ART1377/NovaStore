@@ -1,18 +1,18 @@
 // src/features/cart/components/cart-page.tsx
 'use client';
-import Link from 'next/link';
-import Image from 'next/image';
-import { ArrowLeft, ShoppingBag, ShieldCheck } from 'lucide-react';
-import { useCart } from '../hooks/use-cart';
-import { formatPrice, formatNumber } from '@/lib/utils';
-import { CartQuantityControls } from './cart-quantity-controls';
 import { EmptyState } from '@/components/shared/empty-state';
 import { ProductImagePlaceholder } from '@/components/shared/product-image-placeholder';
+import { QueryError } from '@/components/shared/query-state';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
 import { getClientErrorMessage } from '@/lib/client-error';
-import { QueryError } from '@/components/shared/query-state';
+import { formatNumber, formatPrice } from '@/lib/utils';
+import { ArrowLeft, ShieldCheck, ShoppingBag } from 'lucide-react';
+import Image from 'next/image';
+import Link from 'next/link';
+import { useCart } from '../hooks/use-cart';
+import { CartQuantityControls } from './cart-quantity-controls';
 
 export function CartPage() {
   const { data, isLoading, isError, error, refetch } = useCart();

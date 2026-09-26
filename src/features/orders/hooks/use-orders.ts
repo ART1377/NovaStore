@@ -1,8 +1,8 @@
 // src/features/orders/hooks/use-orders.ts
 'use client';
+import { QUERY_KEYS } from '@/lib/query-keys';
 import { useQuery } from '@tanstack/react-query';
 import { ordersService } from '../api/orders.api';
-import { QUERY_KEYS } from '@/lib/query-keys';
 
 export function useOrders() {
   return useQuery({

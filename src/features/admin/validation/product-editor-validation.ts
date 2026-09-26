@@ -1,7 +1,7 @@
 // src/features/admin/validation/product-editor-validation.ts
-import { z } from 'zod';
-import { numericInputValue } from '@/lib/utils';
 import { zodFieldErrors, type FieldErrors } from '@/lib/form-errors';
+import { numericInputValue } from '@/lib/utils';
+import { z } from 'zod';
 import type { FormState, Variant } from '../types/product-editor-types';
 
 const MAX_VARIANT_STOCK = 1_000_000;

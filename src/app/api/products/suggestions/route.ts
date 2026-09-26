@@ -1,8 +1,8 @@
 // src/app/api/products/suggestions/route.ts
+import { apiErrorResponse } from '@/lib/api-error';
+import { db } from '@/lib/prisma';
 import { NextResponse } from 'next/server';
 import { z } from 'zod';
-import { db } from '@/lib/prisma';
-import { apiErrorResponse } from '@/lib/api-error';
 
 const schema = z.string().trim().max(80);
 

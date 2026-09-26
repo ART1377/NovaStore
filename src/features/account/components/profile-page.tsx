@@ -1,13 +1,13 @@
 // src/features/account/components/profile-page.tsx
 'use client';
 
-import Link from 'next/link';
+import { SignOutButton } from '@/components/shared/sign-out-button';
+import { Button } from '@/components/ui/button';
+import { useAccountReviews } from '@/features/account/hooks/use-reviews';
+import { useOrders } from '@/features/orders/hooks/use-orders';
 import { Heart, KeyRound, Package, ShieldCheck, UserRound } from 'lucide-react';
 import { useSession } from 'next-auth/react';
-import { useOrders } from '@/features/orders/hooks/use-orders';
-import { useAccountReviews } from '@/features/account/hooks/use-reviews';
-import { Button } from '@/components/ui/button';
-import { SignOutButton } from '@/components/shared/sign-out-button';
+import Link from 'next/link';
 import { AddressManager } from './address-manager';
 import { ProfileOrdersPreview } from './profile-orders-preview';
 import { ProfileReviewsCard } from './profile-reviews-card';

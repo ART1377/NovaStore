@@ -1,10 +1,10 @@
 // src/features/checkout/components/checkout-shipping-section.tsx
-import { Check } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
-import { formatPrice } from '@/lib/utils';
 import { FREE_SHIPPING_THRESHOLD, SHIPPING_COSTS } from '@/constants/constants';
-import { CheckoutSectionTitle } from './checkout-section-title';
+import { formatPrice } from '@/lib/utils';
+import { Check } from 'lucide-react';
 import type { ShippingMethod } from '../types/checkout-types';
+import { CheckoutSectionTitle } from './checkout-section-title';
 
 const SHIPPING_OPTIONS: Array<{
   id: ShippingMethod;

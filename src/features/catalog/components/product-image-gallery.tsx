@@ -1,15 +1,16 @@
+// src/features/catalog/components/product-image-gallery.tsx
 'use client';
 
-import Image from 'next/image';
-import { Expand, X } from 'lucide-react';
-import { createPortal } from 'react-dom';
-import { useCallback, useEffect, useMemo, useState } from 'react';
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
+import { Expand, X } from 'lucide-react';
+import Image from 'next/image';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { createPortal } from 'react-dom';
 
-import type { Product } from '../types/catalog-types';
-import { cn, formatNumber } from '@/lib/utils';
-import { GalleryArrow } from './gallery-arrow';
 import { ProductImagePlaceholder } from '@/components/shared/product-image-placeholder';
+import { cn, formatNumber } from '@/lib/utils';
+import type { Product } from '../types/catalog-types';
+import { GalleryArrow } from './gallery-arrow';
 
 type GalleryImage = Product['images'][number];
 
@@ -35,30 +36,24 @@ export function ProductImageGallery({
   const [direction, setDirection] = useState(0);
   const reducedMotion = useReducedMotion() === true;
 
+  const safeIndex = Math.min(activeIndex, Math.max(items.length - 1, 0));
+  const activeImage = items[safeIndex];
+
   const goTo = useCallback(
     (index: number) => {
       if (!items.length) return;
       const nextIndex = (index + items.length) % items.length;
-      setDirection(
-        nextIndex > activeIndex ? 1 : nextIndex < activeIndex ? -1 : 0,
-      );
+      setDirection(nextIndex > safeIndex ? 1 : nextIndex < safeIndex ? -1 : 0);
       setActiveIndex(nextIndex);
     },
-    [activeIndex, items.length],
+    [safeIndex, items.length],
   );
 
-  const goNext = useCallback(() => goTo(activeIndex + 1), [activeIndex, goTo]);
-  const goPrevious = useCallback(
-    () => goTo(activeIndex - 1),
-    [activeIndex, goTo],
-  );
+  const goNext = useCallback(() => goTo(safeIndex + 1), [goTo, safeIndex]);
+  const goPrevious = useCallback(() => goTo(safeIndex - 1), [goTo, safeIndex]);
 
-  useEffect(() => {
-    setActiveIndex((current) =>
-      Math.min(current, Math.max(items.length - 1, 0)),
-    );
-  }, [items.length]);
-
+  // Lightbox: body-scroll lock and keyboard navigation. Real external-system
+  // synchronization, so effects are the correct tool here.
   useEffect(() => {
     if (!lightboxOpen) return;
 
@@ -86,7 +81,6 @@ export function ProductImageGallery({
     };
   }, [goNext, goPrevious, items.length, lightboxOpen]);
 
-  const activeImage = items[activeIndex];
   const imageVariants = reducedMotion
     ? {
         enter: { opacity: 1, x: 0, scale: 1 },
@@ -110,7 +104,7 @@ export function ProductImageGallery({
   return (
     <>
       <div className={cn('min-w-0', compact && 'space-y-2')}>
-        <div className="group relative aspect-square overflow-hidden rounded-[28px] border border-zinc-200 bg-zinc-100 shadow-sm">
+        <div className="group border-nova-line bg-nova-hover relative aspect-square overflow-hidden rounded-[28px] border shadow-sm">
           {activeImage?.url ? (
             <AnimatePresence initial={false} custom={direction} mode="wait">
               <motion.div
@@ -146,7 +140,7 @@ export function ProductImageGallery({
               <GalleryArrow direction="previous" onClick={goPrevious} />
               <GalleryArrow direction="next" onClick={goNext} />
               <div className="bg-nova-ink/70 absolute bottom-3 left-1/2 -translate-x-1/2 rounded-full px-3 py-1 text-[11px] font-semibold text-white backdrop-blur">
-                {formatNumber(activeIndex + 1)} / {formatNumber(items.length)}
+                {formatNumber(safeIndex + 1)} / {formatNumber(items.length)}
               </div>
             </>
           ) : null}
@@ -162,7 +156,7 @@ export function ProductImageGallery({
         </div>
 
         {items.length > 1 ? (
-          <div className="grid grid-cols-5 gap-2 sm:grid-cols-6 mt-3">
+          <div className="grid grid-cols-5 gap-2 sm:grid-cols-6">
             {items.map((image, index) => (
               <motion.button
                 key={image.id}
@@ -172,12 +166,12 @@ export function ProductImageGallery({
                 whileTap={reducedMotion ? undefined : { scale: 0.97 }}
                 className={cn(
                   'bg-nova-hover relative aspect-square overflow-hidden rounded-xl border transition',
-                  index === activeIndex
+                  index === safeIndex
                     ? 'border-nova-ink ring-nova-ink/10 ring-2'
                     : 'border-nova-line hover:border-nova-line-strong',
                 )}
                 aria-label={`تصویر ${index + 1}`}
-                aria-current={index === activeIndex}
+                aria-current={index === safeIndex}
               >
                 {image.url ? (
                   <Image
@@ -227,7 +221,10 @@ export function ProductImageGallery({
                         ? undefined
                         : { opacity: 0, y: 12, scale: 0.985 }
                     }
-                    transition={{ duration: 0.28, ease: imageTransition.ease }}
+                    transition={{
+                      duration: 0.28,
+                      ease: imageTransition.ease,
+                    }}
                     onMouseDown={(event) => event.stopPropagation()}
                   >
                     <button
@@ -282,7 +279,7 @@ export function ProductImageGallery({
                       ) : null}
 
                       <div className="pointer-events-none absolute bottom-3 left-1/2 -translate-x-1/2 rounded-full bg-black/45 px-3 py-1 text-[11px] font-semibold text-white backdrop-blur">
-                        {formatNumber(activeIndex + 1)} /{' '}
+                        {formatNumber(safeIndex + 1)} /{' '}
                         {formatNumber(items.length || 1)}
                       </div>
                     </div>
@@ -301,12 +298,12 @@ export function ProductImageGallery({
                               }
                               className={cn(
                                 'relative size-16 shrink-0 overflow-hidden rounded-xl border bg-black/25 transition sm:size-20',
-                                index === activeIndex
+                                index === safeIndex
                                   ? 'border-white ring-2 ring-white/30'
                                   : 'border-white/20 hover:border-white/60',
                               )}
                               aria-label={`نمایش تصویر ${index + 1}`}
-                              aria-current={index === activeIndex}
+                              aria-current={index === safeIndex}
                             >
                               {image.url ? (
                                 <Image

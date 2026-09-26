@@ -1,0 +1,4 @@
+# .husky/commit-msg
+#!/usr/bin/env sh
+
+pnpm commitlint --edit "$1"

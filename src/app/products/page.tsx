@@ -1,7 +1,7 @@
 // src/app/products/page.tsx
+import { ProductsPage } from '@/features/catalog/components/products-page';
 import type { Metadata } from 'next';
 import { Suspense } from 'react';
-import { ProductsPage } from '@/features/catalog/components/products-page';
 
 export const metadata: Metadata = {
   title: 'فروشگاه',

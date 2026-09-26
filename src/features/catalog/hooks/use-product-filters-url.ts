@@ -1,20 +1,23 @@
 // src/features/catalog/hooks/use-product-filters-url.ts
 'use client';
 
-import { useEffect, useMemo, useState, useTransition } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
 import { SEARCH_DEBOUNCE_MS } from '@/constants/constants';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { useEffect, useMemo, useState, useTransition } from 'react';
 import type { ProductFilters } from '../types/catalog-types';
 
 export function useProductFiltersUrl() {
   const params = useSearchParams();
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
-  const [search, setSearch] = useState(params.get('search') ?? '');
+  const urlSearch = params.get('search') ?? '';
+  const [search, setSearch] = useState(urlSearch);
+  const [lastUrlSearch, setLastUrlSearch] = useState(urlSearch);
 
-  useEffect(() => {
-    setSearch(params.get('search') ?? '');
-  }, [params]);
+  if (urlSearch !== lastUrlSearch) {
+    setLastUrlSearch(urlSearch);
+    setSearch(urlSearch);
+  }
 
   const filters = useMemo<ProductFilters>(
     () => ({
@@ -76,5 +79,13 @@ export function useProductFiltersUrl() {
     startTransition(() => router.replace('/products'));
   };
 
-  return { filters, search, setSearch, setParam, setPriceRange, clear, isPending };
+  return {
+    filters,
+    search,
+    setSearch,
+    setParam,
+    setPriceRange,
+    clear,
+    isPending,
+  };
 }

@@ -1,11 +1,11 @@
 // src/features/account/hooks/use-address-actions.ts
 'use client';
 
+import { getClientErrorMessage } from '@/lib/client-error';
+import { QUERY_KEYS } from '@/lib/query-keys';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
 import { addressesService } from '../api/addresses.api';
-import { QUERY_KEYS } from '@/lib/query-keys';
-import { getClientErrorMessage } from '@/lib/client-error';
 import type { Address } from '../types/address';
 
 const invalidateAddresses = (queryClient: ReturnType<typeof useQueryClient>) =>

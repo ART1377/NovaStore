@@ -1,14 +1,17 @@
 // src/features/account/components/profile-orders-preview.tsx
-import Link from 'next/link';
-import { ArrowLeft, Heart, MapPin, Package } from 'lucide-react';
+import { EmptyState } from '@/components/shared/empty-state';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
-import { EmptyState } from '@/components/shared/empty-state';
 import { Skeleton } from '@/components/ui/skeleton';
-import { QuickAccountCard } from './quick-account-card';
-import { ORDER_STATUS_LABELS, SHIPPING_STATUS_LABELS } from '@/constants/constants';
-import { formatDate, formatPrice } from '@/lib/utils';
+import {
+  ORDER_STATUS_LABELS,
+  SHIPPING_STATUS_LABELS,
+} from '@/constants/constants';
 import type { Order } from '@/features/orders/api/orders.api';
+import { formatDate, formatPrice } from '@/lib/utils';
+import { ArrowLeft, Heart, MapPin, Package } from 'lucide-react';
+import Link from 'next/link';
+import { QuickAccountCard } from './quick-account-card';
 
 const RECENT_ORDER_LIMIT = 4;
 const ORDER_SKELETON_COUNT = 3;
@@ -29,7 +32,9 @@ export function ProfileOrdersPreview({
           <div className="flex items-center justify-between gap-3">
             <div>
               <h2 className="text-lg font-black">آخرین سفارش‌ها</h2>
-              <p className="text-nova-muted mt-1 text-xs">چهار سفارش اخیر را سریع ببین.</p>
+              <p className="text-nova-muted mt-1 text-xs">
+                چهار سفارش اخیر را سریع ببین.
+              </p>
             </div>
             <Link
               href="/account/orders"
@@ -57,15 +62,19 @@ export function ProfileOrdersPreview({
                     <div className="flex flex-wrap items-center gap-2">
                       <p className="font-bold">{order.orderNumber}</p>
                       <Badge>
-                        {ORDER_STATUS_LABELS[order.orderStatus] ?? order.orderStatus}
+                        {ORDER_STATUS_LABELS[order.orderStatus] ??
+                          order.orderStatus}
                       </Badge>
                     </div>
                     <p className="text-nova-muted mt-1 text-xs">
                       {formatDate(order.createdAt)} · {order.items.length} قلم ·{' '}
-                      {SHIPPING_STATUS_LABELS[order.shippingStatus] ?? order.shippingStatus}
+                      {SHIPPING_STATUS_LABELS[order.shippingStatus] ??
+                        order.shippingStatus}
                     </p>
                   </div>
-                  <strong className="shrink-0 text-sm">{formatPrice(order.total)}</strong>
+                  <strong className="shrink-0 text-sm">
+                    {formatPrice(order.total)}
+                  </strong>
                 </Link>
               ))}
             </div>

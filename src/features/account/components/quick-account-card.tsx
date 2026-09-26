@@ -1,7 +1,7 @@
 // src/features/account/components/quick-account-card.tsx
-import Link from 'next/link';
 import type { LucideIcon } from 'lucide-react';
 import { ArrowLeft } from 'lucide-react';
+import Link from 'next/link';
 
 export function QuickAccountCard({
   icon: Icon,

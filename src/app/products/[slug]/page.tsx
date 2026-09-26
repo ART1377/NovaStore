@@ -1,14 +1,14 @@
 // src/app/products/[slug]/page.tsx
-import type { Metadata } from 'next';
-import { notFound } from 'next/navigation';
-import { getAuthSession } from '@/lib/auth';
 import {
+  getAdminProductForDetail,
   getPublishedProduct,
   getPublishedProductMeta,
-  getAdminProductForDetail,
 } from '@/features/catalog/api/catalog-server.api';
 import { ProductDetail } from '@/features/catalog/components/product-detail';
 import { ProductStructuredData } from '@/features/catalog/components/product-structured-data';
+import { getAuthSession } from '@/lib/auth';
+import type { Metadata } from 'next';
+import { notFound } from 'next/navigation';
 
 export async function generateMetadata({
   params,
@@ -53,7 +53,8 @@ export default async function Page({
   let product = await getPublishedProduct(slug);
   if (!product) {
     const session = await getAuthSession();
-    if (session?.user?.role === 'ADMIN') product = await getAdminProductForDetail(slug);
+    if (session?.user?.role === 'ADMIN')
+      product = await getAdminProductForDetail(slug);
   }
   if (!product) notFound();
 

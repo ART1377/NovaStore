@@ -1,12 +1,12 @@
 // src/features/compare/hooks/use-compare-products.ts
 'use client';
 
-import { useQueries } from '@tanstack/react-query';
 import { catalogService } from '@/features/catalog/api/catalog.api';
 import type { Product } from '@/features/catalog/types/catalog-types';
 import { QUERY_KEYS } from '@/lib/query-keys';
-import { useCompare } from './use-compare';
+import { useQueries } from '@tanstack/react-query';
 import { useEffect } from 'react';
+import { useCompare } from './use-compare';
 
 export function useCompareProducts() {
   const { items, remove } = useCompare();

@@ -1,9 +1,9 @@
 // src/features/cart/components/cart-quantity-controls.tsx
 'use client';
 
+import { cn, formatNumber } from '@/lib/utils';
 import { Minus, Plus, Trash2 } from 'lucide-react';
 import { useCartActions } from '../hooks/use-cart';
-import { cn, formatNumber } from '@/lib/utils';
 
 export function CartQuantityControls({
   cartItemId,

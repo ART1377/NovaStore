@@ -1,6 +1,6 @@
 // src/features/orders/components/order-tracking-page.tsx
-import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { Card, CardContent } from '@/components/ui/card';
 import { formatPrice } from '@/lib/utils';
 import type { AccountOrderDetail } from '../api/orders-server.api';
 

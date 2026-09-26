@@ -1,9 +1,9 @@
 // src/components/ui/select.tsx
 'use client';
-import { ChevronDown, Check } from 'lucide-react';
-import { Children, useMemo, useRef, useState } from 'react';
-import { cn } from '@/lib/utils';
 import { useCloseOnOutsideInteraction } from '@/hooks/use-close-on-outside-interaction';
+import { cn } from '@/lib/utils';
+import { Check, ChevronDown } from 'lucide-react';
+import { Children, useMemo, useRef, useState } from 'react';
 type SelectProps = Omit<
   React.SelectHTMLAttributes<HTMLSelectElement>,
   'onChange'

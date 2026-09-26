@@ -1,15 +1,15 @@
 // src/features/wishlist/components/wishlist-page.tsx
 'use client';
-import Link from 'next/link';
-import Image from 'next/image';
-import { Heart, ShoppingBag, Trash2 } from 'lucide-react';
-import { useWishlist, useWishlistActions } from '../hooks/use-wishlist';
-import { formatPrice } from '@/lib/utils';
+import { EmptyState, ProductImagePlaceholder } from '@/components/shared';
+import { QueryError } from '@/components/shared/query-state';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
-import { EmptyState, ProductImagePlaceholder } from '@/components/shared';
 import { getClientErrorMessage } from '@/lib/client-error';
-import { QueryError } from '@/components/shared/query-state';
+import { formatPrice } from '@/lib/utils';
+import { Heart, ShoppingBag, Trash2 } from 'lucide-react';
+import Image from 'next/image';
+import Link from 'next/link';
+import { useWishlist, useWishlistActions } from '../hooks/use-wishlist';
 export function WishlistPage() {
   const { data, isLoading, isError, error, refetch } = useWishlist();
   const { remove, moveToCart } = useWishlistActions();

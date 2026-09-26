@@ -1,9 +1,9 @@
 // src/features/notifications/hooks/use-notifications.ts
 'use client';
+import { QUERY_KEYS } from '@/lib/query-keys';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useSession } from 'next-auth/react';
 import { notificationsService } from '../api/notifications.api';
-import { QUERY_KEYS } from '@/lib/query-keys';
 export function useNotifications() {
   const { data: session } = useSession();
   const qc = useQueryClient();

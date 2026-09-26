@@ -1,6 +1,6 @@
 // src/app/compare/page.tsx
-import type { Metadata } from 'next';
 import { ComparePage } from '@/features/compare/components/compare-page';
+import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: 'مقایسه محصولات',

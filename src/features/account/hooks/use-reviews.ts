@@ -1,8 +1,8 @@
 // src/features/account/hooks/use-reviews.ts
 'use client';
 
-import { useQuery } from '@tanstack/react-query';
 import { QUERY_KEYS } from '@/lib/query-keys';
+import { useQuery } from '@tanstack/react-query';
 import { accountReviewsService } from '../api/reviews.api';
 
 export function useAccountReviews() {

@@ -2,9 +2,9 @@
 import { Card, CardContent } from '@/components/ui/card';
 import { PRODUCT_STATUS_LABELS } from '@/constants/constants';
 import { formatNumber } from '@/lib/utils';
-import { SummaryRow } from './summary-row';
 import type { FormState, Variant } from '../types/product-editor-types';
 import { totalVariantStock } from '../utils/product-editor-utils';
+import { SummaryRow } from './summary-row';
 
 export function ProductSummaryCard({
   form,

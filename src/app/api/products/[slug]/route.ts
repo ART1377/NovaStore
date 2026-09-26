@@ -1,6 +1,6 @@
 // src/app/api/products/[slug]/route.ts
-import { NextResponse } from 'next/server';
 import { getPublishedProduct } from '@/features/catalog/api/catalog-server.api';
+import { NextResponse } from 'next/server';
 
 export async function GET(
   _: Request,

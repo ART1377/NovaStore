@@ -1,14 +1,14 @@
 // src/app/api/admin/home/route.ts
-import { NextResponse } from 'next/server';
-import { z } from 'zod';
-import { db } from '@/lib/prisma';
-import { requireAdmin } from '@/lib/auth';
-import { apiErrorResponse } from '@/lib/api-error';
 import {
   HOME_PLACEMENT_LIMITS,
   HOME_PLACEMENT_SLOTS,
 } from '@/constants/constants';
+import { apiErrorResponse } from '@/lib/api-error';
+import { requireAdmin } from '@/lib/auth';
+import { db } from '@/lib/prisma';
 import { revalidatePath } from 'next/cache';
+import { NextResponse } from 'next/server';
+import { z } from 'zod';
 
 const slotSchema = z.enum([
   'HERO_PRODUCT',

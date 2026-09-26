@@ -1,8 +1,8 @@
 // src/features/checkout/api/checkout.api.ts
-import api from '@/lib/api-client';
 import type { Address } from '@/features/account/types/address';
-import type { CouponPreview, ShippingMethod } from '../types/checkout-types';
 import type { AddressInputWithDefault } from '@/features/account/validation/address.schema';
+import api from '@/lib/api-client';
+import type { CouponPreview, ShippingMethod } from '../types/checkout-types';
 
 export type CheckoutPayload = {
   addressId: string;

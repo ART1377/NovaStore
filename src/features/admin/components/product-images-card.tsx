@@ -1,7 +1,7 @@
 // src/features/admin/components/product-images-card.tsx
-import { Card, CardContent } from '@/components/ui/card';
-import { CloudinaryUpload } from '@/components/shared/cloudinary-upload';
 import { type CloudinaryImageValue } from '@/components/shared/cloudinary-types';
+import { CloudinaryUpload } from '@/components/shared/cloudinary-upload';
+import { Card, CardContent } from '@/components/ui/card';
 
 export function ProductImagesCard({
   images,

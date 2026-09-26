@@ -1,11 +1,10 @@
 // src/features/checkout/hooks/use-checkout-coupon.ts
 'use client';
 
-import { useState } from 'react';
 import { getClientErrorMessage } from '@/lib/client-error';
+import { useState } from 'react';
 import type { CouponPreview, ShippingMethod } from '../types/checkout-types';
 import { useCouponValidation } from './use-checkout-actions';
-
 
 export function useCheckoutCoupon() {
   const [couponCode, setCouponCode] = useState('');

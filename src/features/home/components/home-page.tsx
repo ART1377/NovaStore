@@ -1,5 +1,6 @@
 // src/features/home/components/home-page.tsx
-import Link from 'next/link';
+import { Button } from '@/components/ui/button';
+import { RecentlyViewedSection } from '@/features/recently-viewed/components/recently-viewed-section';
 import {
   ArrowLeft,
   ArrowUpLeft,
@@ -9,12 +10,11 @@ import {
   Truck,
   Zap,
 } from 'lucide-react';
-import { RecentlyViewedSection } from '@/features/recently-viewed/components/recently-viewed-section';
-import { Button } from '@/components/ui/button';
+import Link from 'next/link';
 import type { HomePageData } from '../api/home.api';
+import { HomeHero } from './home-hero';
 import { HomeProductSection } from './home-product-section';
 import { HomeSectionHeader } from './home-section-header';
-import { HomeHero } from './home-hero';
 import { HomeTrustItem } from './home-trust-item';
 
 export function HomePage({ data }: { data: HomePageData }) {

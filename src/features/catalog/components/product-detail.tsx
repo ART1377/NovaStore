@@ -1,31 +1,31 @@
 // src/features/catalog/components/product-detail.tsx
 'use client';
 
-import Link from 'next/link';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
+import { Skeleton } from '@/components/ui/skeleton';
+import { ProductCartActions } from '@/features/cart/components/product-cart-actions';
+import { WishlistToggle } from '@/features/wishlist/components/wishlist-toggle';
+import { formatNumber, formatPrice } from '@/lib/utils';
+import { motion, useReducedMotion } from 'framer-motion';
 import {
-  Star,
-  Truck,
-  ShieldCheck,
-  GitCompareArrows,
   CheckCircle2,
+  GitCompareArrows,
   MessageSquare,
   PackageX,
+  ShieldCheck,
+  Star,
+  Truck,
 } from 'lucide-react';
-import type { Product } from '../types/catalog-types';
-import { formatPrice, formatNumber } from '@/lib/utils';
+import Link from 'next/link';
 import { useProductDetail } from '../hooks/use-product-detail';
-import { Button } from '@/components/ui/button';
-import { ProductCartActions } from '@/features/cart/components/product-cart-actions';
-import { Badge } from '@/components/ui/badge';
-import { Card, CardContent } from '@/components/ui/card';
-import { ReviewForm } from './review-form';
-import { ProductImageGallery } from './product-image-gallery';
+import type { Product } from '../types/catalog-types';
 import { ProductGrid } from './product-grid';
-import { WishlistToggle } from '@/features/wishlist/components/wishlist-toggle';
-import { ReviewThread } from './review-thread';
+import { ProductImageGallery } from './product-image-gallery';
 import { ProductInfoCard } from './product-info-card';
-import { motion, useReducedMotion } from 'framer-motion';
-import { Skeleton } from '@/components/ui/skeleton';
+import { ReviewForm } from './review-form';
+import { ReviewThread } from './review-thread';
 
 const ease = [0.22, 1, 0.36, 1] as const;
 
@@ -54,7 +54,6 @@ export function ProductDetail({
   const {
     product,
     variant,
-    cartItem,
     isLoading,
     error,
     isFetching,
@@ -65,7 +64,6 @@ export function ProductDetail({
     average,
     ratingCount,
     ratingDistribution,
-    available,
     cartQuantity,
   } = detail;
 

@@ -32,7 +32,7 @@ export function Button({
     <button
       type={type}
       className={cn(
-        'inline-flex shrink-0 items-center justify-center gap-2 whitespace-nowrap rounded-2xl font-semibold tracking-[-.01em] transition duration-200 active:scale-[.985] disabled:pointer-events-none disabled:opacity-50 [&>svg]:size-4 [&>svg]:shrink-0',
+        'inline-flex shrink-0 items-center justify-center gap-2 rounded-2xl font-semibold tracking-[-.01em] whitespace-nowrap transition duration-200 active:scale-[.985] disabled:pointer-events-none disabled:opacity-50 [&>svg]:size-4 [&>svg]:shrink-0',
         variants[variant],
         sizes[size],
         className,

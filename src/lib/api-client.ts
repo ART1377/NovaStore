@@ -1,6 +1,6 @@
 // src/lib/api-client.ts
-import axios from 'axios';
 import { API_TIMEOUT_MS } from '@/constants/constants';
+import axios from 'axios';
 
 export class ApiClientError extends Error {
   readonly status: number | undefined;

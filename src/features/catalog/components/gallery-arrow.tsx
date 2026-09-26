@@ -1,8 +1,8 @@
 // src/features/catalog/components/gallery-arrow.tsx
 'use client';
 
-import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 type Props = {
   direction: 'next' | 'previous';

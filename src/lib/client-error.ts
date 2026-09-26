@@ -36,7 +36,8 @@ export function getClientErrorMessage(
   const raw = getRawMessage(error).trim();
   if (raw && !TECHNICAL_MESSAGES.has(raw)) {
     if (raw === 'UNAUTHORIZED') return 'برای ادامه ابتدا وارد حساب شوید.';
-    if (raw === 'FORBIDDEN') return 'شما دسترسی لازم برای این عملیات را ندارید.';
+    if (raw === 'FORBIDDEN')
+      return 'شما دسترسی لازم برای این عملیات را ندارید.';
     return raw;
   }
 

@@ -1,16 +1,16 @@
 // src/features/admin/components/product-editor.tsx
 'use client';
 
-import { ArrowRight, Save } from 'lucide-react';
+import { QueryError } from '@/components/shared/query-state';
 import { Button } from '@/components/ui/button';
 import { ConfirmDialog } from '@/components/ui/dialog';
+import { ArrowRight, Save } from 'lucide-react';
 import { useProductEditor } from '../hooks/use-product-editor';
+import { AdminDetailSkeleton } from './admin-detail-skeleton';
 import { ProductGeneralFields } from './product-general-fields';
-import { ProductVariantsEditor } from './product-variants-editor';
 import { ProductImagesCard } from './product-images-card';
 import { ProductSummaryCard } from './product-summary-card';
-import { AdminDetailSkeleton } from './admin-detail-skeleton';
-import { QueryError } from '@/components/shared/query-state';
+import { ProductVariantsEditor } from './product-variants-editor';
 
 export function ProductEditor({ id }: { id?: string }) {
   const editor = useProductEditor({ id });
@@ -27,8 +27,17 @@ export function ProductEditor({ id }: { id?: string }) {
 
   const optionsErrorNotice = editor.optionsError ? (
     <div className="rounded-2xl border border-red-200 bg-red-50 p-4 text-sm">
-      <p className="font-semibold text-red-700">دریافت دسته‌بندی‌ها و برندها ناموفق بود.</p>
-      <Button size="sm" variant="outline" className="mt-3" onClick={() => void editor.refetchOptions()}>تلاش مجدد</Button>
+      <p className="font-semibold text-red-700">
+        دریافت دسته‌بندی‌ها و برندها ناموفق بود.
+      </p>
+      <Button
+        size="sm"
+        variant="outline"
+        className="mt-3"
+        onClick={() => void editor.refetchOptions()}
+      >
+        تلاش مجدد
+      </Button>
     </div>
   ) : null;
 
@@ -36,10 +45,18 @@ export function ProductEditor({ id }: { id?: string }) {
     <main className="w-full min-w-0">
       <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <p className="text-nova-muted text-xs">مدیریت / محصولات / {id ? 'ویرایش' : 'جدید'}</p>
-          <h1 className="mt-2 text-3xl font-black sm:text-4xl">{id ? 'ویرایش محصول' : 'محصول جدید'}</h1>
+          <p className="text-nova-muted text-xs">
+            مدیریت / محصولات / {id ? 'ویرایش' : 'جدید'}
+          </p>
+          <h1 className="mt-2 text-3xl font-black sm:text-4xl">
+            {id ? 'ویرایش محصول' : 'محصول جدید'}
+          </h1>
         </div>
-        <Button className="w-full sm:w-auto" variant="outline" onClick={editor.goBack}>
+        <Button
+          className="w-full sm:w-auto"
+          variant="outline"
+          onClick={editor.goBack}
+        >
           <ArrowRight size={16} /> بازگشت
         </Button>
       </div>
@@ -66,10 +83,23 @@ export function ProductEditor({ id }: { id?: string }) {
 
         <div className="space-y-6">
           {optionsErrorNotice}
-          <ProductImagesCard images={editor.images} onChange={editor.setImages} />
-          <ProductSummaryCard form={editor.form} imagesCount={editor.images.length} variants={editor.variants} />
-          <Button size="lg" className="w-full" disabled={editor.isSaving} onClick={editor.submit}>
-            <Save size={18} /> {editor.isSaving ? 'در حال ذخیره...' : 'ذخیره محصول'}
+          <ProductImagesCard
+            images={editor.images}
+            onChange={editor.setImages}
+          />
+          <ProductSummaryCard
+            form={editor.form}
+            imagesCount={editor.images.length}
+            variants={editor.variants}
+          />
+          <Button
+            size="lg"
+            className="w-full"
+            disabled={editor.isSaving}
+            onClick={editor.submit}
+          >
+            <Save size={18} />{' '}
+            {editor.isSaving ? 'در حال ذخیره...' : 'ذخیره محصول'}
           </Button>
         </div>
       </div>

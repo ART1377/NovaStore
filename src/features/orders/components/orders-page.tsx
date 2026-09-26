@@ -1,17 +1,17 @@
 // src/features/orders/components/orders-page.tsx
 'use client';
-import Link from 'next/link';
-import { Package } from 'lucide-react';
+import { EmptyState } from '@/components/shared';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
-import { useOrders } from '../hooks/use-orders';
-import { formatPrice, formatDate } from '@/lib/utils';
-import { EmptyState } from '@/components/shared';
 import {
   ORDER_STATUS_LABELS,
   SHIPPING_STATUS_LABELS,
 } from '@/constants/constants';
+import { formatDate, formatPrice } from '@/lib/utils';
+import { Package } from 'lucide-react';
+import Link from 'next/link';
+import { useOrders } from '../hooks/use-orders';
 export function OrdersPage() {
   const { data, isLoading } = useOrders();
   if (isLoading)

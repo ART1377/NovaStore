@@ -2,9 +2,10 @@
 'use client';
 
 import { useState } from 'react';
-import type { CheckoutAddress } from '../types/checkout-types';
 
-export function useCheckoutAddress(addresses: CheckoutAddress[]) {
+export type AddressRef = { id: string; isDefault: boolean };
+
+export function useCheckoutAddress(addresses: AddressRef[]) {
   const [selectedAddress, setSelectedAddress] = useState('');
 
   const addressId =

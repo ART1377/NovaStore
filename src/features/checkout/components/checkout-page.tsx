@@ -1,17 +1,17 @@
 // src/features/checkout/components/checkout-page.tsx
 'use client';
 
-import { ShieldCheck, Truck } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { useCart } from '@/features/cart/hooks/use-cart';
 import { useAddresses } from '@/features/account/hooks/use-addresses';
+import { useCart } from '@/features/cart/hooks/use-cart';
+import { getClientErrorMessage } from '@/lib/client-error';
+import { ShieldCheck, Truck } from 'lucide-react';
 import { useCheckout } from '../hooks/use-checkout';
-import { CheckoutSkeleton } from './checkout-skeleton';
 import { CheckoutAddressSection } from './checkout-address-section';
-import { CheckoutShippingSection } from './checkout-shipping-section';
 import { CheckoutCouponSection } from './checkout-coupon-section';
 import { CheckoutOrderSummary } from './checkout-order-summary';
-import { getClientErrorMessage } from '@/lib/client-error';
+import { CheckoutShippingSection } from './checkout-shipping-section';
+import { CheckoutSkeleton } from './checkout-skeleton';
 
 export function CheckoutPage() {
   const { data: cart, isLoading: cartLoading } = useCart();

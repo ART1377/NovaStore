@@ -1,16 +1,25 @@
 // src/features/admin/hooks/use-product-editor.ts
 'use client';
 
-import { useEffect, useMemo, useRef, useState } from 'react';
-import { useRouter } from 'next/navigation';
-import toast from 'react-hot-toast';
 import type { CloudinaryImageValue } from '@/components/shared/cloudinary-types';
 import { apiFieldErrors, type FieldErrors } from '@/lib/form-errors';
 import { formatInputNumber } from '@/lib/utils';
-import { useAdminProduct, useAdminProductActions, useAdminProductOptions } from './use-admin';
-import { emptyVariant, initialFormState, type FormState, type Variant } from '../types/product-editor-types';
+import { useRouter } from 'next/navigation';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import toast from 'react-hot-toast';
+import {
+  emptyVariant,
+  initialFormState,
+  type FormState,
+  type Variant,
+} from '../types/product-editor-types';
 import { buildProductPayload } from '../utils/product-editor-utils';
 import { validateProductForm } from '../validation/product-editor-validation';
+import {
+  useAdminProduct,
+  useAdminProductActions,
+  useAdminProductOptions,
+} from './use-admin';
 
 type UseProductEditorParams = { id?: string };
 
@@ -23,7 +32,9 @@ export function useProductEditor({ id }: UseProductEditorParams) {
   const [variants, setVariants] = useState<Variant[]>([emptyVariant()]);
   const [images, setImages] = useState<CloudinaryImageValue[]>([]);
   const [errors, setErrors] = useState<FieldErrors>({});
-  const [confirmVariantIndex, setConfirmVariantIndex] = useState<number | null>(null);
+  const [confirmVariantIndex, setConfirmVariantIndex] = useState<number | null>(
+    null,
+  );
   const syncedProductData = useRef(productQuery.data);
 
   useEffect(() => {
@@ -35,13 +46,21 @@ export function useProductEditor({ id }: UseProductEditorParams) {
       name: productData.name,
       description: productData.description,
       price: formatInputNumber(String(productData.price)),
-      compareAtPrice: productData.compareAtPrice ? formatInputNumber(String(productData.compareAtPrice)) : '',
+      compareAtPrice: productData.compareAtPrice
+        ? formatInputNumber(String(productData.compareAtPrice))
+        : '',
       categoryId: productData.categoryId,
       brandId: productData.brandId ?? '',
       status: productData.status,
       featured: productData.featured,
     });
-    setImages(productData.images.map((image) => ({ url: image.url, publicId: image.publicId, bytes: image.bytes })));
+    setImages(
+      productData.images.map((image) => ({
+        url: image.url,
+        publicId: image.publicId,
+        bytes: image.bytes,
+      })),
+    );
     setVariants(
       productData.variants.length
         ? productData.variants.map((variant) => ({
@@ -50,7 +69,10 @@ export function useProductEditor({ id }: UseProductEditorParams) {
             name: variant.name,
             color: variant.color ?? '',
             size: variant.size ?? '',
-            price: variant.price == null ? '' : formatInputNumber(String(variant.price)),
+            price:
+              variant.price == null
+                ? ''
+                : formatInputNumber(String(variant.price)),
             stock: formatInputNumber(String(variant.stock)),
           }))
         : [emptyVariant()],
@@ -58,15 +80,25 @@ export function useProductEditor({ id }: UseProductEditorParams) {
   }, [productQuery.data]);
 
   const activeCategories = useMemo(
-    () => optionsQuery.data?.categories.filter((option) => option.isActive || option.id === productQuery.data?.categoryId) ?? [],
+    () =>
+      optionsQuery.data?.categories.filter(
+        (option) =>
+          option.isActive || option.id === productQuery.data?.categoryId,
+      ) ?? [],
     [optionsQuery.data?.categories, productQuery.data?.categoryId],
   );
   const activeBrands = useMemo(
-    () => optionsQuery.data?.brands.filter((option) => option.isActive || option.id === productQuery.data?.brandId) ?? [],
+    () =>
+      optionsQuery.data?.brands.filter(
+        (option) => option.isActive || option.id === productQuery.data?.brandId,
+      ) ?? [],
     [optionsQuery.data?.brands, productQuery.data?.brandId],
   );
 
-  const setFormValue = <K extends keyof FormState>(key: K, value: FormState[K]) => {
+  const setFormValue = <K extends keyof FormState>(
+    key: K,
+    value: FormState[K],
+  ) => {
     setForm((current) => ({ ...current, [key]: value }));
     setErrors((current) => {
       const next = { ...current };
@@ -75,8 +107,16 @@ export function useProductEditor({ id }: UseProductEditorParams) {
     });
   };
 
-  const setVariantValue = <K extends keyof Variant>(index: number, key: K, value: Variant[K]) => {
-    setVariants((current) => current.map((variant, currentIndex) => currentIndex === index ? { ...variant, [key]: value } : variant));
+  const setVariantValue = <K extends keyof Variant>(
+    index: number,
+    key: K,
+    value: Variant[K],
+  ) => {
+    setVariants((current) =>
+      current.map((variant, currentIndex) =>
+        currentIndex === index ? { ...variant, [key]: value } : variant,
+      ),
+    );
     setErrors((current) => {
       const next = { ...current };
       delete next[`variants.${index}.${String(key)}`];
@@ -86,7 +126,9 @@ export function useProductEditor({ id }: UseProductEditorParams) {
 
   const removeVariant = () => {
     if (confirmVariantIndex === null) return;
-    setVariants((current) => current.filter((_, index) => index !== confirmVariantIndex));
+    setVariants((current) =>
+      current.filter((_, index) => index !== confirmVariantIndex),
+    );
     setConfirmVariantIndex(null);
   };
 
@@ -99,7 +141,8 @@ export function useProductEditor({ id }: UseProductEditorParams) {
     }
 
     const payload = buildProductPayload(form, variants, images);
-    const onError = (error: unknown) => setErrors((current) => ({ ...current, ...apiFieldErrors(error) }));
+    const onError = (error: unknown) =>
+      setErrors((current) => ({ ...current, ...apiFieldErrors(error) }));
 
     if (id) {
       save.mutate({ id, payload }, { onError });

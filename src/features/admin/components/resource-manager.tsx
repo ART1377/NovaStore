@@ -1,17 +1,17 @@
 // src/features/admin/components/resource-manager.tsx
 'use client';
 import { SearchField } from '@/components/shared';
-import { Check, Power, Plus, Trash2, X } from 'lucide-react';
-import type { AdminResourceKind } from '../types/admin-types';
-import { useResourceManager } from '../hooks/use-resource-manager';
-import { Card, CardContent } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Badge } from '@/components/ui/badge';
-import { ConfirmDialog } from '@/components/ui/dialog';
 import { QueryEmpty } from '@/components/shared/query-state';
-import { AdminPageHeader } from './admin-page-header';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
+import { ConfirmDialog } from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
+import { Check, Plus, Power, Trash2, X } from 'lucide-react';
+import { useResourceManager } from '../hooks/use-resource-manager';
+import type { AdminResourceKind } from '../types/admin-types';
 import { AdminListSkeleton } from './admin-list-skeleton';
+import { AdminPageHeader } from './admin-page-header';
 export function SimpleResourceManager({
   kind,
   title,
@@ -20,13 +20,35 @@ export function SimpleResourceManager({
   title: string;
 }) {
   const manager = useResourceManager(kind);
-  const { resourceLabel, name, search, editing, formError, editError, list, isLoading, create, update, remove, setName, setSearch, startEdit, setEditingName, cancelEdit, addItem, saveItem, requestDelete, cancel, confirm, confirmId } = {
+  const {
+    resourceLabel,
+    name,
+    search,
+    editing,
+    formError,
+    editError,
+    list,
+    isLoading,
+    create,
+    update,
+    remove,
+    setName,
+    setSearch,
+    startEdit,
+    setEditingName,
+    cancelEdit,
+    addItem,
+    saveItem,
+    requestDelete,
+    cancel,
+    confirm,
+    confirmId,
+  } = {
     ...manager,
     resourceLabel: kind === 'categories' ? 'دسته‌بندی' : 'برند',
   };
 
-  if (isLoading)
-    return <AdminListSkeleton rows={5} withThumbnail={false} />;
+  if (isLoading) return <AdminListSkeleton rows={5} withThumbnail={false} />;
   return (
     <main className="w-full min-w-0">
       <AdminPageHeader
@@ -96,11 +118,7 @@ export function SimpleResourceManager({
                     <Check size={14} />
                     ذخیره
                   </Button>
-                  <Button
-                    size="sm"
-                    variant="outline"
-                    onClick={cancelEdit}
-                  >
+                  <Button size="sm" variant="outline" onClick={cancelEdit}>
                     <X size={14} />
                     لغو
                   </Button>
@@ -158,7 +176,11 @@ export function SimpleResourceManager({
             )}
             {!list.length && (
               <QueryEmpty
-                title={search ? 'موردی پیدا نشد' : `هنوز ${resourceLabel}ای ثبت نشده است`}
+                title={
+                  search
+                    ? 'موردی پیدا نشد'
+                    : `هنوز ${resourceLabel}ای ثبت نشده است`
+                }
                 description={
                   search
                     ? 'عبارت جستجو را تغییر بده یا فیلتر را پاک کن.'

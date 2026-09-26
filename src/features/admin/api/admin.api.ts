@@ -1,8 +1,15 @@
 // src/features/admin/api/admin.api.ts
+import type {
+  OrderStatus,
+  PaymentStatus,
+  ShippingStatus,
+} from '@/constants/constants';
 import api from '@/lib/api-client';
 import type {
   AdminCoupon,
   AdminCouponPayload,
+  AdminHomeData,
+  AdminHomePlacementSlot,
   AdminOrder,
   AdminOrderDetail,
   AdminPaginated,
@@ -14,18 +21,11 @@ import type {
   AdminResourceKind,
   AdminReview,
   AdminStats,
-  AdminHomeData,
-  AdminHomePlacementSlot,
   AdminUser,
   AdminUserDetail,
   InventoryUpdate,
   InventoryVariant,
 } from '../types/admin-types';
-import type {
-  OrderStatus,
-  PaymentStatus,
-  ShippingStatus,
-} from '@/constants/constants';
 
 const resourceUrl = (kind: AdminResourceKind) => `/admin/${kind}`;
 

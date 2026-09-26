@@ -1,6 +1,6 @@
 // src/components/layout/footer.tsx
+import { ArrowUpLeft, RotateCcw, ShieldCheck, Truck } from 'lucide-react';
 import Link from 'next/link';
-import { ShieldCheck, Truck, RotateCcw, ArrowUpLeft } from 'lucide-react';
 
 export function Footer() {
   return (

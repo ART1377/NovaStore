@@ -1,8 +1,8 @@
 // src/features/checkout/hooks/use-checkout-pricing.ts
 'use client';
 
-import { useMemo } from 'react';
 import { FREE_SHIPPING_THRESHOLD, SHIPPING_COSTS } from '@/constants/constants';
+import { useMemo } from 'react';
 import type { CouponPreview, ShippingMethod } from '../types/checkout-types';
 
 type CartLine = {

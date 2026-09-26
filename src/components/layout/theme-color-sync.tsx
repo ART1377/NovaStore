@@ -1,7 +1,7 @@
 // src/components/layout/theme-color-sync.tsx
 'use client';
-import { useEffect } from 'react';
 import { THEME_CHANGE_EVENT } from '@/lib/themes';
+import { useEffect } from 'react';
 
 export function ThemeColorSync() {
   useEffect(() => {

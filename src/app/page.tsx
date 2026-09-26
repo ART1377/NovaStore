@@ -1,7 +1,7 @@
 // src/app/page.tsx
-import type { Metadata } from 'next';
 import { getHomePageData } from '@/features/home/api/home.api';
 import { HomePage } from '@/features/home/components/home-page';
+import type { Metadata } from 'next';
 
 export const revalidate = 60;
 

@@ -8,39 +8,39 @@ NovaStore is designed as a complete e-commerce experience with a customer-facing
 
 ### Storefront
 
-* 🛍️ Product browsing and product categories
-* 🔎 Product search and advanced filtering
-* 💰 Price range filtering
-* 📦 Product variants and inventory availability
-* 🖼️ Product image galleries with fullscreen preview
-* ⚡ Quick View for products
-* ❤️ Favorites / wishlist
-* 🛒 Shopping cart
-* ⭐ Product ratings and reviews
-* 💬 Review replies
-* 👤 User authentication and profile
-* 📍 Multiple delivery addresses
-* 📋 Order history and order details
-* 🎨 Responsive RTL Persian interface
-* 🌓 Theme switching
-* ✨ Smooth UI animations
+- 🛍️ Product browsing and product categories
+- 🔎 Product search and advanced filtering
+- 💰 Price range filtering
+- 📦 Product variants and inventory availability
+- 🖼️ Product image galleries with fullscreen preview
+- ⚡ Quick View for products
+- ❤️ Favorites / wishlist
+- 🛒 Shopping cart
+- ⭐ Product ratings and reviews
+- 💬 Review replies
+- 👤 User authentication and profile
+- 📍 Multiple delivery addresses
+- 📋 Order history and order details
+- 🎨 Responsive RTL Persian interface
+- 🌓 Theme switching
+- ✨ Smooth UI animations
 
 ### Admin Dashboard
 
-* 📊 Dashboard overview and analytics
-* 📦 Product management
-* 🏷️ Categories and brands management
-* 📋 Order management
-* 👥 User management
-* 📦 Inventory management
-* ⭐ Review management
-* 🎟️ Coupon management
-* 🏠 Homepage and Hero product management
-* 🖼️ Product image management
-* 🔐 Role-based access control
-* 🔎 Search, filtering and sorting
-* 📝 Create and edit forms with validation
-* 🔔 Consistent toast and error feedback
+- 📊 Dashboard overview and analytics
+- 📦 Product management
+- 🏷️ Categories and brands management
+- 📋 Order management
+- 👥 User management
+- 📦 Inventory management
+- ⭐ Review management
+- 🎟️ Coupon management
+- 🏠 Homepage and Hero product management
+- 🖼️ Product image management
+- 🔐 Role-based access control
+- 🔎 Search, filtering and sorting
+- 📝 Create and edit forms with validation
+- 🔔 Consistent toast and error feedback
 
 ## 🏗️ Architecture
 
@@ -60,45 +60,45 @@ The application uses **Server Components by default**, with Client Components in
 
 The codebase also emphasizes:
 
-* Reusable components
-* Custom hooks for complex logic
-* Thin page components
-* Separation of UI and business logic
-* Type-safe data flow
-* Consistent form handling and validation
-* Shared loading and empty states
-* Reusable admin patterns
+- Reusable components
+- Custom hooks for complex logic
+- Thin page components
+- Separation of UI and business logic
+- Type-safe data flow
+- Consistent form handling and validation
+- Shared loading and empty states
+- Reusable admin patterns
 
 ## 🛠️ Tech Stack
 
 ### Frontend
 
-* Next.js 16
-* React 19
-* TypeScript
-* Tailwind CSS
-* shadcn/ui
-* Framer Motion
+- Next.js 16
+- React 19
+- TypeScript
+- Tailwind CSS
+- shadcn/ui
+- Framer Motion
 
 ### Backend & Database
 
-* Next.js Server Actions / API
-* Prisma ORM
-* PostgreSQL
+- Next.js Server Actions / API
+- Prisma ORM
+- PostgreSQL
 
 ### Forms & Validation
 
-* React Hook Form
-* Zod
+- React Hook Form
+- Zod
 
 ### Development
 
-* pnpm
-* ESLint
-* Prettier
-* Husky
-* Commitlint
-* lint-staged
+- pnpm
+- ESLint
+- Prettier
+- Husky
+- Commitlint
+- lint-staged
 
 ## 📁 Project Structure
 
@@ -126,9 +126,9 @@ The `features` directory contains domain-specific functionality, while shared UI
 
 Make sure you have installed:
 
-* Node.js
-* pnpm
-* PostgreSQL
+- Node.js
+- pnpm
+- PostgreSQL
 
 ### Installation
 
@@ -200,24 +200,24 @@ pnpm typecheck
 
 NovaStore was built as a portfolio project to demonstrate practical experience with:
 
-* Modern Next.js architecture
-* Full-stack TypeScript development
-* Database-driven applications
-* Authentication and authorization
-* Complex form handling
-* E-commerce workflows
-* Admin dashboard architecture
-* Reusable component design
-* Responsive RTL interfaces
-* Maintainable and scalable code organization
+- Modern Next.js architecture
+- Full-stack TypeScript development
+- Database-driven applications
+- Authentication and authorization
+- Complex form handling
+- E-commerce workflows
+- Admin dashboard architecture
+- Reusable component design
+- Responsive RTL interfaces
+- Maintainable and scalable code organization
 
 ## 📸 Screenshots
 
-*Add screenshots or a demo preview here.*
+_Add screenshots or a demo preview here._
 
 ## 🌐 Demo
 
-*Add your live demo URL here.*
+_Add your live demo URL here._
 
 ## 👨‍💻 Author
 

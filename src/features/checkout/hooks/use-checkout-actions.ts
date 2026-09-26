@@ -1,14 +1,13 @@
 // src/features/checkout/hooks/use-checkout-actions.ts
 'use client';
 
+import { getClientErrorMessage } from '@/lib/client-error';
+import { QUERY_KEYS } from '@/lib/query-keys';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import toast from 'react-hot-toast';
 import { checkoutService } from '../api/checkout.api';
-import { getClientErrorMessage } from '@/lib/client-error';
-import { QUERY_KEYS } from '@/lib/query-keys';
 import type { ShippingMethod } from '../types/checkout-types';
-import type { Address } from '@/features/account/types/address';
 
 export function useCouponValidation() {
   return useMutation({

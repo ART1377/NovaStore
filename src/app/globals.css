@@ -51,20 +51,35 @@
   font-display: swap;
 }
 
-
 /* NovaStore hero motion + depth */
 .nova-hero {
   background:
-    radial-gradient(circle at 76% 46%, color-mix(in srgb, var(--nova-primary) 12%, transparent), transparent 34%),
-    radial-gradient(circle at 18% 12%, color-mix(in srgb, var(--nova-accent) 8%, transparent), transparent 28%),
+    radial-gradient(
+      circle at 76% 46%,
+      color-mix(in srgb, var(--nova-primary) 12%, transparent),
+      transparent 34%
+    ),
+    radial-gradient(
+      circle at 18% 12%,
+      color-mix(in srgb, var(--nova-accent) 8%, transparent),
+      transparent 28%
+    ),
     var(--nova-surface);
 }
 .nova-hero-grid {
   position: absolute;
   inset: 0;
-  opacity: .35;
-  background-image: linear-gradient(color-mix(in srgb, var(--nova-primary) 5%, transparent) 1px, transparent 1px),
-    linear-gradient(90deg, color-mix(in srgb, var(--nova-primary) 5%, transparent) 1px, transparent 1px);
+  opacity: 0.35;
+  background-image:
+    linear-gradient(
+      color-mix(in srgb, var(--nova-primary) 5%, transparent) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      90deg,
+      color-mix(in srgb, var(--nova-primary) 5%, transparent) 1px,
+      transparent 1px
+    );
   background-size: 56px 56px;
   mask-image: linear-gradient(to bottom, black, transparent 78%);
 }
@@ -102,14 +117,15 @@
 }
 .nova-hero-backdrop {
   transform: rotate(-4deg);
-  box-shadow: 0 45px 100px -54px color-mix(in srgb, var(--nova-ink) 70%, transparent);
+  box-shadow: 0 45px 100px -54px
+    color-mix(in srgb, var(--nova-ink) 70%, transparent);
 }
 .nova-hero-visual:hover .nova-hero-backdrop {
   transform: rotate(-3deg) scale(1.01);
-  transition: transform .7s cubic-bezier(.2,.8,.2,1);
+  transition: transform 0.7s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 .nova-hero-product {
-  filter: drop-shadow(0 34px 26px rgba(0,0,0,.24));
+  filter: drop-shadow(0 34px 26px rgba(0, 0, 0, 0.24));
   animation: nova-product-float 6.5s ease-in-out infinite;
 }
 .nova-hero-ring {
@@ -125,23 +141,47 @@
   animation-delay: -2.1s;
 }
 @keyframes nova-product-float {
-  0%, 100% { transform: translateY(0) rotate(.4deg); }
-  50% { transform: translateY(-10px) rotate(-.6deg); }
+  0%,
+  100% {
+    transform: translateY(0) rotate(0.4deg);
+  }
+  50% {
+    transform: translateY(-10px) rotate(-0.6deg);
+  }
 }
 @keyframes nova-card-float {
-  0%, 100% { transform: translate3d(0,0,0); }
-  50% { transform: translate3d(0,-8px,0); }
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(0, -8px, 0);
+  }
 }
 @keyframes nova-ring-pulse {
-  0%, 100% { transform: scale(1); opacity: .65; }
-  50% { transform: scale(1.035); opacity: 1; }
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.65;
+  }
+  50% {
+    transform: scale(1.035);
+    opacity: 1;
+  }
 }
 @keyframes nova-orb-float {
-  0%, 100% { transform: translate3d(0,0,0); }
-  50% { transform: translate3d(12px,-16px,0); }
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(12px, -16px, 0);
+  }
 }
 @media (max-width: 1023px) {
-  .nova-hero-visual { max-width: 620px; }
+  .nova-hero-visual {
+    max-width: 620px;
+  }
 }
 @media (prefers-reduced-motion: reduce) {
   .nova-hero-product,

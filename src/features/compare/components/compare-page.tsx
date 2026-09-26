@@ -1,17 +1,17 @@
 // src/features/compare/components/compare-page.tsx
 'use client';
 
-import Link from 'next/link';
-import { ArrowLeft, Scale, Trash2 } from 'lucide-react';
-import { useCompare } from '../hooks/use-compare';
-import { useCompareProducts } from '../hooks/use-compare-products';
-import { formatPrice } from '@/lib/utils';
+import { EmptyState } from '@/components/shared';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
-import { EmptyState } from '@/components/shared';
+import { formatPrice } from '@/lib/utils';
+import { ArrowLeft, Scale, Trash2 } from 'lucide-react';
+import Link from 'next/link';
+import { useCompare } from '../hooks/use-compare';
+import { useCompareProducts } from '../hooks/use-compare-products';
 
 export function ComparePage() {
-  const { items, remove, clear } = useCompare();
+  const { remove, clear } = useCompare();
   const { products, isLoading: loading } = useCompareProducts();
 
   if (loading)

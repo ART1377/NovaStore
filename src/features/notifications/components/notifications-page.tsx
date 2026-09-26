@@ -1,13 +1,13 @@
 // src/features/notifications/components/notifications-page.tsx
 'use client';
-import Link from 'next/link';
-import { Bell, CheckCheck } from 'lucide-react';
-import { useNotifications } from '../hooks/use-notifications';
+import { EmptyState } from '@/components/shared';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
-import { EmptyState } from '@/components/shared';
 import { formatDateTime } from '@/lib/utils';
+import { Bell, CheckCheck } from 'lucide-react';
+import Link from 'next/link';
+import { useNotifications } from '../hooks/use-notifications';
 export function NotificationsPage() {
   const { items, unread, read, readAll, isLoading } = useNotifications();
   return (

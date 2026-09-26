@@ -1,23 +1,43 @@
 // src/features/admin/components/home-settings-page.tsx
 'use client';
 
-import Image from 'next/image';
 import { GripVertical, Save } from 'lucide-react';
+import Image from 'next/image';
 
-import { Card, CardContent } from '@/components/ui/card';
+import { ProductImagePlaceholder } from '@/components/shared/product-image-placeholder';
+import { QueryError } from '@/components/shared/query-state';
+import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Combobox } from '@/components/ui/combobox';
-import { Badge } from '@/components/ui/badge';
-import { HOME_SLOTS, SLOT_META, useAdminHomeSettingsPage } from '../hooks/use-admin-home-settings-page';
 import { Skeleton } from '@/components/ui/skeleton';
-import { QueryError } from '@/components/shared/query-state';
+import {
+  HOME_SLOTS,
+  SLOT_META,
+  useAdminHomeSettingsPage,
+} from '../hooks/use-admin-home-settings-page';
 import { AdminPageHeader } from './admin-page-header';
-import { ProductImagePlaceholder } from '@/components/shared/product-image-placeholder';
 
 export function AdminHomeSettingsPage() {
   const page = useAdminHomeSettingsPage();
-  const { data, isLoading, error, refetch, updatePlacement, selected, dragged, publishedProducts, productMap, toggle, selectHero, startDrag, endDrag, drop, save } = page;
+  const {
+    data,
+    isLoading,
+    error,
+    refetch,
+    updatePlacement,
+    selected,
+    dragged,
+    publishedProducts,
+    productMap,
+    toggle,
+    selectHero,
+    startDrag,
+    endDrag,
+    drop,
+    save,
+  } = page;
   if (isLoading)
     return (
       <main className="w-full min-w-0 space-y-6">
@@ -91,7 +111,7 @@ export function AdminHomeSettingsPage() {
                       if (!product) return option.label;
                       return (
                         <span className="flex min-w-0 flex-1 items-center gap-3 text-right">
-                          <span className="bg-nova-soft grid size-16 shrink-0 place-items-center overflow-hidden rounded-xl border border-nova-line">
+                          <span className="bg-nova-soft border-nova-line grid size-16 shrink-0 place-items-center overflow-hidden rounded-xl border">
                             {product.image ? (
                               <Image
                                 src={product.image}
@@ -101,12 +121,20 @@ export function AdminHomeSettingsPage() {
                                 className="size-full object-cover"
                               />
                             ) : (
-                              <ProductImagePlaceholder compact label="" className="text-transparent" />
+                              <ProductImagePlaceholder
+                                compact
+                                label=""
+                                className="text-transparent"
+                              />
                             )}
                           </span>
                           <span className="min-w-0">
-                            <span className="block truncate text-sm font-bold">{product.name}</span>
-                            <span className="text-nova-muted mt-1 block text-[11px]">انتخاب‌شده برای Hero</span>
+                            <span className="block truncate text-sm font-bold">
+                              {product.name}
+                            </span>
+                            <span className="text-nova-muted mt-1 block text-[11px]">
+                              انتخاب‌شده برای Hero
+                            </span>
                           </span>
                         </span>
                       );
@@ -116,7 +144,7 @@ export function AdminHomeSettingsPage() {
                       if (!product) return option.label;
                       return (
                         <span className="flex min-w-0 items-center gap-3">
-                          <span className="bg-nova-soft grid size-11 shrink-0 place-items-center overflow-hidden rounded-lg border border-nova-line">
+                          <span className="bg-nova-soft border-nova-line grid size-11 shrink-0 place-items-center overflow-hidden rounded-lg border">
                             {product.image ? (
                               <Image
                                 src={product.image}
@@ -126,17 +154,23 @@ export function AdminHomeSettingsPage() {
                                 className="size-full object-cover"
                               />
                             ) : (
-                              <ProductImagePlaceholder compact label="" className="text-transparent" />
+                              <ProductImagePlaceholder
+                                compact
+                                label=""
+                                className="text-transparent"
+                              />
                             )}
                           </span>
-                          <span className="min-w-0 truncate text-sm font-semibold">{product.name}</span>
+                          <span className="min-w-0 truncate text-sm font-semibold">
+                            {product.name}
+                          </span>
                         </span>
                       );
                     }}
                   />
                   {chosen[0] && (
                     <div className="bg-nova-hover flex min-h-0 min-w-0 items-center gap-3 rounded-2xl border p-3">
-                      <span className="bg-nova-soft grid size-16 shrink-0 place-items-center overflow-hidden rounded-xl border border-nova-line">
+                      <span className="bg-nova-soft border-nova-line grid size-16 shrink-0 place-items-center overflow-hidden rounded-xl border">
                         {chosen[0].image ? (
                           <Image
                             src={chosen[0].image}
@@ -146,7 +180,11 @@ export function AdminHomeSettingsPage() {
                             className="size-full object-cover"
                           />
                         ) : (
-                          <ProductImagePlaceholder compact label="" className="text-transparent" />
+                          <ProductImagePlaceholder
+                            compact
+                            label=""
+                            className="text-transparent"
+                          />
                         )}
                       </span>
                       <div className="min-w-0">

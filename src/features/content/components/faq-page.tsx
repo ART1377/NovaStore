@@ -1,8 +1,8 @@
 // src/features/content/components/faq-page.tsx
 'use client';
-import { useState } from 'react';
-import { ChevronDown, MessageCircle } from 'lucide-react';
 import { Card } from '@/components/ui/card';
+import { ChevronDown, MessageCircle } from 'lucide-react';
+import { useState } from 'react';
 const faqs = [
   [
     'چطور سفارش خودم را پیگیری کنم؟',

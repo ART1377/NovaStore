@@ -1,12 +1,13 @@
 // src/features/catalog/hooks/use-product-detail.ts
 'use client';
-import { useEffect, useMemo, useState } from 'react';
-import toast from 'react-hot-toast';
-import { useProduct } from './use-catalog';
+
 import { useCartItem } from '@/features/cart/hooks/use-cart';
 import { useCompare } from '@/features/compare/hooks/use-compare';
 import { pushRecentlyViewed } from '@/features/recently-viewed/store';
+import { useEffect, useState } from 'react';
+import toast from 'react-hot-toast';
 import type { Product } from '../types/catalog-types';
+import { useProduct } from './use-catalog';
 
 export function useProductDetail(slug: string, initialProduct: Product) {
   const productQuery = useProduct(slug, initialProduct);
@@ -14,33 +15,14 @@ export function useProductDetail(slug: string, initialProduct: Product) {
   const [variantId, setVariantId] = useState('');
   const product = productQuery.data;
 
-  useEffect(() => {
-    if (!product?.variants.length) {
-      setVariantId('');
-      return;
-    }
+  const variant = product?.variants.length
+    ? (product.variants.find((item) => item.id === variantId) ??
+      product.variants.find((item) => item.stock > 0) ??
+      product.variants[0])
+    : undefined;
 
-    setVariantId((current) => {
-      const currentVariant = product.variants.find(
-        (item) => item.id === current,
-      );
-      if (currentVariant) return current;
-
-      return (
-        product.variants.find((item) => item.stock > 0)?.id ??
-        product.variants[0].id
-      );
-    });
-  }, [product?.variants]);
-  const variant = useMemo(
-    () =>
-      product?.variants.find((item) => item.id === variantId) ??
-      product?.variants.find((item) => item.stock > 0) ??
-      product?.variants[0],
-    [product?.variants, variantId],
-  );
   const cartItem = useCartItem(product?.id ?? '', variant?.id);
-  
+
   useEffect(() => {
     if (!product) return;
     pushRecentlyViewed({
@@ -52,6 +34,7 @@ export function useProductDetail(slug: string, initialProduct: Product) {
   }, [product]);
 
   const selectVariant = (nextVariantId: string) => setVariantId(nextVariantId);
+
   const toggleCompare = () => {
     if (!product) return;
     const added = toggle(product.slug);

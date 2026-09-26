@@ -1,9 +1,8 @@
 // src/features/home/components/home-hero.tsx
 'use client';
 
-import Image from 'next/image';
-import { useEffect, useState } from 'react';
-import Link from 'next/link';
+import { ProductImagePlaceholder } from '@/components/shared/product-image-placeholder';
+import { Button } from '@/components/ui/button';
 import { motion, useReducedMotion } from 'framer-motion';
 import {
   ArrowLeft,
@@ -13,25 +12,30 @@ import {
   Star,
   Truck,
 } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import Image from 'next/image';
+import Link from 'next/link';
+import { useSyncExternalStore } from 'react';
 import type { HomePageData } from '../api/home.api';
 import { HomeProof } from './home-proof';
-import { ProductImagePlaceholder } from '@/components/shared/product-image-placeholder';
 
 type HeroData = HomePageData['hero'];
 
 const ease = [0.22, 1, 0.36, 1] as const;
+
+const subscribe = () => () => {};
+const getClientSnapshot = () => true;
+const getServerSnapshot = () => false;
 
 export function HomeHero({ hero }: { hero: HeroData }) {
   const image = hero?.images[0]?.url ?? null;
   const href = hero ? `/products/${hero.slug}` : '/products';
   const rating = hero?.ratingAverage ?? 4.8;
   const reducedMotion = useReducedMotion() === true;
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+  const mounted = useSyncExternalStore(
+    subscribe,
+    getClientSnapshot,
+    getServerSnapshot,
+  );
 
   const reveal = (delay = 0) => ({
     opacity: 1,

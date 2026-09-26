@@ -1,8 +1,8 @@
 // src/components/ui/password-input.tsx
 'use client';
+import { cn } from '@/lib/utils';
 import { Eye, EyeOff } from 'lucide-react';
 import { useState } from 'react';
-import { cn } from '@/lib/utils';
 
 type Props = React.InputHTMLAttributes<HTMLInputElement>;
 export function PasswordInput({ className, ...props }: Props) {

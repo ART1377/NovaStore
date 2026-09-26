@@ -1,6 +1,6 @@
 // src/app/notifications/page.tsx
-import type { Metadata } from 'next';
 import { NotificationsPage } from '@/features/notifications/components/notifications-page';
+import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: 'اعلان‌ها',

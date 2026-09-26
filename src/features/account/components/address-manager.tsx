@@ -1,22 +1,38 @@
 // src/features/account/components/address-manager.tsx
 'use client';
 
-import { Pencil, MapPin, Star, Trash2, Plus, X } from 'lucide-react';
-import { getClientErrorMessage } from '@/lib/client-error';
-import { Card, CardContent } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
-import { FormField } from '@/components/ui/form-field';
-import { Checkbox } from '@/components/ui/checkbox';
 import { EmptyState } from '@/components/shared/empty-state';
-import { AddressListSkeleton } from './address-list-skeleton';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
+import { Checkbox } from '@/components/ui/checkbox';
+import { FormField } from '@/components/ui/form-field';
+import { Input } from '@/components/ui/input';
+import { getClientErrorMessage } from '@/lib/client-error';
+import { MapPin, Pencil, Plus, Star, Trash2, X } from 'lucide-react';
 import { useAddressManager } from '../hooks/use-address-manager';
+import { AddressListSkeleton } from './address-list-skeleton';
 
 export function AddressManager() {
   const manager = useAddressManager();
   const {
-    addresses, form, errors, editingId, create, update, remove, setDefault,
-    isLoading, isError, error, refetch, resetForm, startCreate, startEdit, setField, submit, scrollToForm,
+    addresses,
+    form,
+    errors,
+    editingId,
+    create,
+    update,
+    remove,
+    setDefault,
+    isLoading,
+    isError,
+    error,
+    refetch,
+    resetForm,
+    startCreate,
+    startEdit,
+    setField,
+    submit,
+    scrollToForm,
   } = manager;
 
   return (
@@ -169,18 +185,14 @@ export function AddressManager() {
               <Input
                 value={form.title}
                 aria-invalid={!!errors.title}
-                onChange={(e) =>
-                  setField('title', e.target.value)
-                }
+                onChange={(e) => setField('title', e.target.value)}
               />
             </FormField>
             <FormField label="نام گیرنده" required error={errors.recipient}>
               <Input
                 value={form.recipient}
                 aria-invalid={!!errors.recipient}
-                onChange={(e) =>
-                  setField('recipient', e.target.value)
-                }
+                onChange={(e) => setField('recipient', e.target.value)}
               />
             </FormField>
             <FormField label="شماره موبایل" required error={errors.phone}>
@@ -188,27 +200,21 @@ export function AddressManager() {
                 inputMode="tel"
                 value={form.phone}
                 aria-invalid={!!errors.phone}
-                onChange={(e) =>
-                  setField('phone', e.target.value)
-                }
+                onChange={(e) => setField('phone', e.target.value)}
               />
             </FormField>
             <FormField label="شهر" required error={errors.city}>
               <Input
                 value={form.city}
                 aria-invalid={!!errors.city}
-                onChange={(e) =>
-                  setField('city', e.target.value)
-                }
+                onChange={(e) => setField('city', e.target.value)}
               />
             </FormField>
             <FormField label="استان" required error={errors.state}>
               <Input
                 value={form.state}
                 aria-invalid={!!errors.state}
-                onChange={(e) =>
-                  setField('state', e.target.value)
-                }
+                onChange={(e) => setField('state', e.target.value)}
               />
             </FormField>
             <FormField label="کد پستی" required error={errors.postalCode}>
@@ -229,9 +235,7 @@ export function AddressManager() {
               <Input
                 value={form.street}
                 aria-invalid={!!errors.street}
-                onChange={(e) =>
-                  setField('street', e.target.value)
-                }
+                onChange={(e) => setField('street', e.target.value)}
               />
             </FormField>
           </div>
@@ -240,9 +244,7 @@ export function AddressManager() {
               label="این آدرس را به‌عنوان پیش‌فرض انتخاب کن"
               checked={form.isDefault || (addresses.length === 0 && !editingId)}
               disabled={addresses.length === 0 && !editingId}
-              onChange={(event) =>
-                setField('isDefault', event.target.checked)
-              }
+              onChange={(event) => setField('isDefault', event.target.checked)}
             />
           </div>
           <div className="mt-5 flex flex-wrap gap-2">

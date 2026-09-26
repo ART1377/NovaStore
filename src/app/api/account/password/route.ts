@@ -1,11 +1,11 @@
 // src/app/api/account/password/route.ts
+import { passwordSchema } from '@/features/account/validation/auth.schema';
+import { apiErrorResponse } from '@/lib/api-error';
+import { requireUser } from '@/lib/auth';
+import { db } from '@/lib/prisma';
+import { compare, hash } from 'bcryptjs';
 import { NextResponse } from 'next/server';
 import { z } from 'zod';
-import { compare, hash } from 'bcryptjs';
-import { db } from '@/lib/prisma';
-import { requireUser } from '@/lib/auth';
-import { apiErrorResponse } from '@/lib/api-error';
-import { passwordSchema } from '@/features/account/validation/auth.schema';
 const schema = z.object({
   currentPassword: z.string().min(1),
   newPassword: passwordSchema,

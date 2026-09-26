@@ -1,27 +1,27 @@
 // src/features/admin/components/products-page.tsx
 'use client';
-import { useState } from 'react';
-import Image from 'next/image';
-import Link from 'next/link';
-import { Archive, Edit3, Plus, Star } from 'lucide-react';
-import { useAdminProducts, useAdminProductActions } from '../hooks/use-admin';
-import { useDeleteConfirmation } from '../hooks/use-delete-confirmation';
-import { Card, CardContent } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Select } from '@/components/ui/select';
 import { SearchField } from '@/components/shared';
-import { formatPrice, formatNumber } from '@/lib/utils';
+import { ProductImagePlaceholder } from '@/components/shared/product-image-placeholder';
+import { QueryEmpty } from '@/components/shared/query-state';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
 import { ConfirmDialog } from '@/components/ui/dialog';
+import { Select } from '@/components/ui/select';
 import {
   PRODUCT_STATUS_LABELS,
   type ProductStatus,
 } from '@/constants/constants';
-import { AdminProductsError } from './admin-products-error';
+import { formatNumber, formatPrice } from '@/lib/utils';
+import { Archive, Edit3, Plus, Star } from 'lucide-react';
+import Image from 'next/image';
+import Link from 'next/link';
+import { useState } from 'react';
+import { useAdminProductActions, useAdminProducts } from '../hooks/use-admin';
+import { useDeleteConfirmation } from '../hooks/use-delete-confirmation';
 import { AdminListSkeleton } from './admin-list-skeleton';
-import { QueryEmpty } from '@/components/shared/query-state';
-import { ProductImagePlaceholder } from '@/components/shared/product-image-placeholder';
 import { AdminFilterGrid, AdminPageHeader } from './admin-page-header';
+import { AdminProductsError } from './admin-products-error';
 
 export function AdminProductsPage() {
   const [search, setSearch] = useState('');

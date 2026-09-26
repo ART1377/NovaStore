@@ -1,11 +1,11 @@
 // src/app/api/admin/inventory/route.ts
+import { ADMIN_LIST_PAGE_SIZE } from '@/constants/constants';
+import { apiErrorResponse } from '@/lib/api-error';
+import { requireAdmin } from '@/lib/auth';
+import { db } from '@/lib/prisma';
+import type { Prisma } from '@prisma/client';
 import { NextResponse } from 'next/server';
 import { z } from 'zod';
-import { db } from '@/lib/prisma';
-import { requireAdmin } from '@/lib/auth';
-import { apiErrorResponse } from '@/lib/api-error';
-import { ADMIN_LIST_PAGE_SIZE } from '@/constants/constants';
-import type { Prisma } from '@prisma/client';
 
 const schema = z.object({
   variantId: z.string().min(1),

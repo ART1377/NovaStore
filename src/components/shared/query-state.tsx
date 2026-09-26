@@ -1,6 +1,6 @@
 // src/components/shared/query-state.tsx
-import { AlertCircle, Inbox, RefreshCw } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { AlertCircle, Inbox, RefreshCw } from 'lucide-react';
 
 export function QueryLoading({
   label = 'در حال دریافت اطلاعات...',

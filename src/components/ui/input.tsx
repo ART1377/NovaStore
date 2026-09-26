@@ -1,7 +1,7 @@
 // src/components/ui/input.tsx
-import { forwardRef } from 'react';
-import { X } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { X } from 'lucide-react';
+import { forwardRef } from 'react';
 
 export type InputProps = React.InputHTMLAttributes<HTMLInputElement> & {
   clearable?: boolean;

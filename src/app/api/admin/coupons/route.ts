@@ -1,10 +1,10 @@
 // src/app/api/admin/coupons/route.ts
-import { NextResponse } from 'next/server';
-import { db } from '@/lib/prisma';
-import { requireAdmin } from '@/lib/auth';
 import { apiErrorResponse } from '@/lib/api-error';
-import { z } from 'zod';
+import { requireAdmin } from '@/lib/auth';
+import { db } from '@/lib/prisma';
 import { Prisma } from '@prisma/client';
+import { NextResponse } from 'next/server';
+import { z } from 'zod';
 
 const schema = z.object({
   code: z
@@ -56,8 +56,14 @@ export async function POST(request: Request) {
       { status: 201 },
     );
   } catch (error) {
-    if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2002')
-      return NextResponse.json({ error: 'این کد تخفیف قبلاً ثبت شده است.' }, { status: 409 });
+    if (
+      error instanceof Prisma.PrismaClientKnownRequestError &&
+      error.code === 'P2002'
+    )
+      return NextResponse.json(
+        { error: 'این کد تخفیف قبلاً ثبت شده است.' },
+        { status: 409 },
+      );
     const result = apiErrorResponse(error, 'ساخت کد تخفیف انجام نشد.');
     return NextResponse.json(result.body, { status: result.status });
   }

@@ -1,5 +1,5 @@
-import { ImageOff } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { ImageOff } from 'lucide-react';
 
 export function ProductImagePlaceholder({
   label = 'تصویر محصول موجود نیست',
@@ -19,7 +19,7 @@ export function ProductImagePlaceholder({
     >
       <div
         className={cn(
-          'grid place-items-center rounded-2xl border border-nova-line bg-nova-surface/80 shadow-sm',
+          'border-nova-line bg-nova-surface/80 grid place-items-center rounded-2xl border shadow-sm',
           compact ? 'size-11' : 'size-16',
         )}
       >

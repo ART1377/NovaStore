@@ -1,15 +1,15 @@
 // src/components/layout/theme-switcher.tsx
 'use client';
-import { useEffect, useRef, useState, useSyncExternalStore } from 'react';
-import { Check, Palette } from 'lucide-react';
+import { useCloseOnOutsideInteraction } from '@/hooks/use-close-on-outside-interaction';
 import {
+  DEFAULT_THEME_ID,
+  THEME_CHANGE_EVENT,
+  THEME_STORAGE_KEY,
   themes,
   type ThemeId,
-  THEME_STORAGE_KEY,
-  THEME_CHANGE_EVENT,
-  DEFAULT_THEME_ID,
 } from '@/lib/themes';
-import { useCloseOnOutsideInteraction } from '@/hooks/use-close-on-outside-interaction';
+import { Check, Palette } from 'lucide-react';
+import { useEffect, useRef, useState, useSyncExternalStore } from 'react';
 
 function readStoredTheme(): ThemeId {
   const saved = window.localStorage.getItem(

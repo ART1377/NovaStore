@@ -1,8 +1,8 @@
 // src/lib/admin-resource-routes.ts
 import { NextResponse } from 'next/server';
 import { z } from 'zod';
-import { requireAdmin } from './auth';
 import { apiErrorResponse } from './api-error';
+import { requireAdmin } from './auth';
 
 const nameSchema = z.object({ name: z.string().trim().min(2).max(80) });
 const updateSchema = z.object({

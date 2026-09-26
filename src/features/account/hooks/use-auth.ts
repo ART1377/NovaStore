@@ -33,7 +33,9 @@ export function useLogin() {
       const destination =
         session?.user.role === 'ADMIN'
           ? '/admin'
-          : callbackUrl && callbackUrl !== '/admin' && !callbackUrl.startsWith('/admin/')
+          : callbackUrl &&
+              callbackUrl !== '/admin' &&
+              !callbackUrl.startsWith('/admin/')
             ? callbackUrl
             : '/';
 

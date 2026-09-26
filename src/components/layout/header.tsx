@@ -1,8 +1,9 @@
 // src/components/layout/header.tsx
 'use client';
 
-import { useEffect, useState } from 'react';
-import Link from 'next/link';
+import { ThemeSwitcher } from '@/components/layout/theme-switcher';
+import { useCart } from '@/features/cart/hooks/use-cart';
+import { useNotifications } from '@/features/notifications/hooks/use-notifications';
 import {
   ArrowUpLeft,
   Bell,
@@ -16,9 +17,8 @@ import {
   X,
 } from 'lucide-react';
 import { useSession } from 'next-auth/react';
-import { useNotifications } from '@/features/notifications/hooks/use-notifications';
-import { useCart } from '@/features/cart/hooks/use-cart';
-import { ThemeSwitcher } from '@/components/layout/theme-switcher';
+import Link from 'next/link';
+import { useEffect, useState } from 'react';
 
 export function Header() {
   const [open, setOpen] = useState(false);

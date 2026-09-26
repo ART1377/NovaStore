@@ -91,7 +91,11 @@ export async function getHomePageData() {
   const heroBase =
     bySlot.get('HERO_PRODUCT')?.[0]?.product ?? newestFallback[0] ?? null;
   const heroReview = heroBase
-    ? await db.review.aggregate({ where: { productId: heroBase.id }, _avg: { rating: true }, _count: { _all: true } })
+    ? await db.review.aggregate({
+        where: { productId: heroBase.id },
+        _avg: { rating: true },
+        _count: { _all: true },
+      })
     : null;
   const hero = heroBase
     ? {

@@ -1,15 +1,15 @@
 // src/app/api/admin/products/[id]/route.ts
-import { NextResponse } from 'next/server';
-import { revalidatePath } from 'next/cache';
-import { db } from '@/lib/prisma';
-import { requireAdmin } from '@/lib/auth';
-import { apiErrorResponse } from '@/lib/api-error';
-import { validateProductCategoryAndBrand } from '@/lib/admin-product-relations';
 import {
   resolveProductImages,
   updateProductSchema,
 } from '@/features/admin/validation/product.schema';
+import { validateProductCategoryAndBrand } from '@/lib/admin-product-relations';
+import { apiErrorResponse } from '@/lib/api-error';
+import { requireAdmin } from '@/lib/auth';
 import { cloudinary, publicIdFromCloudinaryUrl } from '@/lib/cloudinary';
+import { db } from '@/lib/prisma';
+import { revalidatePath } from 'next/cache';
+import { NextResponse } from 'next/server';
 
 async function backfillImageMetadata(
   images: Array<{

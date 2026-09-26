@@ -1,20 +1,13 @@
 // src/features/admin/components/user-detail-page.tsx
 'use client';
-import Link from 'next/link';
-import {
-  ArrowRight,
-  Mail,
-  MapPin,
-  ShoppingCart,
-  Star,
-  UserRound,
-} from 'lucide-react';
-import { useAdminUser } from '../hooks/use-admin';
-import { Card, CardContent } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { formatPrice, formatDate } from '@/lib/utils';
-import { AdminDetailSkeleton } from './admin-detail-skeleton';
 import { QueryError } from '@/components/shared/query-state';
+import { Badge } from '@/components/ui/badge';
+import { Card, CardContent } from '@/components/ui/card';
+import { formatDate, formatPrice } from '@/lib/utils';
+import { ArrowRight, Mail, MapPin, ShoppingCart, Star } from 'lucide-react';
+import Link from 'next/link';
+import { useAdminUser } from '../hooks/use-admin';
+import { AdminDetailSkeleton } from './admin-detail-skeleton';
 export function UserDetailPage({ id }: { id: string }) {
   const { data, isLoading } = useAdminUser(id);
   if (isLoading) return <AdminDetailSkeleton />;

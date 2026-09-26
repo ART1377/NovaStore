@@ -1,7 +1,7 @@
 // src/components/shared/search-field.tsx
 'use client';
-import { Search } from 'lucide-react';
 import { Input } from '@/components/ui/input';
+import { Search } from 'lucide-react';
 export function SearchField({
   value,
   onChange,

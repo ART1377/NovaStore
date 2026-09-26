@@ -1,13 +1,20 @@
 // src/app/api/admin/coupons/[id]/route.ts
+import { apiErrorResponse } from '@/lib/api-error';
+import { requireAdmin } from '@/lib/auth';
+import { db } from '@/lib/prisma';
+import { Prisma } from '@prisma/client';
 import { NextResponse } from 'next/server';
 import { z } from 'zod';
-import { db } from '@/lib/prisma';
-import { requireAdmin } from '@/lib/auth';
-import { apiErrorResponse } from '@/lib/api-error';
-import { Prisma } from '@prisma/client';
 
 const patchSchema = z.object({
-  code: z.string().trim().min(3).max(40).regex(/^[A-Za-z0-9_-]+$/).transform((value) => value.toUpperCase()).optional(),
+  code: z
+    .string()
+    .trim()
+    .min(3)
+    .max(40)
+    .regex(/^[A-Za-z0-9_-]+$/)
+    .transform((value) => value.toUpperCase())
+    .optional(),
   type: z.enum(['PERCENTAGE', 'FIXED']).optional(),
   value: z.number().positive().optional(),
   minOrder: z.number().nonnegative().optional(),
@@ -50,8 +57,14 @@ export async function PATCH(
       }),
     );
   } catch (error) {
-    if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2002')
-      return NextResponse.json({ error: 'این کد تخفیف قبلاً ثبت شده است.' }, { status: 409 });
+    if (
+      error instanceof Prisma.PrismaClientKnownRequestError &&
+      error.code === 'P2002'
+    )
+      return NextResponse.json(
+        { error: 'این کد تخفیف قبلاً ثبت شده است.' },
+        { status: 409 },
+      );
     const result = apiErrorResponse(error, 'به‌روزرسانی کد تخفیف انجام نشد.');
     return NextResponse.json(result.body, { status: result.status });
   }

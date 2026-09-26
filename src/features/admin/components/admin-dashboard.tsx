@@ -1,9 +1,13 @@
 // src/features/admin/components/admin-dashboard.tsx
 'use client';
-import Link from 'next/link';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
+import { ORDER_STATUS_LABELS } from '@/constants/constants';
+import { formatNumber, formatPrice } from '@/lib/utils';
 import {
-  ArrowLeft,
   AlertTriangle,
+  ArrowLeft,
   BarChart3,
   Boxes,
   CircleDollarSign,
@@ -11,11 +15,7 @@ import {
   ShoppingCart,
   Users,
 } from 'lucide-react';
-import { Card, CardContent } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { formatNumber, formatPrice } from '@/lib/utils';
-import { ORDER_STATUS_LABELS } from '@/constants/constants';
+import Link from 'next/link';
 import { useAdminStats } from '../hooks/use-admin';
 import { DashboardEmptyChart } from './dashboard-empty-chart';
 import { DashboardErrorPanel } from './dashboard-error-panel';

@@ -1,6 +1,6 @@
 // src/features/catalog/components/product-structured-data.tsx
-import type { PublishedProduct } from '../api/catalog-server.api';
 import { siteConfig } from '@/lib/site';
+import type { PublishedProduct } from '../api/catalog-server.api';
 
 function safeJson(value: unknown) {
   return JSON.stringify(value).replace(/</g, '\\u003c');

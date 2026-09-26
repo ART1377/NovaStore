@@ -1,10 +1,10 @@
 // src/features/catalog/hooks/use-product-filters.ts
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
-import type { ProductFilters as FilterState } from '../types/catalog-types';
 import { PRICE_FILTER_RANGE } from '@/constants/constants';
 import { toEnglishDigits } from '@/lib/utils';
+import { useMemo, useState } from 'react';
+import type { ProductFilters as FilterState } from '../types/catalog-types';
 
 type UseProductFiltersParams = {
   filters: FilterState;
@@ -22,13 +22,21 @@ export function useProductFilters({
   onRangeChange,
 }: UseProductFiltersParams) {
   const [open, setOpen] = useState(false);
-  const [minPrice, setMinPrice] = useState(filters.minPrice ?? '');
-  const [maxPrice, setMaxPrice] = useState(filters.maxPrice ?? '');
+  const urlMinPrice = filters.minPrice ?? '';
+  const urlMaxPrice = filters.maxPrice ?? '';
+  const [minPrice, setMinPrice] = useState(urlMinPrice);
+  const [maxPrice, setMaxPrice] = useState(urlMaxPrice);
+  const [lastUrlMinPrice, setLastUrlMinPrice] = useState(urlMinPrice);
+  const [lastUrlMaxPrice, setLastUrlMaxPrice] = useState(urlMaxPrice);
 
-  useEffect(() => {
-    setMinPrice(filters.minPrice ?? '');
-    setMaxPrice(filters.maxPrice ?? '');
-  }, [filters.minPrice, filters.maxPrice]);
+  if (urlMinPrice !== lastUrlMinPrice) {
+    setLastUrlMinPrice(urlMinPrice);
+    setMinPrice(urlMinPrice);
+  }
+  if (urlMaxPrice !== lastUrlMaxPrice) {
+    setLastUrlMaxPrice(urlMaxPrice);
+    setMaxPrice(urlMaxPrice);
+  }
 
   const parsedMin = useMemo(
     () =>

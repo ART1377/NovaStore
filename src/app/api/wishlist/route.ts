@@ -1,9 +1,9 @@
 // src/app/api/wishlist/route.ts
+import { apiErrorResponse } from '@/lib/api-error';
+import { requireUser } from '@/lib/auth';
+import { db } from '@/lib/prisma';
 import { NextResponse } from 'next/server';
 import { z } from 'zod';
-import { db } from '@/lib/prisma';
-import { requireUser } from '@/lib/auth';
-import { apiErrorResponse } from '@/lib/api-error';
 
 const schema = z.object({
   productId: z.string().min(1),

@@ -1,14 +1,17 @@
 // src/features/catalog/components/product-filters.tsx
 'use client';
 
-import { SlidersHorizontal, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { RangeSlider } from '@/components/ui/range-slider';
-import { formatPrice } from '@/lib/utils';
 import { Select } from '@/components/ui/select';
-import type { CatalogOption, ProductFilters as FilterState } from '../types/catalog-types';
+import { formatPrice } from '@/lib/utils';
+import { SlidersHorizontal, X } from 'lucide-react';
 import { useProductFilters } from '../hooks/use-product-filters';
+import type {
+  CatalogOption,
+  ProductFilters as FilterState,
+} from '../types/catalog-types';
 import { FilterButton } from './filter-button';
 import { FilterCheckRow } from './filter-check-row';
 import { FilterSection } from './filter-section';
@@ -50,7 +53,10 @@ export function ProductFilters({
     <div className="space-y-6">
       <FilterSection title="دسته‌بندی">
         <div className="grid gap-1">
-          <FilterButton active={!filters.category} onClick={() => onChange('category', '')}>
+          <FilterButton
+            active={!filters.category}
+            onClick={() => onChange('category', '')}
+          >
             همه دسته‌ها
           </FilterButton>
           {categories.map((category) => (
@@ -67,7 +73,10 @@ export function ProductFilters({
 
       <FilterSection title="برند">
         <div className="grid gap-1">
-          <FilterButton active={!filters.brand} onClick={() => onChange('brand', '')}>
+          <FilterButton
+            active={!filters.brand}
+            onClick={() => onChange('brand', '')}
+          >
             همه برندها
           </FilterButton>
           {brands.map((brand) => (
@@ -116,7 +125,12 @@ export function ProductFilters({
             aria-label="حداکثر قیمت"
           />
         </div>
-        <Button size="sm" variant="outline" className="mt-2 w-full" onClick={applyPrice}>
+        <Button
+          size="sm"
+          variant="outline"
+          className="mt-2 w-full"
+          onClick={applyPrice}
+        >
           اعمال بازه
         </Button>
       </FilterSection>
@@ -135,7 +149,10 @@ export function ProductFilters({
       </FilterSection>
 
       <FilterSection title="حداقل امتیاز">
-        <Select value={filters.rating ?? ''} onChange={(event) => onChange('rating', event.target.value)}>
+        <Select
+          value={filters.rating ?? ''}
+          onChange={(event) => onChange('rating', event.target.value)}
+        >
           <option value="">همه امتیازها</option>
           <option value="4">۴ ستاره و بیشتر</option>
           <option value="3">۳ ستاره و بیشتر</option>
@@ -144,7 +161,10 @@ export function ProductFilters({
       </FilterSection>
 
       <FilterSection title="مرتب‌سازی">
-        <Select value={filters.sort ?? 'newest'} onChange={(event) => onChange('sort', event.target.value)}>
+        <Select
+          value={filters.sort ?? 'newest'}
+          onChange={(event) => onChange('sort', event.target.value)}
+        >
           <option value="newest">جدیدترین</option>
           <option value="price-asc">ارزان‌ترین</option>
           <option value="price-desc">گران‌ترین</option>
@@ -175,7 +195,9 @@ export function ProductFilters({
             <p className="text-nova-muted text-xs">انتخاب هوشمند</p>
             <h2 className="mt-1 font-black">فیلترها</h2>
           </div>
-          <span className="bg-nova-soft text-nova-primary rounded-full px-2 py-1 text-[10px]">URL</span>
+          <span className="bg-nova-soft text-nova-primary rounded-full px-2 py-1 text-[10px]">
+            URL
+          </span>
         </div>
         {content}
       </aside>
@@ -194,7 +216,12 @@ export function ProductFilters({
                 <p className="text-nova-muted text-xs">جستجو و کشف</p>
                 <h2 className="mt-1 text-xl font-black">فیلترها</h2>
               </div>
-              <button type="button" onClick={() => setOpen(false)} className="hover:bg-nova-soft rounded-full p-2" aria-label="بستن">
+              <button
+                type="button"
+                onClick={() => setOpen(false)}
+                className="hover:bg-nova-soft rounded-full p-2"
+                aria-label="بستن"
+              >
                 <X size={20} />
               </button>
             </div>

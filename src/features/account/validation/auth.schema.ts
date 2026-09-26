@@ -1,6 +1,6 @@
 // src/features/account/validation/auth.schema.ts
-import { z } from 'zod';
 import { MIN_PASSWORD_LENGTH } from '@/constants/constants';
+import { z } from 'zod';
 
 export const passwordSchema = z
   .string()

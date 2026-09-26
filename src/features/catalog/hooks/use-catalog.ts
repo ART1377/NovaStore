@@ -1,10 +1,10 @@
 // src/features/catalog/hooks/use-catalog.ts
 'use client';
+import { QUERY_STALE_TIME_MS } from '@/constants/constants';
+import { QUERY_KEYS } from '@/lib/query-keys';
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import { catalogService } from '../api/catalog.api';
 import type { Product, ProductFilters } from '../types/catalog-types';
-import { QUERY_KEYS } from '@/lib/query-keys';
-import { QUERY_STALE_TIME_MS } from '@/constants/constants';
 export function useProducts(filters: ProductFilters) {
   return useQuery({
     queryKey: QUERY_KEYS.products(filters),

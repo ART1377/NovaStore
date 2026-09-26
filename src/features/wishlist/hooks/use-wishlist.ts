@@ -1,13 +1,13 @@
 // src/features/wishlist/hooks/use-wishlist.ts
 'use client';
 
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import toast from 'react-hot-toast';
-import { useSession } from 'next-auth/react';
-import { wishlistService } from '../api/wishlist.api';
-import { QUERY_KEYS } from '@/lib/query-keys';
 import { useCartActions } from '@/features/cart/hooks/use-cart';
 import { getClientErrorMessage } from '@/lib/client-error';
+import { QUERY_KEYS } from '@/lib/query-keys';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useSession } from 'next-auth/react';
+import toast from 'react-hot-toast';
+import { wishlistService } from '../api/wishlist.api';
 
 function getErrorMessage(error: unknown, fallback: string) {
   return getClientErrorMessage(error, fallback);

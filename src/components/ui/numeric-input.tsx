@@ -1,9 +1,9 @@
 // src/components/ui/numeric-input.tsx
 'use client';
 
+import { formatInputNumber, numericInputValue } from '@/lib/utils';
 import { useRef } from 'react';
 import { Input, type InputProps } from './input';
-import { formatInputNumber, numericInputValue } from '@/lib/utils';
 
 type NumericInputProps = Omit<InputProps, 'value' | 'onChange'> & {
   value: string;

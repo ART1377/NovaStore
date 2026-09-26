@@ -1,8 +1,8 @@
 // src/features/account/hooks/use-addresses.ts
 'use client';
 
-import { useQuery } from '@tanstack/react-query';
 import { QUERY_KEYS } from '@/lib/query-keys';
+import { useQuery } from '@tanstack/react-query';
 import { addressesService } from '../api/addresses.api';
 
 export function useAddresses() {

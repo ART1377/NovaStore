@@ -1,9 +1,9 @@
 // src/app/api/admin/brands/[id]/route.ts
-import { db } from '@/lib/prisma';
 import {
   handleResourceDelete,
   handleResourceUpdate,
 } from '@/lib/admin-resource-routes';
+import { db } from '@/lib/prisma';
 
 export async function PATCH(
   req: Request,

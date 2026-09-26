@@ -1,12 +1,12 @@
 // src/features/admin/components/product-variants-editor.tsx
-import { Plus, Trash2 } from 'lucide-react';
-import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
+import { FormField } from '@/components/ui/form-field';
 import { Input } from '@/components/ui/input';
 import { NumericInput } from '@/components/ui/numeric-input';
-import { formatNumber } from '@/lib/utils';
 import type { FieldErrors } from '@/lib/form-errors';
-import { FormField } from '@/components/ui/form-field';
+import { formatNumber } from '@/lib/utils';
+import { Plus, Trash2 } from 'lucide-react';
 import { emptyVariant, type Variant } from '../types/product-editor-types';
 import { totalVariantStock } from '../utils/product-editor-utils';
 
@@ -56,10 +56,7 @@ export function ProductVariantsEditor({
               className="bg-nova-hover/60 rounded-2xl border p-4"
             >
               <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
-                <FormField
-                  label="SKU"
-                  error={errors[`variants.${index}.sku`]}
-                >
+                <FormField label="SKU" error={errors[`variants.${index}.sku`]}>
                   <Input
                     value={variant.sku}
                     onChange={(event) =>

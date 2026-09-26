@@ -2,8 +2,8 @@
 import type {
   OrderStatus,
   PaymentStatus,
-  ShippingStatus,
   ProductStatus,
+  ShippingStatus,
 } from '@/constants/constants';
 
 export type AdminResourceKind = 'categories' | 'brands';
@@ -28,6 +28,19 @@ export type AdminStats = {
   statusCounts: Partial<Record<OrderStatus, number>>;
   topProducts: { name: string; quantity: number }[];
   dailyRevenue: { date: string; value: number }[];
+};
+
+export type AdminProduct = {
+  id: string;
+  name: string;
+  price: number;
+  status: ProductStatus;
+  featured: boolean;
+  category: { name: string };
+  brand: { name: string } | null;
+  variants: { stock: number }[];
+  images: { url: string }[];
+  _count: { reviews: number; orderItems: number };
 };
 
 export type AdminPaginated<T> = {

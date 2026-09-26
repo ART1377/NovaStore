@@ -41,8 +41,16 @@ async function getProductForDetail(slug: string, includeUnpublished = false) {
   });
   if (!product) return null;
   const [aggregate, distribution] = await Promise.all([
-    db.review.aggregate({ where: { productId: product.id }, _avg: { rating: true }, _count: { _all: true } }),
-    db.review.groupBy({ by: ['rating'], where: { productId: product.id }, _count: { _all: true } }),
+    db.review.aggregate({
+      where: { productId: product.id },
+      _avg: { rating: true },
+      _count: { _all: true },
+    }),
+    db.review.groupBy({
+      by: ['rating'],
+      where: { productId: product.id },
+      _count: { _all: true },
+    }),
   ]);
   return {
     ...product,
@@ -58,7 +66,9 @@ async function getProductForDetail(slug: string, includeUnpublished = false) {
     })),
     ratingAverage: aggregate._avg.rating ?? 0,
     ratingCount: aggregate._count._all,
-    ratingDistribution: Object.fromEntries(distribution.map((row) => [String(row.rating), row._count._all])),
+    ratingDistribution: Object.fromEntries(
+      distribution.map((row) => [String(row.rating), row._count._all]),
+    ),
   };
 }
 

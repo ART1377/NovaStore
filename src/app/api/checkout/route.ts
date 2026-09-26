@@ -1,15 +1,15 @@
 // src/app/api/checkout/route.ts
-import { NextResponse } from 'next/server';
-import { revalidatePath } from 'next/cache';
-import { Prisma } from '@prisma/client';
-import { z } from 'zod';
-import { db } from '@/lib/prisma';
-import { requireUser } from '@/lib/auth';
-import { createOrderNumber } from '@/lib/utils';
-import { pusherServer } from '@/lib/pusher';
-import { apiErrorResponse } from '@/lib/api-error';
-import { priceOrderWithCoupon } from '@/lib/coupon-pricing';
 import { ORDER_STATUS_LABELS } from '@/constants/constants';
+import { apiErrorResponse } from '@/lib/api-error';
+import { requireUser } from '@/lib/auth';
+import { priceOrderWithCoupon } from '@/lib/coupon-pricing';
+import { db } from '@/lib/prisma';
+import { pusherServer } from '@/lib/pusher';
+import { createOrderNumber } from '@/lib/utils';
+import { Prisma } from '@prisma/client';
+import { revalidatePath } from 'next/cache';
+import { NextResponse } from 'next/server';
+import { z } from 'zod';
 
 const schema = z.object({
   addressId: z.string().min(1),

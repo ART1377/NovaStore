@@ -1,8 +1,8 @@
 // src/features/compare/components/compare-bar.tsx
 'use client';
 
-import Link from 'next/link';
 import { ArrowLeft, GitCompareArrows, X } from 'lucide-react';
+import Link from 'next/link';
 import { useCompare } from '../hooks/use-compare';
 
 export function CompareBar() {

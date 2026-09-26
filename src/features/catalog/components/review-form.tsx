@@ -1,14 +1,14 @@
 // src/features/catalog/components/review-form.tsx
 'use client';
 
-import { useState } from 'react';
-import { useSession } from 'next-auth/react';
-import { useCreateReview } from '../hooks/use-review-actions';
 import { Star } from 'lucide-react';
+import { useSession } from 'next-auth/react';
+import { useState } from 'react';
+import { useCreateReview } from '../hooks/use-review-actions';
 
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import { Card, CardContent } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
 import { formatNumber } from '@/lib/utils';
 
 export function ReviewForm({

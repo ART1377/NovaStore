@@ -1,25 +1,24 @@
 // src/features/admin/components/inventory-page.tsx
 'use client';
-import { useEffect, useState } from 'react';
-import Image from 'next/image';
-import { PackageCheck, Boxes } from 'lucide-react';
 import { EmptyState, SearchField, Stat } from '@/components/shared';
-import { Card, CardContent } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Badge } from '@/components/ui/badge';
-import { formatInputNumber } from '@/lib/utils';
-import { LOW_STOCK_THRESHOLD } from '@/constants/constants';
-import { numericInputValue } from '@/lib/utils';
-import { AdminListSkeleton } from './admin-list-skeleton';
 import { ProductImagePlaceholder } from '@/components/shared/product-image-placeholder';
-import { AdminPageHeader } from './admin-page-header';
-import { AdminPagination } from './admin-pagination';
 import { QueryError } from '@/components/shared/query-state';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { LOW_STOCK_THRESHOLD } from '@/constants/constants';
+import { formatInputNumber, numericInputValue } from '@/lib/utils';
+import { Boxes, PackageCheck } from 'lucide-react';
+import Image from 'next/image';
+import { useState } from 'react';
 import {
   useAdminInventory,
   useAdminInventoryActions,
 } from '../hooks/use-admin';
+import { AdminListSkeleton } from './admin-list-skeleton';
+import { AdminPageHeader } from './admin-page-header';
+import { AdminPagination } from './admin-pagination';
 
 type InventoryFilter = 'ALL' | 'LOW' | 'OUT';
 
@@ -224,14 +223,15 @@ function InventoryStockInput({
   disabled: boolean;
   onSave: (value: string) => void;
 }) {
-  const [value, setValue] = useState(formatInputNumber(String(stock)));
-
-  useEffect(() => {
-    setValue(formatInputNumber(String(stock)));
-  }, [stock]);
-
+  const serverValue = formatInputNumber(String(stock));
+  const [value, setValue] = useState(serverValue);
+  const [lastServerValue, setLastServerValue] = useState(serverValue);
+  if (serverValue !== lastServerValue) {
+    setLastServerValue(serverValue);
+    setValue(serverValue);
+  }
   const commit = () => {
-    if (value === formatInputNumber(String(stock))) return;
+    if (value === serverValue) return;
     onSave(value);
   };
 

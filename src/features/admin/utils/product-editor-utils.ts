@@ -1,7 +1,7 @@
 // src/features/admin/utils/product-editor-utils.ts
+import type { CloudinaryImageValue } from '@/components/shared/cloudinary-types';
 import { numericInputValue } from '@/lib/utils';
 import type { AdminProductPayload } from '../types/admin-types';
-import type { CloudinaryImageValue } from '@/components/shared/cloudinary-types';
 import type { FormState, Variant } from '../types/product-editor-types';
 
 function toVariantPayload(variant: Variant) {

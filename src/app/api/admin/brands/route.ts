@@ -1,10 +1,10 @@
 // src/app/api/admin/brands/route.ts
-import { db } from '@/lib/prisma';
-import { slugify } from '@/lib/utils';
 import {
   handleResourceCreate,
   handleResourceList,
 } from '@/lib/admin-resource-routes';
+import { db } from '@/lib/prisma';
+import { slugify } from '@/lib/utils';
 
 export async function GET() {
   return handleResourceList(

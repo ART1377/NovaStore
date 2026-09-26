@@ -1,8 +1,11 @@
 // src/features/catalog/hooks/use-search-suggestions-state.ts
 'use client';
 
+import {
+  SUGGESTION_DEBOUNCE_MS,
+  SUGGESTION_MIN_LENGTH,
+} from '@/constants/constants';
 import { useEffect, useRef, useState } from 'react';
-import { SUGGESTION_DEBOUNCE_MS, SUGGESTION_MIN_LENGTH } from '@/constants/constants';
 import { useSearchSuggestions } from './use-search-suggestions';
 
 export function useSearchSuggestionsState(value: string) {
@@ -12,7 +15,10 @@ export function useSearchSuggestionsState(value: string) {
   const inputValue = value.trim();
 
   useEffect(() => {
-    const timer = window.setTimeout(() => setTerm(inputValue), SUGGESTION_DEBOUNCE_MS);
+    const timer = window.setTimeout(
+      () => setTerm(inputValue),
+      SUGGESTION_DEBOUNCE_MS,
+    );
     return () => window.clearTimeout(timer);
   }, [inputValue]);
 
@@ -27,5 +33,12 @@ export function useSearchSuggestionsState(value: string) {
   const enabled = term.length >= SUGGESTION_MIN_LENGTH;
   const query = useSearchSuggestions(term);
 
-  return { ref, open, setOpen, enabled, data: query.data ?? [], isFetching: query.isFetching };
+  return {
+    ref,
+    open,
+    setOpen,
+    enabled,
+    data: query.data ?? [],
+    isFetching: query.isFetching,
+  };
 }

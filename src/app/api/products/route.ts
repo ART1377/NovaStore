@@ -1,10 +1,10 @@
 // src/app/api/products/route.ts
-import { NextResponse } from 'next/server';
-import { z } from 'zod';
-import { db } from '@/lib/prisma';
-import type { Prisma } from '@prisma/client';
 import { PRODUCTS_PAGE_SIZE } from '@/constants/constants';
 import { apiErrorResponse } from '@/lib/api-error';
+import { db } from '@/lib/prisma';
+import type { Prisma } from '@prisma/client';
+import { NextResponse } from 'next/server';
+import { z } from 'zod';
 
 const querySchema = z
   .object({
@@ -120,7 +120,7 @@ export async function GET(request: Request) {
           _count: { _all: true },
         })
       : [];
-      
+
     const ratingMap = new Map(
       ratingGroups.map((item) => [
         item.productId,

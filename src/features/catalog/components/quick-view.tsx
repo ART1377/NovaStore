@@ -1,17 +1,17 @@
 // src/features/catalog/components/quick-view.tsx
 'use client';
 
-import Link from 'next/link';
+import { ProductCartActions } from '@/features/cart/components/product-cart-actions';
+import { useCartItem } from '@/features/cart/hooks/use-cart';
+import { WishlistToggle } from '@/features/wishlist/components/wishlist-toggle';
+import { formatNumber, formatPrice } from '@/lib/utils';
 import { ArrowLeft, Star, X } from 'lucide-react';
+import Link from 'next/link';
 import { useEffect } from 'react';
 import { createPortal } from 'react-dom';
-import type { Product } from '../types/catalog-types';
-import { useCartItem } from '@/features/cart/hooks/use-cart';
-import { formatPrice, formatNumber } from '@/lib/utils';
-import { ProductCartActions } from '@/features/cart/components/product-cart-actions';
-import { WishlistToggle } from '@/features/wishlist/components/wishlist-toggle';
-import { ProductImageGallery } from './product-image-gallery';
 import { useProduct } from '../hooks/use-catalog';
+import type { Product } from '../types/catalog-types';
+import { ProductImageGallery } from './product-image-gallery';
 
 type QuickViewProps = {
   product: Product;

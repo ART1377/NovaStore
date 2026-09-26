@@ -1,13 +1,13 @@
 // src/features/recently-viewed/components/recently-viewed-section.tsx
 'use client';
 
-import { useSyncExternalStore } from 'react';
-import Link from 'next/link';
-import Image from 'next/image';
-import { ArrowLeft, Clock3 } from 'lucide-react';
-import { SectionHeading } from '@/components/shared/section-heading';
 import { ProductImagePlaceholder } from '@/components/shared/product-image-placeholder';
+import { SectionHeading } from '@/components/shared/section-heading';
 import { formatPrice } from '@/lib/utils';
+import { ArrowLeft, Clock3 } from 'lucide-react';
+import Image from 'next/image';
+import Link from 'next/link';
+import { useSyncExternalStore } from 'react';
 import {
   readRecentlyViewed,
   subscribeRecentlyViewed,

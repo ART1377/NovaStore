@@ -1,15 +1,15 @@
 // src/features/catalog/components/review-thread.tsx
 'use client';
 
-import { useState } from 'react';
-import { useSession } from 'next-auth/react';
-import { MessageCircle, Send, ChevronDown, Star } from 'lucide-react';
-import { useCreateReviewReply } from '../hooks/use-review-actions';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import { Card, CardContent } from '@/components/ui/card';
-import type { Product } from '../types/catalog-types';
+import { Input } from '@/components/ui/input';
 import { formatDate, formatNumber } from '@/lib/utils';
+import { ChevronDown, MessageCircle, Send, Star } from 'lucide-react';
+import { useSession } from 'next-auth/react';
+import { useState } from 'react';
+import { useCreateReviewReply } from '../hooks/use-review-actions';
+import type { Product } from '../types/catalog-types';
 
 type Review = NonNullable<Product['reviews']>[number];
 

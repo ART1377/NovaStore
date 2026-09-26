@@ -1,20 +1,27 @@
 // src/features/account/hooks/use-register-form.ts
 'use client';
 
-import { useState, type FormEvent } from 'react';
-import { useRegisterAndLogin } from './use-auth';
-import { registerSchema } from '../validation/auth.schema';
-import { zodFieldErrors, type FieldErrors } from '@/lib/form-errors';
 import { getClientErrorMessage } from '@/lib/client-error';
+import { zodFieldErrors, type FieldErrors } from '@/lib/form-errors';
+import { useState, type FormEvent } from 'react';
+import { registerSchema } from '../validation/auth.schema';
+import { useRegisterAndLogin } from './use-auth';
 
 type RegisterForm = { name: string; email: string; password: string };
 
 export function useRegisterForm() {
   const register = useRegisterAndLogin();
-  const [form, setForm] = useState<RegisterForm>({ name: '', email: '', password: '' });
+  const [form, setForm] = useState<RegisterForm>({
+    name: '',
+    email: '',
+    password: '',
+  });
   const [errors, setErrors] = useState<FieldErrors>({});
 
-  const updateField = <K extends keyof RegisterForm>(key: K, value: RegisterForm[K]) => {
+  const updateField = <K extends keyof RegisterForm>(
+    key: K,
+    value: RegisterForm[K],
+  ) => {
     setForm((current) => ({ ...current, [key]: value }));
     setErrors((current) => ({ ...current, [String(key)]: '' }));
   };
@@ -28,7 +35,13 @@ export function useRegisterForm() {
     }
     setErrors({});
     register.mutate(parsed.data, {
-      onError: (error) => setErrors({ form: getClientErrorMessage(error, 'ثبت‌نام انجام نشد. لطفاً اطلاعات واردشده را بررسی کنید.') }),
+      onError: (error) =>
+        setErrors({
+          form: getClientErrorMessage(
+            error,
+            'ثبت‌نام انجام نشد. لطفاً اطلاعات واردشده را بررسی کنید.',
+          ),
+        }),
     });
   };
 

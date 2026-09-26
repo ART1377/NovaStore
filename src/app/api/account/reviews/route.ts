@@ -1,8 +1,8 @@
 // src/app/api/account/reviews/route.ts
-import { NextResponse } from 'next/server';
-import { db } from '@/lib/prisma';
-import { requireUser } from '@/lib/auth';
 import { apiErrorResponse } from '@/lib/api-error';
+import { requireUser } from '@/lib/auth';
+import { db } from '@/lib/prisma';
+import { NextResponse } from 'next/server';
 
 export async function GET() {
   try {

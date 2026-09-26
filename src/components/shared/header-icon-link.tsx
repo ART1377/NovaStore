@@ -1,7 +1,7 @@
 // src/components/shared/header-icon-link.tsx
-import Link from 'next/link';
-import type { LucideIcon } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import type { LucideIcon } from 'lucide-react';
+import Link from 'next/link';
 export function HeaderIconLink({
   href,
   label,

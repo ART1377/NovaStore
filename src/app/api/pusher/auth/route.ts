@@ -1,7 +1,8 @@
 // src/app/api/pusher/auth/route.ts
-import { NextResponse } from 'next/server';
+import { apiErrorResponse } from '@/lib/api-error';
 import { requireUser } from '@/lib/auth';
 import { pusherServer } from '@/lib/pusher';
+import { NextResponse } from 'next/server';
 export async function POST(req: Request) {
   try {
     const u = await requireUser();
@@ -25,4 +26,3 @@ export async function POST(req: Request) {
     return NextResponse.json(r.body, { status: r.status });
   }
 }
-import { apiErrorResponse } from '@/lib/api-error';
