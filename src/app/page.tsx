@@ -3,6 +3,8 @@ import type { Metadata } from 'next';
 import { getHomePageData } from '@/features/home/api/home.api';
 import { HomePage } from '@/features/home/components/home-page';
 
+export const revalidate = 60;
+
 export const metadata: Metadata = {
   title: 'خرید ساده‌تر، انتخاب بهتر',
   description:

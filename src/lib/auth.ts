@@ -35,30 +35,34 @@ export const authOptions: NextAuthOptions = {
     }),
   ],
   callbacks: {
-    async jwt({ token, user }) {
+    async jwt({ token, user, trigger }) {
       if (user) {
         token.id = user.id;
         token.role = user.role;
+        token.name = user.name ?? null;
+        token.email = user.email ?? null;
+        return token;
       }
+
+      if (trigger === 'update' && token.id) {
+        const fresh = await db.user.findUnique({
+          where: { id: token.id as string },
+          select: { name: true, email: true, role: true },
+        });
+        if (fresh) {
+          token.role = fresh.role;
+          token.name = fresh.name;
+          token.email = fresh.email;
+        }
+      }
+
       return token;
     },
     async session({ session, token }) {
       session.user.id = token.id as string;
-      const user = token.id
-        ? await db.user.findUnique({
-            where: { id: token.id as string },
-            select: { name: true, email: true, role: true },
-          })
-        : null;
-
-      if (user) {
-        session.user.name = user.name;
-        session.user.email = user.email;
-        session.user.role = user.role;
-      } else {
-        session.user.role = token.role as string;
-      }
-
+      session.user.role = token.role as string;
+      session.user.name = (token.name as string | null) ?? null;
+      session.user.email = (token.email as string | null) ?? null;
       return session;
     },
   },

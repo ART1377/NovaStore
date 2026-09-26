@@ -5,6 +5,7 @@ import type {
   AdminCouponPayload,
   AdminOrder,
   AdminOrderDetail,
+  AdminPaginated,
   AdminProduct,
   AdminProductEditor,
   AdminProductOption,
@@ -28,12 +29,51 @@ import type {
 
 const resourceUrl = (kind: AdminResourceKind) => `/admin/${kind}`;
 
+type ListParams = { page?: number; search?: string };
+
+/** Unwraps the `{ items, total, page, pageSize, hasMore }` shape that
+ * every paginated admin list endpoint returns. */
+async function fetchPage<T>(
+  url: string,
+  params: ListParams = {},
+): Promise<AdminPaginated<T>> {
+  const response = await api.get<{
+    items?: T[];
+    products?: T[];
+    orders?: T[];
+    users?: T[];
+    reviews?: T[];
+    variants?: T[];
+    total: number;
+    page: number;
+    pageSize: number;
+    hasMore: boolean;
+  }>(url, { params });
+
+  const items =
+    response.data.items ??
+    response.data.products ??
+    response.data.orders ??
+    response.data.users ??
+    response.data.reviews ??
+    response.data.variants ??
+    [];
+
+  return {
+    items,
+    total: response.data.total,
+    page: response.data.page,
+    pageSize: response.data.pageSize,
+    hasMore: response.data.hasMore,
+  };
+}
+
 export const adminService = {
   getStats: async (): Promise<AdminStats> =>
     (await api.get<AdminStats>('/admin/stats')).data,
 
-  getProducts: async (): Promise<AdminProduct[]> =>
-    (await api.get<AdminProduct[]>('/admin/products')).data,
+  getProducts: (params: ListParams = {}) =>
+    fetchPage<AdminProduct>('/admin/products', params),
   getProduct: async (id: string): Promise<AdminProductEditor> =>
     (await api.get<AdminProductEditor>(`/admin/products/${id}`)).data,
   getProductOptions: async (): Promise<{
@@ -55,8 +95,8 @@ export const adminService = {
     productIds: string[];
   }) => (await api.put('/admin/home', payload)).data,
 
-  getOrders: async (): Promise<AdminOrder[]> =>
-    (await api.get<AdminOrder[]>('/admin/orders')).data,
+  getOrders: (params: ListParams = {}) =>
+    fetchPage<AdminOrder>('/admin/orders', params),
   getOrder: async (id: string): Promise<AdminOrderDetail> =>
     (await api.get<AdminOrderDetail>(`/admin/orders/${id}`)).data,
   updateOrder: async (payload: {
@@ -67,8 +107,8 @@ export const adminService = {
     trackingNumber?: string | null;
   }) => (await api.patch('/admin/orders', payload)).data,
 
-  getUsers: async (): Promise<AdminUser[]> =>
-    (await api.get<AdminUser[]>('/admin/users')).data,
+  getUsers: (params: ListParams = {}) =>
+    fetchPage<AdminUser>('/admin/users', params),
   getUser: async (id: string): Promise<AdminUserDetail> =>
     (await api.get<AdminUserDetail>(`/admin/users/${id}`)).data,
   updateUserRole: async (payload: {
@@ -76,13 +116,13 @@ export const adminService = {
     role: AdminUser['role'];
   }) => (await api.patch('/admin/users', payload)).data,
 
-  getReviews: async (): Promise<AdminReview[]> =>
-    (await api.get<AdminReview[]>('/admin/reviews')).data,
+  getReviews: (params: ListParams = {}) =>
+    fetchPage<AdminReview>('/admin/reviews', params),
   removeReview: async (id: string) =>
     (await api.delete(`/admin/reviews/${id}`)).data,
 
-  getInventory: async (): Promise<InventoryVariant[]> =>
-    (await api.get<InventoryVariant[]>('/admin/inventory')).data,
+  getInventory: (params: ListParams = {}) =>
+    fetchPage<InventoryVariant>('/admin/inventory', params),
   updateInventory: async (payload: InventoryUpdate) =>
     (await api.patch('/admin/inventory', payload)).data,
 

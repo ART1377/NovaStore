@@ -3,7 +3,7 @@
 import { Select } from '@/components/ui/select';
 import { SearchField } from '@/components/shared';
 import Link from 'next/link';
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 import { Eye, Truck } from 'lucide-react';
 import { useAdminOrders, useAdminOrderActions } from '../hooks/use-admin';
 import { Card, CardContent } from '@/components/ui/card';
@@ -14,6 +14,8 @@ import { ORDER_STATUS_LABELS } from '@/constants/constants';
 import { AdminListSkeleton } from './admin-list-skeleton';
 import { QueryEmpty, QueryError } from '@/components/shared/query-state';
 import { AdminPageHeader } from './admin-page-header';
+import { AdminPagination } from './admin-pagination';
+
 const STATUSES = [
   'PENDING',
   'PAID',
@@ -23,28 +25,33 @@ const STATUSES = [
   'CANCELLED',
 ] as const;
 type Status = (typeof STATUSES)[number];
+
 export function AdminOrdersPage() {
-  const { data = [], isLoading, error, refetch } = useAdminOrders();
-  const { update } = useAdminOrderActions();
   const [search, setSearch] = useState('');
   const [status, setStatus] = useState<'ALL' | Status>('ALL');
-  const list = useMemo(
-    () =>
-      data.filter(
-        (o) =>
-          (status === 'ALL' || o.orderStatus === status) &&
-          `${o.orderNumber} ${o.user.name ?? ''} ${o.user.email ?? ''}`
-            .toLowerCase()
-            .includes(search.toLowerCase()),
-      ),
-    [data, search, status],
+  const [page, setPage] = useState(1);
+
+  const { data, isLoading, isError, error, refetch, isFetching } =
+    useAdminOrders({ page });
+  const { update } = useAdminOrderActions();
+
+  const list = (data?.items ?? []).filter(
+    (order) =>
+      (status === 'ALL' || order.orderStatus === status) &&
+      `${order.orderNumber} ${order.user.name ?? ''} ${order.user.email ?? ''}`
+        .toLowerCase()
+        .includes(search.toLowerCase()),
   );
-  if (isLoading)
-    return <AdminListSkeleton rows={5} withThumbnail={false} />;
-  if (error)
+
+  if (isLoading) return <AdminListSkeleton rows={5} withThumbnail={false} />;
+  if (isError)
     return (
-      <QueryError message="دریافت سفارش‌ها ناموفق بود." onRetry={() => refetch()} />
+      <QueryError
+        message="دریافت سفارش‌ها ناموفق بود."
+        onRetry={() => refetch()}
+      />
     );
+
   return (
     <main className="w-full min-w-0">
       <AdminPageHeader
@@ -74,7 +81,9 @@ export function AdminOrdersPage() {
           </div>
         }
       />
-      <div className="mt-6 space-y-3">
+      <div
+        className={`mt-6 space-y-3 transition-opacity ${isFetching ? 'opacity-60' : ''}`}
+      >
         {list.map((o) => (
           <Card key={o.id}>
             <CardContent>
@@ -82,7 +91,9 @@ export function AdminOrdersPage() {
                 <div className="min-w-0 flex-1">
                   <div className="flex flex-wrap items-center gap-2">
                     <p className="font-bold">{o.orderNumber}</p>
-                    <Badge>{ORDER_STATUS_LABELS[o.orderStatus] ?? o.orderStatus}</Badge>
+                    <Badge>
+                      {ORDER_STATUS_LABELS[o.orderStatus] ?? o.orderStatus}
+                    </Badge>
                   </div>
                   <p className="text-nova-primary mt-1 text-sm">
                     {o.user.name ?? 'بدون نام'} · {o.user.email}
@@ -125,7 +136,11 @@ export function AdminOrdersPage() {
         ))}
         {!list.length && (
           <QueryEmpty
-            title={search || status !== 'ALL' ? 'سفارشی پیدا نشد' : 'هنوز سفارشی ثبت نشده است'}
+            title={
+              search || status !== 'ALL'
+                ? 'سفارشی پیدا نشد'
+                : 'هنوز سفارشی ثبت نشده است'
+            }
             description={
               search || status !== 'ALL'
                 ? 'جستجو یا فیلتر وضعیت را تغییر بده.'
@@ -134,6 +149,14 @@ export function AdminOrdersPage() {
           />
         )}
       </div>
+      {data && (
+        <AdminPagination
+          page={data.page}
+          hasMore={data.hasMore}
+          isFetching={isFetching}
+          onPageChange={setPage}
+        />
+      )}
     </main>
   );
 }

@@ -7,6 +7,7 @@ import { AppProviders } from '@/providers/app-providers';
 import { CompareBar } from '@/features/compare/components/compare-bar';
 import { siteConfig } from '@/lib/site';
 import { themes, THEME_STORAGE_KEY, DEFAULT_THEME_ID } from '@/lib/themes';
+import { ThemeColorSync } from '@/components/layout/theme-color-sync';
 
 const themeBootstrapScript = `(function(){try{var t=localStorage.getItem(${JSON.stringify(
   THEME_STORAGE_KEY,
@@ -45,7 +46,7 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
-  themeColor: 'var(--nova-ink)',
+  themeColor: '#17324d',
 };
 
 export default function RootLayout({
@@ -58,6 +59,7 @@ export default function RootLayout({
       </head>
       <body className="flex min-h-screen flex-col">
         <AppProviders>
+          <ThemeColorSync />
           <Header />
           <div className="flex-1">{children}</div>
           <CompareBar />

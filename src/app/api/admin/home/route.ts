@@ -8,6 +8,7 @@ import {
   HOME_PLACEMENT_LIMITS,
   HOME_PLACEMENT_SLOTS,
 } from '@/constants/constants';
+import { revalidatePath } from 'next/cache';
 
 const slotSchema = z.enum([
   'HERO_PRODUCT',
@@ -117,6 +118,8 @@ export async function PUT(request: Request) {
           })),
         });
     });
+    revalidatePath('/');
+
     return NextResponse.json({
       success: true,
       slot: body.slot,

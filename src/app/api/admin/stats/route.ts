@@ -2,11 +2,16 @@
 import { NextResponse } from 'next/server';
 import { apiErrorResponse } from '@/lib/api-error';
 import { db } from '@/lib/prisma';
-import { LOW_STOCK_THRESHOLD } from '@/constants/constants';
+import {
+  ADMIN_DASHBOARD_RECENT_DAYS,
+  LOW_STOCK_THRESHOLD,
+} from '@/constants/constants';
 import { requireAdmin } from '@/lib/auth';
 
 export async function GET() {
   try {
+    const sevenDaysAgo = new Date();
+    sevenDaysAgo.setDate(sevenDaysAgo.getDate() - ADMIN_DASHBOARD_RECENT_DAYS);
     await requireAdmin();
     const [
       users,
@@ -39,10 +44,12 @@ export async function GET() {
         orderBy: { productId: 'asc' },
       }),
       db.order.findMany({
-        where: { paymentStatus: 'PAID' },
+        where: {
+          paymentStatus: 'PAID',
+          createdAt: { gte: sevenDaysAgo },
+        },
         select: { total: true, createdAt: true },
-        orderBy: { createdAt: 'desc' },
-        take: 100,
+        orderBy: { createdAt: 'asc' },
       }),
     ]);
 

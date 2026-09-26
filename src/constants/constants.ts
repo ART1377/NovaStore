@@ -1,6 +1,6 @@
 // src/constants/constants.ts
 export const PRODUCTS_PAGE_SIZE = 12;
-export const ADMIN_LIST_PAGE_SIZE = 200;
+export const ADMIN_LIST_PAGE_SIZE = 25;
 export const MAX_PRODUCT_IMAGES = 12;
 export const MAX_PRODUCT_VARIANTS = 30;
 export const MAX_CART_QUANTITY = 50;
@@ -48,8 +48,8 @@ export const SHIPPING_COSTS = {
 
 export const PRICE_FILTER_RANGE = {
   MIN: 0,
-  MAX: 1_000_000_000,
-  STEP: 500_000,
+  MAX: 300_000_000,
+  STEP: 10_000_000,
 } as const;
 
 export const ORDER_STATUSES = [

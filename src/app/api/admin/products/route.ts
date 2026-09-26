@@ -10,22 +10,56 @@ import {
   createProductSchema,
   resolveProductImages,
 } from '@/features/admin/validation/product.schema';
+import type { Prisma } from '@prisma/client';
+import { z } from 'zod';
+import { ADMIN_LIST_PAGE_SIZE } from '@/constants/constants';
 
-export async function GET() {
+const listQuerySchema = z.object({
+  page: z.coerce.number().int().min(1).max(1000).default(1),
+  search: z.string().trim().max(80).optional(),
+});
+
+export async function GET(request: Request) {
   try {
     await requireAdmin();
-    return NextResponse.json(
-      await db.product.findMany({
+    const query = listQuerySchema.parse(
+      Object.fromEntries(new URL(request.url).searchParams),
+    );
+
+    const where: Prisma.ProductWhereInput = query.search
+      ? {
+          OR: [
+            { name: { contains: query.search } },
+            { brand: { name: { contains: query.search } } },
+            { category: { name: { contains: query.search } } },
+          ],
+        }
+      : {};
+
+    const [products, total] = await db.$transaction([
+      db.product.findMany({
+        where,
         include: {
           category: true,
           brand: true,
           variants: true,
-          images: true,
+          images: { orderBy: { sortOrder: 'asc' }, take: 1 },
           _count: { select: { reviews: true, orderItems: true } },
         },
         orderBy: { updatedAt: 'desc' },
+        skip: (query.page - 1) * ADMIN_LIST_PAGE_SIZE,
+        take: ADMIN_LIST_PAGE_SIZE,
       }),
-    );
+      db.product.count({ where }),
+    ]);
+
+    return NextResponse.json({
+      products,
+      total,
+      page: query.page,
+      pageSize: ADMIN_LIST_PAGE_SIZE,
+      hasMore: query.page * ADMIN_LIST_PAGE_SIZE < total,
+    });
   } catch (error) {
     const result = apiErrorResponse(error, 'دریافت محصولات مدیریتی انجام نشد.');
     return NextResponse.json(result.body, { status: result.status });

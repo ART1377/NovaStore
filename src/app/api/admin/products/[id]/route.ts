@@ -11,6 +11,38 @@ import {
 } from '@/features/admin/validation/product.schema';
 import { cloudinary, publicIdFromCloudinaryUrl } from '@/lib/cloudinary';
 
+async function backfillImageMetadata(
+  images: Array<{
+    id: string;
+    url: string;
+    publicId: string | null;
+    bytes: number | null;
+  }>,
+) {
+  const stale = images.filter(
+    (image) => !image.publicId || image.bytes == null,
+  );
+  if (!stale.length) return;
+
+  await Promise.all(
+    stale.map(async (image) => {
+      try {
+        const publicId = image.publicId ?? publicIdFromCloudinaryUrl(image.url);
+        if (!publicId) return;
+        const resource = await cloudinary.api.resource(publicId, {
+          resource_type: 'image',
+        });
+        const bytes =
+          typeof resource.bytes === 'number' ? resource.bytes : null;
+        await db.productImage.update({
+          where: { id: image.id },
+          data: { publicId, bytes },
+        });
+      } catch {}
+    }),
+  );
+}
+
 export async function GET(
   _: Request,
   { params }: { params: Promise<{ id: string }> },
@@ -29,30 +61,14 @@ export async function GET(
     });
     if (!product)
       return NextResponse.json({ error: 'محصول پیدا نشد.' }, { status: 404 });
-    const images = await Promise.all(
-      product.images.map(async (image) => {
-        if (image.bytes && image.publicId) return image;
-        try {
-          const publicId =
-            image.publicId ?? publicIdFromCloudinaryUrl(image.url);
-          if (!publicId) return image;
-          const resource = await cloudinary.api.resource(publicId, {
-            resource_type: 'image',
-          });
-          const bytes =
-            typeof resource.bytes === 'number' ? resource.bytes : image.bytes;
-          if (bytes && (!image.bytes || !image.publicId)) {
-            await db.productImage.update({
-              where: { id: image.id },
-              data: { publicId, bytes },
-            });
-          }
-          return { ...image, publicId, bytes };
-        } catch {
-          return image;
-        }
-      }),
-    );
+
+    void backfillImageMetadata(product.images);
+
+    const images = product.images.map((image) => ({
+      ...image,
+      publicId: image.publicId ?? publicIdFromCloudinaryUrl(image.url),
+    }));
+
     return NextResponse.json({ ...product, images });
   } catch (error) {
     const r = apiErrorResponse(error, 'دریافت محصول انجام نشد.');

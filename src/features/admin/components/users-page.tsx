@@ -1,7 +1,7 @@
 // src/features/admin/components/users-page.tsx
 'use client';
 import Link from 'next/link';
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 import { useAdminUsers, useAdminUserActions } from '../hooks/use-admin';
 import { ShieldCheck, UserRound } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
@@ -11,27 +11,37 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { formatNumber } from '@/lib/utils';
 import { AdminListSkeleton } from './admin-list-skeleton';
-import { QueryEmpty } from '@/components/shared/query-state';
+import { QueryEmpty, QueryError } from '@/components/shared/query-state';
 import { AdminFilterGrid, AdminPageHeader } from './admin-page-header';
+import { AdminPagination } from './admin-pagination';
 
 export function UsersPage() {
-  const { data = [], isLoading } = useAdminUsers();
-  const { updateRole: update } = useAdminUserActions();
   const [search, setSearch] = useState('');
   const [role, setRole] = useState('ALL');
-  const list = useMemo(
-    () =>
-      data.filter(
-        (u) =>
-          (role === 'ALL' || u.role === role) &&
-          `${u.name ?? ''} ${u.email}`
-            .toLowerCase()
-            .includes(search.toLowerCase()),
-      ),
-    [data, role, search],
+  const [page, setPage] = useState(1);
+
+  const { data, isLoading, isError, error, refetch, isFetching } =
+    useAdminUsers({ page });
+  const { updateRole: update } = useAdminUserActions();
+
+  const list = (data?.items ?? []).filter(
+    (user) =>
+      (role === 'ALL' || user.role === role) &&
+      `${user.name ?? ''} ${user.email}`
+        .toLowerCase()
+        .includes(search.toLowerCase()),
   );
+
   if (isLoading)
     return <AdminListSkeleton rows={6} withThumbnail withStats={false} />;
+  if (isError)
+    return (
+      <QueryError
+        message="دریافت کاربران ناموفق بود."
+        onRetry={() => refetch()}
+      />
+    );
+
   return (
     <main className="w-full min-w-0">
       <AdminPageHeader
@@ -40,27 +50,28 @@ export function UsersPage() {
         description="نمایش فعالیت خرید، نظرات و مدیریت نقش‌ها."
         controls={
           <AdminFilterGrid>
-
-        <SearchField
-          value={search}
-          onChange={setSearch}
-          placeholder="جستجو بر اساس نام یا ایمیل..."
-        />
-        <Select
-          className="w-full"
-          value={role}
-          onChange={(e) => setRole(e.target.value)}
-        >
-          <option value="ALL">همه نقش‌ها</option>
-          <option value="USER">کاربر</option>
-          <option value="ADMIN">مدیر</option>
-        </Select>
+            <SearchField
+              value={search}
+              onChange={setSearch}
+              placeholder="جستجو بر اساس نام یا ایمیل..."
+            />
+            <Select
+              className="w-full"
+              value={role}
+              onChange={(e) => setRole(e.target.value)}
+            >
+              <option value="ALL">همه نقش‌ها</option>
+              <option value="USER">کاربر</option>
+              <option value="ADMIN">مدیر</option>
+            </Select>
           </AdminFilterGrid>
         }
       />
       <Card className="mt-6">
         <CardContent className="p-0">
-          <div className="divide-y">
+          <div
+            className={`divide-y transition-opacity ${isFetching ? 'opacity-60' : ''}`}
+          >
             {list.map((u) => (
               <article
                 key={u.id}
@@ -134,6 +145,14 @@ export function UsersPage() {
           </div>
         </CardContent>
       </Card>
+      {data && (
+        <AdminPagination
+          page={data.page}
+          hasMore={data.hasMore}
+          isFetching={isFetching}
+          onPageChange={setPage}
+        />
+      )}
     </main>
   );
 }

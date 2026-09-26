@@ -1,17 +1,16 @@
 // src/features/admin/components/products-page.tsx
 'use client';
-import { Select } from '@/components/ui/select';
-import { SearchField } from '@/components/shared';
+import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useMemo, useState } from 'react';
 import { Archive, Edit3, Plus, Star } from 'lucide-react';
 import { useAdminProducts, useAdminProductActions } from '../hooks/use-admin';
 import { useDeleteConfirmation } from '../hooks/use-delete-confirmation';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Input } from '@/components/ui/input';
+import { Select } from '@/components/ui/select';
+import { SearchField } from '@/components/shared';
 import { formatPrice, formatNumber } from '@/lib/utils';
 import { ConfirmDialog } from '@/components/ui/dialog';
 import {
@@ -23,25 +22,29 @@ import { AdminListSkeleton } from './admin-list-skeleton';
 import { QueryEmpty } from '@/components/shared/query-state';
 import { ProductImagePlaceholder } from '@/components/shared/product-image-placeholder';
 import { AdminFilterGrid, AdminPageHeader } from './admin-page-header';
+
 export function AdminProductsPage() {
-  const { data = [], isLoading, error, refetch } = useAdminProducts();
-  const { archive, restore } = useAdminProductActions();
   const [search, setSearch] = useState('');
   const [status, setStatus] = useState('ALL');
+  const [page, setPage] = useState(1);
+
+  const { data, isLoading, error, refetch, isFetching } = useAdminProducts({
+    page,
+  });
+  const { archive, restore } = useAdminProductActions();
   const { confirmId, requestDelete, cancel, confirm } = useDeleteConfirmation(
     archive.mutate,
   );
-  const list = useMemo(
-    () =>
-      data.filter(
-        (p) =>
-          (status === 'ALL' || p.status === status) &&
-          p.name.toLowerCase().includes(search.toLowerCase()),
-      ),
-    [data, search, status],
+
+  const list = (data?.items ?? []).filter(
+    (product) =>
+      (status === 'ALL' || product.status === status) &&
+      product.name.toLowerCase().includes(search.toLowerCase()),
   );
+
   if (isLoading) return <AdminListSkeleton rows={6} withStats={false} />;
   if (error) return <AdminProductsError onRetry={() => refetch()} />;
+
   return (
     <main className="w-full min-w-0">
       <AdminPageHeader
@@ -58,24 +61,26 @@ export function AdminProductsPage() {
         }
         controls={
           <AdminFilterGrid>
-
-        <SearchField
-          value={search}
-          onChange={setSearch}
-          placeholder="جستجوی محصول..."
-        />
-        <Select value={status} onChange={(e) => setStatus(e.target.value)}>
-          <option value="ALL">همه وضعیت‌ها</option>
-          <option value="PUBLISHED">منتشر شده</option>
-          <option value="DRAFT">پیش‌نویس</option>
-          <option value="ARCHIVED">آرشیو</option>
-        </Select>
+            <SearchField
+              value={search}
+              onChange={setSearch}
+              placeholder="جستجوی محصول..."
+            />
+            <Select value={status} onChange={(e) => setStatus(e.target.value)}>
+              <option value="ALL">همه وضعیت‌ها</option>
+              <option value="PUBLISHED">منتشر شده</option>
+              <option value="DRAFT">پیش‌نویس</option>
+              <option value="ARCHIVED">آرشیو</option>
+            </Select>
           </AdminFilterGrid>
         }
       />
+
       <Card className="mt-6">
         <CardContent className="p-0">
-          <div className="divide-y">
+          <div
+            className={`divide-y transition-opacity ${isFetching ? 'opacity-60' : ''}`}
+          >
             {list.map((p) => {
               const stock = p.variants.reduce((sum, v) => sum + v.stock, 0);
               return (
@@ -102,7 +107,7 @@ export function AdminProductsPage() {
                         <p className="truncate font-semibold">{p.name}</p>
                         {p.featured && (
                           <Badge>
-                            <Star size={11} className="ml-1 fill-black" />
+                            <Star size={11} className="ml-1 fill-current" />
                             شاخص
                           </Badge>
                         )}
@@ -189,6 +194,29 @@ export function AdminProductsPage() {
           )}
         </CardContent>
       </Card>
+
+      {data && data.total > data.pageSize && (
+        <div className="mt-6 flex items-center justify-center gap-3">
+          <Button
+            variant="outline"
+            disabled={page <= 1 || isFetching}
+            onClick={() => setPage((current) => Math.max(1, current - 1))}
+          >
+            قبلی
+          </Button>
+          <span className="bg-nova-surface min-w-20 rounded-xl px-4 py-2 text-center text-sm font-bold shadow-sm">
+            {page}
+          </span>
+          <Button
+            variant="outline"
+            disabled={!data.hasMore || isFetching}
+            onClick={() => setPage((current) => current + 1)}
+          >
+            بعدی
+          </Button>
+        </div>
+      )}
+
       <ConfirmDialog
         open={!!confirmId}
         title="آرشیو محصول"

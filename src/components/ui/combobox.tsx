@@ -1,3 +1,4 @@
+// src/components/ui/combobox.tsx
 'use client';
 
 import { Check, ChevronDown, Search, X } from 'lucide-react';
@@ -43,9 +44,12 @@ export function Combobox({
 }: ComboboxProps) {
   const ref = useRef<HTMLDivElement>(null);
   const searchRef = useRef<HTMLInputElement>(null);
+  const listRef = useRef<HTMLDivElement>(null);
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState('');
+  const [activeIndex, setActiveIndex] = useState(-1);
   const selected = options.find((option) => option.value === value);
+
   const filtered = useMemo(() => {
     const normalized = query.trim().toLocaleLowerCase();
     if (!normalized) return options;
@@ -57,17 +61,61 @@ export function Combobox({
   useCloseOnOutsideInteraction(ref, open, () => {
     setOpen(false);
     setQuery('');
+    setActiveIndex(-1);
   });
 
   useEffect(() => {
-    if (open) window.setTimeout(() => searchRef.current?.focus(), 0);
-  }, [open]);
+    if (open) {
+      setActiveIndex(filtered.findIndex((option) => !option.disabled));
+      window.setTimeout(() => searchRef.current?.focus(), 0);
+    }
+  }, [open, filtered]);
+
+  // Keep the active option visible while arrowing through a long list.
+  useEffect(() => {
+    if (activeIndex < 0) return;
+    const container = listRef.current;
+    if (!container) return;
+    const node = container.children[activeIndex] as HTMLElement | undefined;
+    node?.scrollIntoView({ block: 'nearest' });
+  }, [activeIndex]);
 
   const choose = (option: ComboboxOption) => {
     if (option.disabled) return;
     onChange(option.value);
     setOpen(false);
     setQuery('');
+    setActiveIndex(-1);
+  };
+
+  const moveActive = (direction: 1 | -1) => {
+    if (!filtered.length) return;
+    let next = activeIndex;
+    for (let step = 0; step < filtered.length; step += 1) {
+      next = (next + direction + filtered.length) % filtered.length;
+      if (!filtered[next]?.disabled) {
+        setActiveIndex(next);
+        return;
+      }
+    }
+  };
+
+  const onSearchKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'ArrowDown') {
+      event.preventDefault();
+      moveActive(1);
+    } else if (event.key === 'ArrowUp') {
+      event.preventDefault();
+      moveActive(-1);
+    } else if (event.key === 'Enter') {
+      event.preventDefault();
+      const option = filtered[activeIndex];
+      if (option) choose(option);
+    } else if (event.key === 'Escape') {
+      event.preventDefault();
+      setOpen(false);
+      setQuery('');
+    }
   };
 
   return (
@@ -137,26 +185,44 @@ export function Combobox({
               <input
                 ref={searchRef}
                 value={query}
-                onChange={(event) => setQuery(event.target.value)}
+                onChange={(event) => {
+                  setQuery(event.target.value);
+                  setActiveIndex(-1);
+                }}
+                onKeyDown={onSearchKeyDown}
                 placeholder={searchPlaceholder}
                 className="h-10 w-full bg-transparent pr-9 pl-3 text-sm outline-none"
+                aria-controls="combobox-listbox"
+                aria-activedescendant={
+                  activeIndex >= 0
+                    ? `combobox-option-${activeIndex}`
+                    : undefined
+                }
               />
             </div>
           </div>
-          <div role="listbox" className="max-h-64 overflow-auto p-1.5">
-            {filtered.map((option) => (
+          <div
+            ref={listRef}
+            id="combobox-listbox"
+            role="listbox"
+            className="max-h-64 overflow-auto p-1.5"
+          >
+            {filtered.map((option, index) => (
               <button
                 key={option.value}
+                id={`combobox-option-${index}`}
                 type="button"
                 role="option"
                 aria-selected={option.value === value}
                 disabled={option.disabled}
+                onMouseEnter={() => setActiveIndex(index)}
                 onClick={() => choose(option)}
                 className={cn(
                   'flex min-h-10 w-full items-center justify-between gap-3 rounded-xl px-3 py-2 text-right text-sm transition',
                   option.disabled
                     ? 'text-nova-muted cursor-not-allowed opacity-60'
                     : 'text-nova-ink hover:bg-nova-hover cursor-pointer',
+                  index === activeIndex && !option.disabled && 'bg-nova-hover',
                 )}
               >
                 {renderOption ? (

@@ -1,37 +1,89 @@
 // src/features/admin/components/inventory-page.tsx
 'use client';
-import { EmptyState, SearchField, Stat } from '@/components/shared';
+import { useEffect, useState } from 'react';
 import Image from 'next/image';
-import { PackageCheck, AlertTriangle, Boxes } from 'lucide-react';
-import { useInventoryPage } from '../hooks/use-inventory-page';
+import { PackageCheck, Boxes } from 'lucide-react';
+import { EmptyState, SearchField, Stat } from '@/components/shared';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { formatInputNumber } from '@/lib/utils';
 import { LOW_STOCK_THRESHOLD } from '@/constants/constants';
+import { numericInputValue } from '@/lib/utils';
 import { AdminListSkeleton } from './admin-list-skeleton';
 import { ProductImagePlaceholder } from '@/components/shared/product-image-placeholder';
 import { AdminPageHeader } from './admin-page-header';
+import { AdminPagination } from './admin-pagination';
+import { QueryError } from '@/components/shared/query-state';
+import {
+  useAdminInventory,
+  useAdminInventoryActions,
+} from '../hooks/use-admin';
+
+type InventoryFilter = 'ALL' | 'LOW' | 'OUT';
+
 export function InventoryPage() {
-  const inventory = useInventoryPage();
-  const {
-    list,
-    isLoading,
-    update,
-    search,
-    filter,
-    stockErrors,
-    total,
-    out,
-    low,
-    setSearch,
-    setFilter,
-    saveStock,
-  } = inventory;
+  const [search, setSearch] = useState('');
+  const [filter, setFilter] = useState<InventoryFilter>('ALL');
+  const [page, setPage] = useState(1);
+  const [stockErrors, setStockErrors] = useState<Record<string, string>>({});
+
+  const { data, isLoading, isError, refetch, isFetching } = useAdminInventory({
+    page,
+  });
+  const { update } = useAdminInventoryActions();
+
+  const items = data?.items ?? [];
+  const list = items.filter((variant) => {
+    const matchesFilter =
+      filter === 'ALL' ||
+      (filter === 'LOW' &&
+        variant.stock > 0 &&
+        variant.stock <= LOW_STOCK_THRESHOLD) ||
+      (filter === 'OUT' && variant.stock === 0);
+    const query = search.trim().toLowerCase();
+    return (
+      matchesFilter &&
+      `${variant.product.name} ${variant.sku} ${variant.name}`
+        .toLowerCase()
+        .includes(query)
+    );
+  });
+
+  const total = items.reduce((sum, item) => sum + item.stock, 0);
+  const out = items.filter((item) => item.stock === 0).length;
+  const low = items.filter(
+    (item) => item.stock > 0 && item.stock <= LOW_STOCK_THRESHOLD,
+  ).length;
+
+  const saveStock = (variantId: string, value: string) => {
+    const normalized = numericInputValue(value);
+    if (!/^\d+$/.test(normalized) || Number(normalized) > 1_000_000) {
+      setStockErrors((current) => ({
+        ...current,
+        [variantId]: 'موجودی باید عدد صحیح بین ۰ تا ۱٬۰۰۰٬۰۰۰ باشد.',
+      }));
+      return;
+    }
+    setStockErrors((current) => {
+      const next = { ...current };
+      delete next[variantId];
+      return next;
+    });
+    update.mutate({ variantId, stock: Number(normalized) });
+  };
 
   if (isLoading)
     return <AdminListSkeleton rows={6} withToolbar={false} withStats />;
+  if (isError)
+    return (
+      <QueryError
+        message="دریافت موجودی ناموفق بود."
+        onRetry={() => refetch()}
+      />
+    );
+
   return (
     <main className="w-full min-w-0">
       <AdminPageHeader
@@ -54,15 +106,19 @@ export function InventoryPage() {
               className="w-full lg:flex-1"
             />
             <div className="flex flex-wrap gap-2 lg:shrink-0">
-              {(['ALL', 'LOW', 'OUT'] as const).map((x) => (
+              {(['ALL', 'LOW', 'OUT'] as const).map((key) => (
                 <Button
-                  key={x}
+                  key={key}
                   size="sm"
-                  variant={filter === x ? 'default' : 'outline'}
-                  onClick={() => setFilter(x)}
+                  variant={filter === key ? 'default' : 'outline'}
+                  onClick={() => setFilter(key)}
                   className="min-w-24"
                 >
-                  {x === 'ALL' ? 'همه' : x === 'LOW' ? 'موجودی کم' : 'ناموجود'}
+                  {key === 'ALL'
+                    ? 'همه'
+                    : key === 'LOW'
+                      ? 'موجودی کم'
+                      : 'ناموجود'}
                 </Button>
               ))}
             </div>
@@ -71,18 +127,20 @@ export function InventoryPage() {
       />
       <Card className="mt-6">
         <CardContent className="p-0">
-          <div className="divide-y">
-            {list.map((v) => (
+          <div
+            className={`divide-y transition-opacity ${isFetching ? 'opacity-60' : ''}`}
+          >
+            {list.map((variant) => (
               <div
-                key={v.id}
+                key={variant.id}
                 className="flex flex-col gap-4 p-4 sm:flex-row sm:items-center"
               >
                 <div className="flex min-w-0 flex-1 items-center gap-3">
                   <div className="bg-nova-soft relative h-12 w-12 shrink-0 overflow-hidden rounded-xl">
-                    {v.product.images[0]?.url ? (
+                    {variant.product.images[0]?.url ? (
                       <Image
-                        src={v.product.images[0].url}
-                        alt={v.product.name}
+                        src={variant.product.images[0].url}
+                        alt={variant.product.name}
                         fill
                         className="object-cover"
                         sizes="48px"
@@ -93,64 +151,36 @@ export function InventoryPage() {
                   </div>
                   <div className="min-w-0">
                     <p className="truncate text-sm font-semibold">
-                      {v.product.name}
+                      {variant.product.name}
                     </p>
                     <p className="text-nova-primary mt-1 text-xs">
-                      {v.name} · {v.sku}
+                      {variant.name} · {variant.sku}
                     </p>
                   </div>
                 </div>
                 <div className="flex items-center gap-2">
                   <Badge
                     className={
-                      v.stock === 0
+                      variant.stock === 0
                         ? 'bg-nova-danger-soft text-nova-danger'
-                        : v.stock <= LOW_STOCK_THRESHOLD
+                        : variant.stock <= LOW_STOCK_THRESHOLD
                           ? 'bg-amber-50 text-amber-700'
                           : 'bg-nova-soft'
                     }
                   >
-                    {v.stock === 0
+                    {variant.stock === 0
                       ? 'ناموجود'
-                      : v.stock <= LOW_STOCK_THRESHOLD
+                      : variant.stock <= LOW_STOCK_THRESHOLD
                         ? 'موجودی کم'
                         : 'موجود'}
                   </Badge>
-                  <div>
-                    <Input
-                      aria-label="موجودی"
-                      className="w-full sm:w-24"
-                      defaultValue={v.stock}
-                      type="text"
-                      inputMode="numeric"
-                      onChange={(e) => {
-                        e.currentTarget.value = formatInputNumber(
-                          e.currentTarget.value,
-                        );
-                      }}
-                      onKeyDown={(e) => {
-                        if (e.key === 'Enter')
-                          saveStock(v.id, (e.target as HTMLInputElement).value);
-                      }}
-                      aria-invalid={!!stockErrors[v.id]}
-                    />
-                    <p className="text-nova-danger mt-1 min-h-5 text-xs font-medium">
-                      {stockErrors[v.id] ?? ''}
-                    </p>
-                  </div>
-                  <Button
-                    size="sm"
-                    className="w-full sm:w-auto"
-                    onClick={(e) => {
-                      const input = e.currentTarget
-                        .previousElementSibling as HTMLInputElement | null;
-                      if (input) saveStock(v.id, input.value);
-                    }}
+                  <InventoryStockInput
+                    variantId={variant.id}
+                    stock={variant.stock}
+                    error={stockErrors[variant.id]}
                     disabled={update.isPending}
-                  >
-                    <PackageCheck size={15} />
-                    ذخیره
-                  </Button>
+                    onSave={(value) => saveStock(variant.id, value)}
+                  />
                 </div>
               </div>
             ))}
@@ -169,6 +199,67 @@ export function InventoryPage() {
           )}
         </CardContent>
       </Card>
+      {data && (
+        <AdminPagination
+          page={data.page}
+          hasMore={data.hasMore}
+          isFetching={isFetching}
+          onPageChange={setPage}
+        />
+      )}
     </main>
+  );
+}
+
+function InventoryStockInput({
+  variantId,
+  stock,
+  error,
+  disabled,
+  onSave,
+}: {
+  variantId: string;
+  stock: number;
+  error?: string;
+  disabled: boolean;
+  onSave: (value: string) => void;
+}) {
+  const [value, setValue] = useState(formatInputNumber(String(stock)));
+
+  useEffect(() => {
+    setValue(formatInputNumber(String(stock)));
+  }, [stock]);
+
+  const commit = () => {
+    if (value === formatInputNumber(String(stock))) return;
+    onSave(value);
+  };
+
+  return (
+    <div>
+      <Input
+        aria-label={`موجودی ${variantId}`}
+        className="w-full sm:w-24"
+        value={value}
+        inputMode="numeric"
+        onChange={(event) => setValue(formatInputNumber(event.target.value))}
+        onKeyDown={(event) => {
+          if (event.key === 'Enter') commit();
+        }}
+        aria-invalid={!!error}
+      />
+      <p className="text-nova-danger mt-1 min-h-5 text-xs font-medium">
+        {error ?? ''}
+      </p>
+      <Button
+        size="sm"
+        className="w-full sm:w-auto"
+        onClick={commit}
+        disabled={disabled}
+      >
+        <PackageCheck size={15} />
+        ذخیره
+      </Button>
+    </div>
   );
 }

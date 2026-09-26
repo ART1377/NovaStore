@@ -1,5 +1,6 @@
 // src/app/api/checkout/route.ts
 import { NextResponse } from 'next/server';
+import { revalidatePath } from 'next/cache';
 import { Prisma } from '@prisma/client';
 import { z } from 'zod';
 import { db } from '@/lib/prisma';
@@ -219,10 +220,13 @@ export async function POST(request: Request) {
             ),
           ),
         ]);
-      } catch {
-        // Realtime is best-effort.
-      }
+      } catch {}
     }
+
+    revalidatePath('/products');
+    revalidatePath('/');
+    revalidatePath('/admin/products');
+    revalidatePath('/admin/inventory');
 
     return NextResponse.json(order, { status: 201 });
   } catch (error) {
@@ -232,8 +236,6 @@ export async function POST(request: Request) {
         { status: error.status },
       );
     }
-    // Concurrent retry with the same idempotency key: the other request won.
-    // Fetch and return its result instead of surfacing a 500.
     if (
       error instanceof Prisma.PrismaClientKnownRequestError &&
       error.code === 'P2002'

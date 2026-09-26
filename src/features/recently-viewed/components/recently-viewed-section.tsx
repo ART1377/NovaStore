@@ -8,34 +8,19 @@ import { ArrowLeft, Clock3 } from 'lucide-react';
 import { SectionHeading } from '@/components/shared/section-heading';
 import { ProductImagePlaceholder } from '@/components/shared/product-image-placeholder';
 import { formatPrice } from '@/lib/utils';
+import {
+  readRecentlyViewed,
+  subscribeRecentlyViewed,
+  type RecentlyViewedItem,
+} from '../store';
 
-type Item = { slug: string; name: string; image?: string; price: number };
-
-const RECENT_ITEMS_KEY = 'novastore-recent-items';
-const emptyItems: Item[] = [];
-
-let cachedRaw: string | null = null;
-let cachedItems: Item[] = emptyItems;
-
-function readRecentItems(): Item[] {
-  const raw = localStorage.getItem(RECENT_ITEMS_KEY);
-  if (raw === cachedRaw) return cachedItems;
-  cachedRaw = raw;
-  try {
-    cachedItems = raw ? JSON.parse(raw) : emptyItems;
-  } catch {
-    cachedItems = emptyItems;
-  }
-  return cachedItems;
-}
-
-const noopSubscribe = () => () => {};
+const EMPTY: RecentlyViewedItem[] = [];
 
 export function RecentlyViewedSection() {
   const items = useSyncExternalStore(
-    noopSubscribe,
-    readRecentItems,
-    () => emptyItems,
+    subscribeRecentlyViewed,
+    readRecentlyViewed,
+    () => EMPTY,
   );
   if (!items.length) return null;
   return (
@@ -48,7 +33,7 @@ export function RecentlyViewedSection() {
             href={`/products/${item.slug}`}
             className="group bg-nova-surface overflow-hidden rounded-2xl border"
           >
-            <div className="bg-nova-soft relative aspect-square overflow-hidden">
+            <div className="bg-nova-hover relative aspect-square overflow-hidden">
               {item.image ? (
                 <Image
                   src={item.image}

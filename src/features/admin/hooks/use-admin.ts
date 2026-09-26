@@ -1,7 +1,12 @@
 // src/features/admin/hooks/use-admin.ts
 'use client';
 
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import {
+  keepPreviousData,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from '@tanstack/react-query';
 import type { QueryKey } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
 import { QUERY_KEYS } from '@/lib/query-keys';
@@ -14,6 +19,7 @@ import type {
   AdminResourceKind,
   InventoryUpdate,
 } from '../types/admin-types';
+import { useSession } from 'next-auth/react';
 
 const showError = (error: unknown, fallback: string) =>
   toast.error(getClientErrorMessage(error, fallback));
@@ -57,11 +63,14 @@ export function useAdminStats() {
   });
 }
 
-export function useAdminProducts() {
+export function useAdminProducts(
+  params: { page?: number; search?: string } = {},
+) {
   return useQuery({
-    queryKey: QUERY_KEYS.adminProducts,
-    queryFn: adminService.getProducts,
+    queryKey: [...QUERY_KEYS.adminProducts, params],
+    queryFn: () => adminService.getProducts(params),
     staleTime: 30_000,
+    placeholderData: keepPreviousData,
   });
 }
 
@@ -92,6 +101,8 @@ export function useAdminProductActions() {
     invalidateKeys: () => [
       QUERY_KEYS.adminProducts,
       QUERY_KEYS.adminHomeSettings,
+      QUERY_KEYS.adminInventory,
+      QUERY_KEYS.adminStats,
     ],
     successMessage: 'محصول با موفقیت آرشیو شد.',
     errorFallback: 'آرشیو محصول انجام نشد.',
@@ -101,6 +112,8 @@ export function useAdminProductActions() {
     invalidateKeys: () => [
       QUERY_KEYS.adminProducts,
       QUERY_KEYS.adminHomeSettings,
+      QUERY_KEYS.adminInventory,
+      QUERY_KEYS.adminStats,
     ],
     successMessage: 'محصول با موفقیت از آرشیو خارج شد.',
     errorFallback: 'بازگردانی محصول انجام نشد.',
@@ -131,10 +144,14 @@ export function useAdminProductActions() {
   return { archive, restore, save, create };
 }
 
-export function useAdminOrders() {
+export function useAdminOrders(
+  params: { page?: number; search?: string } = {},
+) {
   return useQuery({
-    queryKey: QUERY_KEYS.adminOrders,
-    queryFn: adminService.getOrders,
+    queryKey: [...QUERY_KEYS.adminOrders, params],
+    queryFn: () => adminService.getOrders(params),
+    staleTime: 30_000,
+    placeholderData: keepPreviousData,
   });
 }
 
@@ -166,10 +183,12 @@ export function useAdminOrderActions() {
   return { update };
 }
 
-export function useAdminUsers() {
+export function useAdminUsers(params: { page?: number; search?: string } = {}) {
   return useQuery({
-    queryKey: QUERY_KEYS.adminUsers,
-    queryFn: adminService.getUsers,
+    queryKey: [...QUERY_KEYS.adminUsers, params],
+    queryFn: () => adminService.getUsers(params),
+    staleTime: 30_000,
+    placeholderData: keepPreviousData,
   });
 }
 
@@ -182,36 +201,51 @@ export function useAdminUser(id: string) {
 }
 
 export function useAdminUserActions() {
+  const { update: updateSession } = useSession();
   const updateRole = useAdminMutation({
     mutationFn: adminService.updateUserRole,
-    invalidateKeys: () => [QUERY_KEYS.adminUsers],
+    invalidateKeys: (variables) => [
+      QUERY_KEYS.adminUsers,
+      QUERY_KEYS.adminUser(variables.userId),
+    ],
     successMessage: 'نقش کاربر با موفقیت به‌روزرسانی شد.',
     errorFallback: 'تغییر نقش کاربر انجام نشد.',
+    onSuccessExtra: async () => {
+      await updateSession();
+    },
   });
   return { updateRole };
 }
 
-export function useAdminReviews() {
+export function useAdminReviews(
+  params: { page?: number; search?: string } = {},
+) {
   return useQuery({
-    queryKey: QUERY_KEYS.adminReviews,
-    queryFn: adminService.getReviews,
+    queryKey: [...QUERY_KEYS.adminReviews, params],
+    queryFn: () => adminService.getReviews(params),
+    staleTime: 30_000,
+    placeholderData: keepPreviousData,
   });
 }
 
 export function useAdminReviewActions() {
   const remove = useAdminMutation({
     mutationFn: (id: string) => adminService.removeReview(id),
-    invalidateKeys: () => [QUERY_KEYS.adminReviews],
+    invalidateKeys: () => [QUERY_KEYS.adminReviews, QUERY_KEYS.accountReviews],
     successMessage: 'نظر با موفقیت حذف شد.',
     errorFallback: 'حذف نظر انجام نشد.',
   });
   return { remove };
 }
 
-export function useAdminInventory() {
+export function useAdminInventory(
+  params: { page?: number; search?: string } = {},
+) {
   return useQuery({
-    queryKey: QUERY_KEYS.adminInventory,
-    queryFn: adminService.getInventory,
+    queryKey: [...QUERY_KEYS.adminInventory, params],
+    queryFn: () => adminService.getInventory(params),
+    staleTime: 30_000,
+    placeholderData: keepPreviousData,
   });
 }
 
@@ -219,7 +253,7 @@ export function useAdminInventoryActions() {
   const update = useAdminMutation({
     mutationFn: (payload: InventoryUpdate) =>
       adminService.updateInventory(payload),
-    invalidateKeys: () => [QUERY_KEYS.adminInventory],
+    invalidateKeys: () => [QUERY_KEYS.adminInventory, QUERY_KEYS.adminStats],
     successMessage: 'موجودی محصول با موفقیت به‌روزرسانی شد.',
     errorFallback: 'به‌روزرسانی موجودی انجام نشد.',
   });

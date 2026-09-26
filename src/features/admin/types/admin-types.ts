@@ -30,17 +30,12 @@ export type AdminStats = {
   dailyRevenue: { date: string; value: number }[];
 };
 
-export type AdminProduct = {
-  id: string;
-  name: string;
-  price: number;
-  status: ProductStatus;
-  featured: boolean;
-  category: { name: string };
-  brand: { name: string } | null;
-  variants: { stock: number }[];
-  images: { url: string }[];
-  _count: { reviews: number; orderItems: number };
+export type AdminPaginated<T> = {
+  items: T[];
+  total: number;
+  page: number;
+  pageSize: number;
+  hasMore: boolean;
 };
 
 export type AdminProductEditor = {

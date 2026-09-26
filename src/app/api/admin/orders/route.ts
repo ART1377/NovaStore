@@ -9,8 +9,10 @@ import {
   PAYMENT_STATUSES,
   SHIPPING_STATUSES,
   ORDER_STATUS_LABELS,
+  ADMIN_LIST_PAGE_SIZE,
 } from '@/constants/constants';
 import { apiErrorResponse } from '@/lib/api-error';
+import type { Prisma } from '@prisma/client';
 
 const schema = z.object({
   orderId: z.string(),
@@ -20,11 +22,31 @@ const schema = z.object({
   trackingNumber: z.string().trim().max(100).nullable().optional(),
 });
 
-export async function GET() {
+const listQuerySchema = z.object({
+  page: z.coerce.number().int().min(1).max(1000).default(1),
+  search: z.string().trim().max(80).optional(),
+});
+
+export async function GET(request: Request) {
   try {
     await requireAdmin();
-    return NextResponse.json(
-      await db.order.findMany({
+    const query = listQuerySchema.parse(
+      Object.fromEntries(new URL(request.url).searchParams),
+    );
+
+    const where: Prisma.OrderWhereInput = query.search
+      ? {
+          OR: [
+            { orderNumber: { contains: query.search } },
+            { user: { name: { contains: query.search } } },
+            { user: { email: { contains: query.search } } },
+          ],
+        }
+      : {};
+
+    const [orders, total] = await db.$transaction([
+      db.order.findMany({
+        where,
         include: {
           user: { select: { id: true, name: true, email: true } },
           items: {
@@ -34,9 +56,19 @@ export async function GET() {
           shipment: true,
         },
         orderBy: { createdAt: 'desc' },
-        take: 200,
+        skip: (query.page - 1) * ADMIN_LIST_PAGE_SIZE,
+        take: ADMIN_LIST_PAGE_SIZE,
       }),
-    );
+      db.order.count({ where }),
+    ]);
+
+    return NextResponse.json({
+      orders,
+      total,
+      page: query.page,
+      pageSize: ADMIN_LIST_PAGE_SIZE,
+      hasMore: query.page * ADMIN_LIST_PAGE_SIZE < total,
+    });
   } catch (error) {
     const r = apiErrorResponse(error, 'دریافت سفارش‌ها انجام نشد.');
     return NextResponse.json(r.body, { status: r.status });
