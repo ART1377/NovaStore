@@ -22,7 +22,11 @@
     "commitlint": "commitlint"
   },
   "lint-staged": {
-    "*.{ts,tsx,js,jsx,mjs,cjs}": [
+    "src/**/*.{ts,tsx,js,jsx}": [
+      "eslint --fix --max-warnings=0",
+      "prettier --write"
+    ],
+    "*.{mjs,cjs}": [
       "eslint --fix --max-warnings=0",
       "prettier --write"
     ],
