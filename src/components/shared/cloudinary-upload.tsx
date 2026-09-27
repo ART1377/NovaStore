@@ -1,10 +1,11 @@
-// src/components/shared/cloudinary-upload.tsx
 'use client';
 
 import { Button } from '@/components/ui/button';
+import { ConfirmDialog } from '@/components/ui/dialog';
 import { formatFileSize } from '@/lib/utils';
-import { Check, Loader2, Star, UploadCloud, X } from 'lucide-react';
+import { Check, Loader2, Star, Trash2, UploadCloud } from 'lucide-react';
 import Image from 'next/image';
+import { useState } from 'react';
 import type { CloudinaryImageValue } from './cloudinary-types';
 import { useCloudinaryUpload } from './use-cloudinary-upload';
 
@@ -23,10 +24,16 @@ export function CloudinaryUpload({
 }: CloudinaryUploadProps) {
   const { uploading, deletingIndex, upload, remove, setMain } =
     useCloudinaryUpload(value, onChange, multiple);
+  const [confirmIndex, setConfirmIndex] = useState<number | null>(null);
+
+  const confirmDelete = () => {
+    if (confirmIndex === null) return;
+    void remove(confirmIndex).finally(() => setConfirmIndex(null));
+  };
 
   return (
     <div className="space-y-3">
-      <label className="bg-nova-hover/70 hover:bg-nova-hover flex min-h-28 cursor-pointer flex-col items-center justify-center rounded-2xl border border-dashed border-[#d6d0c5] px-4 text-center transition hover:border-[#a8b1c0]">
+      <label className="bg-nova-hover/70 hover:bg-nova-hover flex min-h-24 cursor-pointer flex-col items-center justify-center rounded-2xl border border-dashed border-[#d6d0c5] px-4 text-center transition hover:border-[#a8b1c0]">
         {uploading ? (
           <Loader2 className="text-nova-primary animate-spin" />
         ) : (
@@ -53,92 +60,100 @@ export function CloudinaryUpload({
       </label>
 
       {value.length > 0 ? (
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-2 2xl:grid-cols-3">
-          {value.map((image, index) => {
-            const isMain = index === 0;
-            const deleting = deletingIndex === index;
-            return (
-              <article
-                key={`${image.url}-${index}`}
-                className={`bg-nova-surface overflow-hidden rounded-3xl border shadow-sm transition hover:-translate-y-0.5 hover:shadow-lg ${isMain ? 'border-nova-ink ring-nova-ink/10 ring-2' : 'border-nova-line-strong'}`}
-              >
-                <div className="relative aspect-[4/3] bg-[#f4f2ed]">
-                  <Image
-                    src={image.url}
-                    alt={`تصویر محصول ${index + 1}`}
-                    fill
-                    className="object-contain p-3"
-                    sizes="(max-width:640px) 100vw, (max-width:1280px) 50vw, 360px"
-                  />
-                  <div className="absolute inset-x-3 top-3 flex items-center justify-between gap-2">
-                    <span className="bg-nova-surface/95 inline-flex shrink-0 items-center rounded-full border px-2.5 py-1.5 text-[10px] font-bold shadow-sm">
-                      تصویر {index + 1}
-                    </span>
-                    {isMain ? (
-                      <span className="bg-nova-ink inline-flex shrink-0 items-center gap-1.5 rounded-full px-2.5 py-1.5 text-[10px] font-bold text-white shadow-sm">
-                        <Star size={12} className="fill-current" /> اصلی
+        <div className="@container">
+          <div className="grid grid-cols-1 gap-3 @sm:grid-cols-2 @lg:grid-cols-3 @2xl:grid-cols-4">
+            {value.map((image, index) => {
+              const isMain = index === 0;
+              const deleting = deletingIndex === index;
+              return (
+                <article
+                  key={`${image.url}-${index}`}
+                  className={`bg-nova-surface overflow-hidden rounded-2xl border shadow-sm transition hover:-translate-y-0.5 hover:shadow-md ${
+                    isMain
+                      ? 'border-nova-ink ring-nova-ink/10 ring-2'
+                      : 'border-nova-line-strong'
+                  }`}
+                >
+                  <div className="relative aspect-[4/3] bg-[#f4f2ed]">
+                    <Image
+                      src={image.url}
+                      alt={`تصویر محصول ${index + 1}`}
+                      fill
+                      className="object-contain p-1.5"
+                      sizes="(max-width:640px) 100vw, 220px"
+                    />
+                    <div className="absolute inset-x-2 top-2 flex items-center justify-between gap-1.5">
+                      <span className="bg-nova-surface/95 inline-flex shrink-0 items-center rounded-full border px-2 py-0.5 text-[10px] font-bold shadow-sm">
+                        {index + 1}
                       </span>
-                    ) : null}
-                  </div>
-                </div>
-                <div className="space-y-4 border-t p-4">
-                  <div className="grid grid-cols-2 gap-3">
-                    <div className="bg-nova-hover rounded-2xl px-3 py-2.5">
-                      <p className="text-nova-muted text-[10px] font-medium">
-                        حجم فایل
-                      </p>
-                      <p className="mt-1 text-sm font-black tabular-nums">
-                        {formatFileSize(image.bytes)}
-                      </p>
-                    </div>
-                    <div className="bg-nova-hover rounded-2xl px-3 py-2.5">
-                      <p className="text-nova-muted text-[10px] font-medium">
-                        جایگاه
-                      </p>
-                      <p className="mt-1 text-sm font-black">
-                        {isMain ? 'اولین تصویر کاربر' : `${index + 1} در گالری`}
-                      </p>
-                    </div>
-                  </div>
-                  <div className="grid grid-cols-1 gap-2 2xl:grid-cols-2">
-                    <Button
-                      type="button"
-                      variant={isMain ? 'default' : 'outline'}
-                      className="w-full min-w-0 justify-center text-center leading-5 whitespace-normal"
-                      disabled={isMain}
-                      onClick={() => setMain(index)}
-                    >
                       {isMain ? (
-                        <>
-                          <Check size={15} /> تصویر اصلی
-                        </>
-                      ) : (
-                        <>
-                          <Star size={15} /> انتخاب به‌عنوان اصلی
-                        </>
-                      )}
-                    </Button>
-                    <Button
-                      type="button"
-                      variant="danger"
-                      className="w-full min-w-0 justify-center"
-                      disabled={deleting}
-                      onClick={() => void remove(index)}
-                    >
-                      {deleting ? (
-                        <Loader2 size={15} className="animate-spin" />
-                      ) : (
-                        <X size={15} />
-                      )}{' '}
-                      حذف
-                    </Button>
+                        <span className="bg-nova-ink inline-flex shrink-0 items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-bold text-white shadow-sm">
+                          <Star size={10} className="fill-current" /> اصلی
+                        </span>
+                      ) : null}
+                    </div>
                   </div>
-                </div>
-              </article>
-            );
-          })}
+                  <div className="space-y-2 border-t p-2">
+                    <p className="text-nova-muted text-center text-[10px] font-medium tabular-nums">
+                      {formatFileSize(image.bytes)}
+                    </p>
+                    <div className="flex w-full gap-2">
+                      <Button
+                        type="button"
+                        size="sm"
+                        variant={isMain ? 'default' : 'outline'}
+                        className="flex-1 overflow-hidden"
+                        disabled={isMain}
+                        onClick={() => setMain(index)}
+                        title={
+                          isMain ? 'تصویر اصلی' : 'انتخاب به‌عنوان تصویر اصلی'
+                        }
+                      >
+                        {isMain ? (
+                          <>
+                            <Check size={13} className="shrink-0" />
+                            <span className="truncate">اصلی</span>
+                          </>
+                        ) : (
+                          <>
+                            <Star size={13} className="shrink-0" />
+                            <span className="truncate">انتخاب اصلی</span>
+                          </>
+                        )}
+                      </Button>
+                      <Button
+                        type="button"
+                        size="sm"
+                        variant="danger"
+                        className="px-2"
+                        disabled={deleting}
+                        onClick={() => setConfirmIndex(index)}
+                        aria-label="حذف تصویر"
+                        title="حذف تصویر"
+                      >
+                        {deleting ? (
+                          <Loader2 size={13} className="animate-spin" />
+                        ) : (
+                          <Trash2 size={13} />
+                        )}
+                      </Button>
+                    </div>
+                  </div>
+                </article>
+              );
+            })}
+          </div>
         </div>
       ) : null}
+
+      <ConfirmDialog
+        open={confirmIndex !== null}
+        title="حذف تصویر"
+        description="این تصویر از گالری محصول حذف می‌شود. اگر تصویر اصلی باشد، تصویر بعدی جایگزین آن می‌شود."
+        busy={deletingIndex !== null}
+        onClose={() => setConfirmIndex(null)}
+        onConfirm={confirmDelete}
+      />
     </div>
   );
 }
