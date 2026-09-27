@@ -242,20 +242,6 @@ html[data-theme='sage'] {
   --nova-muted: #687564;
   --nova-bg-alt: #f8f7f2;
 }
-html[data-theme='meadow'] {
-  --nova-ink: #689d4b;
-  --nova-primary: #91ae6e;
-  --nova-accent: #d96868;
-  --nova-soft: #f2f2f2;
-  --nova-surface: #fbfcf8;
-  --nova-paper: #fff;
-  --nova-cream: #fbfcf8;
-  --nova-line: #e5eadf;
-  --nova-line-strong: #c7d4b7;
-  --nova-hover: #fff1f1;
-  --nova-muted: #64735c;
-  --nova-bg-alt: #f5f8f1;
-}
 html[data-theme='slate'] {
   --nova-ink: #2d3142;
   --nova-primary: #4f5d75;
@@ -312,21 +298,6 @@ html[data-theme='ink'] {
   --nova-muted: #5d6d6b;
   --nova-bg-alt: #f7f1e7;
 }
-html[data-theme='lava'] {
-  --nova-ink: #003049;
-  --nova-primary: #669bbc;
-  --nova-accent: #c1121f;
-  --nova-soft: #fdf0d5;
-  --nova-surface: #fffaf0;
-  --nova-paper: #fff;
-  --nova-cream: #fffaf0;
-  --nova-line: #eadfc8;
-  --nova-line-strong: #c7d8df;
-  --nova-hover: #fff1e8;
-  --nova-muted: #587184;
-  --nova-bg-alt: #f5f8fa;
-}
-
 html {
   direction: rtl;
   scroll-behavior: smooth;

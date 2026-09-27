@@ -103,7 +103,7 @@ export function ProductImageGallery({
 
   return (
     <>
-      <div className={cn('min-w-0', compact && 'space-y-2')}>
+      <div className="min-w-0 space-y-3">
         <div className="group border-nova-line bg-nova-hover relative aspect-square overflow-hidden rounded-[28px] border shadow-sm">
           {activeImage?.url ? (
             <AnimatePresence initial={false} custom={direction} mode="wait">
@@ -151,7 +151,7 @@ export function ProductImageGallery({
           <button
             type="button"
             onClick={() => setLightboxOpen(true)}
-            className="border-nova-line bg-nova-paper/95 text-nova-ink hover:bg-nova-paper absolute right-3 bottom-3 rounded-full border p-2.5 opacity-0 shadow-sm transition group-hover:opacity-100 focus-visible:opacity-100"
+            className="border-nova-line bg-nova-paper/95 text-nova-ink hover:bg-nova-paper absolute right-3 bottom-3 rounded-full border p-2.5 shadow-sm transition"
             aria-label="نمایش بزرگ تصویر"
           >
             <Expand size={15} />
@@ -236,7 +236,7 @@ export function ProductImageGallery({
                     <button
                       type="button"
                       onClick={() => setLightboxOpen(false)}
-                      className="absolute top-0 left-0 z-20 grid size-10 place-items-center rounded-full border border-white/15 bg-white/10 text-white shadow-sm backdrop-blur transition hover:bg-white/20 focus-visible:ring-2 focus-visible:ring-white/60 sm:top-2 sm:left-2"
+                      className="absolute top-0 left-0 z-20 grid size-10 place-items-center rounded-full border border-white/15 bg-white/70 text-zinc-700 shadow-sm backdrop-blur transition hover:bg-white focus-visible:ring-2 focus-visible:ring-white/60 sm:top-2 sm:left-2"
                       aria-label="بستن"
                     >
                       <X size={20} />
@@ -277,13 +277,8 @@ export function ProductImageGallery({
                           <GalleryArrow
                             direction="previous"
                             onClick={goPrevious}
-                            lightbox
                           />
-                          <GalleryArrow
-                            direction="next"
-                            onClick={goNext}
-                            lightbox
-                          />
+                          <GalleryArrow direction="next" onClick={goNext} />
                         </>
                       ) : null}
 

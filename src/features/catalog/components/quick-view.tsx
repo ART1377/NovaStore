@@ -81,10 +81,11 @@ export function QuickView({ product, onClose }: QuickViewProps) {
           </div>
 
           <div className="flex min-w-0 flex-col p-5 sm:p-7">
-            <div className="text-nova-muted flex items-center justify-between gap-3 pr-12 text-xs">
+            <div className="text-nova-muted flex items-center gap-3 pe-12 text-xs">
               <span className="truncate">
                 {viewProduct.brand?.name ?? 'بدون برند'}
               </span>
+              /
               <span className="bg-nova-hover text-nova-primary shrink-0 rounded-full px-2.5 py-1 font-semibold">
                 {viewProduct.category.name}
               </span>

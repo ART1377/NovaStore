@@ -235,7 +235,7 @@ export function ProductDetail({
           <motion.div
             initial={{ opacity: 0, y: 18 }}
             animate={reveal(0.64)}
-            className="mt-5 flex flex-col gap-2 sm:flex-row"
+            className="mt-5 flex gap-2"
           >
             <div className="sr-only" aria-live="polite">
               {cartQuantity > 0

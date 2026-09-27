@@ -73,12 +73,21 @@ export function ComparePage() {
         </Button>
       </div>
       <div className="bg-nova-surface mt-8 overflow-x-auto rounded-3xl border shadow-sm">
-        <table className="w-full min-w-[780px] text-right">
+        <table className="w-full min-w-195 text-right">
           <thead className="bg-nova-hover border-b">
             <tr>
-              <th className="w-40 p-5 text-sm">مشخصه</th>
-              {products.map((product) => (
-                <th key={product.id} className="p-5 align-top">
+              <th className="border-nova-line w-40 border-l p-5 text-sm">
+                مشخصه
+              </th>
+              {products.map((product, index) => (
+                <th
+                  key={product.id}
+                  className={`p-5 align-top ${
+                    index < products.length - 1
+                      ? 'border-nova-line border-l'
+                      : ''
+                  }`}
+                >
                   <div className="flex items-start justify-between gap-3">
                     <Link
                       href={`/products/${product.slug}`}
@@ -100,12 +109,19 @@ export function ComparePage() {
           </thead>
           <tbody>
             {rows.map(([label, getter]) => (
-              <tr key={label} className="border-t">
-                <td className="text-nova-primary p-5 text-sm font-semibold">
+              <tr key={label} className="border-nova-line border-t">
+                <td className="border-nova-line text-nova-primary border-l p-5 text-sm font-semibold">
                   {label}
                 </td>
-                {products.map((product) => (
-                  <td key={product.id} className="p-5 text-sm font-bold">
+                {products.map((product, index) => (
+                  <td
+                    key={product.id}
+                    className={`p-5 text-sm font-bold ${
+                      index < products.length - 1
+                        ? 'border-nova-line border-l'
+                        : ''
+                    }`}
+                  >
                     {getter(product)}
                   </td>
                 ))}

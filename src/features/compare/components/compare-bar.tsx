@@ -16,7 +16,7 @@ export function CompareBar() {
         </span>
         <div className="min-w-0 flex-1">
           <p className="text-sm font-bold">مقایسه محصولات</p>
-          <p className="text-nova-muted text-xs">
+          <p className="text-xs">
             {items.length} محصول انتخاب شده · حداکثر ۴ محصول
           </p>
         </div>
