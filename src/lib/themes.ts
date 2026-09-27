@@ -1,7 +1,6 @@
 // src/lib/themes.ts
 export type ThemeId =
   | 'classic'
-  | 'sunset'
   | 'violet'
   | 'teal'
   | 'sage'
@@ -17,11 +16,6 @@ export const themes: ThemeDefinition[] = [
     id: 'classic',
     name: 'نووا کلاسیک',
     colors: ['#17324d', '#577399', '#d8e2dc', '#f7f0e3'],
-  },
-  {
-    id: 'sunset',
-    name: 'غروب نارنجی',
-    colors: ['#DF301C', '#FF9100', '#FFF1D1', '#00B7CD'],
   },
   {
     id: 'violet',

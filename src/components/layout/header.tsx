@@ -74,9 +74,9 @@ export function Header() {
 
   return (
     <>
-      <header className="border-nova-soft/90 bg-nova-surface/90 sticky top-0 z-[70] border-b backdrop-blur-xl">
+      <header className="border-nova-soft/90 bg-nova-surface/90 sticky top-0 z-70 border-b backdrop-blur-xl">
         <div className="mx-auto max-w-7xl px-3 sm:px-4">
-          <div className="flex h-[72px] items-center gap-2 sm:gap-3">
+          <div className="flex h-18 items-center gap-2 sm:gap-3">
             <button
               type="button"
               className="border-nova-line text-nova-ink hover:bg-nova-hover inline-flex shrink-0 rounded-2xl border p-2.5 transition md:hidden"
@@ -234,13 +234,13 @@ export function Header() {
             type="button"
             aria-label="بستن منوی موبایل"
             onClick={closeMenu}
-            className="fixed inset-x-0 top-[72px] bottom-0 z-[60] cursor-default bg-black/35 backdrop-blur-[2px] md:hidden"
+            className="fixed inset-x-0 top-18 bottom-0 z-60 cursor-default bg-black/35 backdrop-blur-[2px] md:hidden"
           />
 
           <aside
             id="mobile-navigation"
             aria-label="منوی موبایل"
-            className="bg-nova-surface border-nova-line fixed inset-x-0 top-[72px] bottom-0 z-[65] overflow-y-auto border-t shadow-[0_28px_70px_-30px_rgba(17,24,39,.45)] md:hidden"
+            className="bg-nova-surface border-nova-line fixed inset-x-0 top-18 bottom-0 z-65 overflow-y-auto border-t shadow-[0_28px_70px_-30px_rgba(17,24,39,.45)] md:hidden"
           >
             <div className="mx-auto w-full max-w-7xl px-3 py-4 pb-8 sm:px-4">
               <nav className="grid gap-1.5" aria-label="ناوبری فروشگاه">

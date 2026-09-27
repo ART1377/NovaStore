@@ -1,0 +1,53 @@
+/* src/app/fonts.css */
+
+/* IRANSansXFaNum — primary Persian UI font */
+@font-face {
+  font-family: IRANSansXFaNum;
+  src: url('/fonts/IranSans/IRANSansXFaNum-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: IRANSansXFaNum;
+  src: url('/fonts/IranSans/IRANSansXFaNum-Medium.ttf') format('truetype');
+  font-weight: 500;
+  font-display: swap;
+}
+@font-face {
+  font-family: IRANSansXFaNum;
+  src: url('/fonts/IranSans/IRANSansXFaNum-DemiBold.ttf') format('truetype');
+  font-weight: 600;
+  font-display: swap;
+}
+@font-face {
+  font-family: IRANSansXFaNum;
+  src: url('/fonts/IranSans/IRANSansXFaNum-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-display: swap;
+}
+
+/* Dana — fallback / accent Persian font */
+@font-face {
+  font-family: Dana;
+  src: url('/fonts/Fa-DanaFont/Dana-Light.ttf') format('truetype');
+  font-weight: 300;
+  font-display: swap;
+}
+@font-face {
+  font-family: Dana;
+  src: url('/fonts/Fa-DanaFont/Dana-Medium.ttf') format('truetype');
+  font-weight: 500;
+  font-display: swap;
+}
+@font-face {
+  font-family: Dana;
+  src: url('/fonts/Fa-DanaFont/Dana-DemiBold.ttf') format('truetype');
+  font-weight: 600;
+  font-display: swap;
+}
+@font-face {
+  font-family: Dana;
+  src: url('/fonts/Fa-DanaFont/Dana-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-display: swap;
+}

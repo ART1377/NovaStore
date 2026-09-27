@@ -28,17 +28,31 @@ export const metadata: Metadata = {
   publisher: siteConfig.name,
   category: 'shopping',
   formatDetection: { telephone: false },
+  manifest: '/manifest.webmanifest',
+  icons: {
+    icon: [
+      { url: '/favicon.ico', sizes: 'any' },
+      { url: '/icon-96.png', type: 'image/png', sizes: '96x96' },
+      { url: '/icon-192.png', type: 'image/png', sizes: '192x192' },
+      { url: '/icon-512.png', type: 'image/png', sizes: '512x512' },
+      { url: '/favicon.svg', type: 'image/svg+xml' },
+    ],
+    apple: [{ url: '/apple-icon.png', sizes: '180x180' }],
+    shortcut: ['/favicon.ico'],
+  },
   openGraph: {
     type: 'website',
     locale: siteConfig.locale,
     siteName: siteConfig.name,
     title: siteConfig.name,
     description: siteConfig.description,
+    images: [{ url: '/icon-512.png', width: 512, height: 512 }],
   },
   twitter: {
     card: 'summary_large_image',
     title: siteConfig.name,
     description: siteConfig.description,
+    images: ['/icon-512.png'],
   },
   robots: { index: true, follow: true },
 };

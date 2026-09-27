@@ -39,7 +39,6 @@ export function ThemeSwitcher() {
   const change = (next: ThemeId) => {
     localStorage.setItem(THEME_STORAGE_KEY, next);
     window.dispatchEvent(new Event(THEME_CHANGE_EVENT));
-    setOpen(false);
   };
   return (
     <div ref={ref} className="relative">
