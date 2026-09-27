@@ -1,9 +1,7 @@
 // src/features/admin/components/home-settings-page.tsx
 'use client';
 
-import { GripVertical, Save } from 'lucide-react';
-import Image from 'next/image';
-
+import { ImageWithFallback } from '@/components/shared/image-with-fallback';
 import { ProductImagePlaceholder } from '@/components/shared/product-image-placeholder';
 import { QueryError } from '@/components/shared/query-state';
 import { Badge } from '@/components/ui/badge';
@@ -12,6 +10,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Combobox } from '@/components/ui/combobox';
 import { Skeleton } from '@/components/ui/skeleton';
+import { GripVertical, Save } from 'lucide-react';
 import {
   HOME_SLOTS,
   SLOT_META,
@@ -113,12 +112,19 @@ export function AdminHomeSettingsPage() {
                         <span className="flex min-w-0 flex-1 items-center gap-3 text-right">
                           <span className="bg-nova-soft border-nova-line grid size-16 shrink-0 place-items-center overflow-hidden rounded-xl border">
                             {product.image ? (
-                              <Image
+                              <ImageWithFallback
                                 src={product.image}
                                 alt=""
-                                width={64}
-                                height={64}
+                                width={44}
+                                height={44}
                                 className="size-full object-cover"
+                                fallback={
+                                  <ProductImagePlaceholder
+                                    compact
+                                    label=""
+                                    className="text-transparent"
+                                  />
+                                }
                               />
                             ) : (
                               <ProductImagePlaceholder
@@ -146,19 +152,18 @@ export function AdminHomeSettingsPage() {
                         <span className="flex min-w-0 items-center gap-3">
                           <span className="bg-nova-soft border-nova-line grid size-11 shrink-0 place-items-center overflow-hidden rounded-lg border">
                             {product.image ? (
-                              <Image
+                              <ImageWithFallback
                                 src={product.image}
-                                alt=""
-                                width={44}
-                                height={44}
-                                className="size-full object-cover"
+                                alt={product.name}
+                                width={48}
+                                height={48}
+                                className="size-12 shrink-0 rounded-xl object-cover"
+                                fallback={
+                                  <div className="bg-nova-soft size-12 shrink-0 rounded-xl" />
+                                }
                               />
                             ) : (
-                              <ProductImagePlaceholder
-                                compact
-                                label=""
-                                className="text-transparent"
-                              />
+                              <div className="bg-nova-soft size-12 shrink-0 rounded-xl" />
                             )}
                           </span>
                           <span className="min-w-0 truncate text-sm font-semibold">
@@ -172,12 +177,19 @@ export function AdminHomeSettingsPage() {
                     <div className="bg-nova-hover flex min-h-0 min-w-0 items-center gap-3 rounded-2xl border p-3">
                       <span className="bg-nova-soft border-nova-line grid size-16 shrink-0 place-items-center overflow-hidden rounded-xl border">
                         {chosen[0].image ? (
-                          <Image
+                          <ImageWithFallback
                             src={chosen[0].image}
                             alt={chosen[0].name}
                             width={64}
                             height={64}
                             className="size-full object-cover"
+                            fallback={
+                              <ProductImagePlaceholder
+                                compact
+                                label=""
+                                className="text-transparent"
+                              />
+                            }
                           />
                         ) : (
                           <ProductImagePlaceholder
@@ -213,12 +225,15 @@ export function AdminHomeSettingsPage() {
                             onChange={() => toggle(slot, product.id)}
                           />
                           {product.image ? (
-                            <Image
+                            <ImageWithFallback
                               src={product.image}
                               alt={product.name}
                               width={48}
                               height={48}
                               className="size-12 shrink-0 rounded-xl object-cover"
+                              fallback={
+                                <div className="bg-nova-soft size-12 shrink-0 rounded-xl" />
+                              }
                             />
                           ) : (
                             <div className="bg-nova-soft size-12 shrink-0 rounded-xl" />

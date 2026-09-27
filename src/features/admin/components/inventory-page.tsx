@@ -1,6 +1,7 @@
 // src/features/admin/components/inventory-page.tsx
 'use client';
 import { EmptyState, SearchField, Stat } from '@/components/shared';
+import { ImageWithFallback } from '@/components/shared/image-with-fallback';
 import { ProductImagePlaceholder } from '@/components/shared/product-image-placeholder';
 import { QueryError } from '@/components/shared/query-state';
 import { Badge } from '@/components/ui/badge';
@@ -10,7 +11,6 @@ import { Input } from '@/components/ui/input';
 import { LOW_STOCK_THRESHOLD } from '@/constants/constants';
 import { formatInputNumber, numericInputValue } from '@/lib/utils';
 import { Boxes, PackageCheck } from 'lucide-react';
-import Image from 'next/image';
 import { useState } from 'react';
 import {
   useAdminInventory,
@@ -137,12 +137,15 @@ export function InventoryPage() {
                 <div className="flex min-w-0 flex-1 items-center gap-3">
                   <div className="bg-nova-soft relative h-12 w-12 shrink-0 overflow-hidden rounded-xl">
                     {variant.product.images[0]?.url ? (
-                      <Image
+                      <ImageWithFallback
                         src={variant.product.images[0].url}
                         alt={variant.product.name}
                         fill
                         className="object-cover"
                         sizes="48px"
+                        fallback={
+                          <ProductImagePlaceholder compact label="بدون تصویر" />
+                        }
                       />
                     ) : (
                       <ProductImagePlaceholder compact label="بدون تصویر" />

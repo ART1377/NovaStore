@@ -1,9 +1,9 @@
 // src/features/catalog/components/product-image-gallery.tsx
 'use client';
 
+import { ImageWithFallback } from '@/components/shared/image-with-fallback';
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import { Expand, X } from 'lucide-react';
-import Image from 'next/image';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { createPortal } from 'react-dom';
 
@@ -117,7 +117,7 @@ export function ProductImageGallery({
                 exit="exit"
                 transition={imageTransition}
               >
-                <Image
+                <ImageWithFallback
                   src={activeImage.url}
                   alt={activeImage.alt ?? productName}
                   fill
@@ -127,6 +127,9 @@ export function ProductImageGallery({
                     compact
                       ? '(max-width: 640px) 100vw, 480px'
                       : '(max-width: 1024px) 100vw, 52vw'
+                  }
+                  fallback={
+                    <ProductImagePlaceholder label="تصویر محصول موجود نیست" />
                   }
                 />
               </motion.div>
@@ -174,12 +177,15 @@ export function ProductImageGallery({
                 aria-current={index === safeIndex}
               >
                 {image.url ? (
-                  <Image
+                  <ImageWithFallback
                     src={image.url}
                     alt={image.alt ?? productName}
                     fill
                     className="object-cover"
                     sizes="96px"
+                    fallback={
+                      <ProductImagePlaceholder compact label="بدون تصویر" />
+                    }
                   />
                 ) : (
                   <ProductImagePlaceholder compact label="بدون تصویر" />
@@ -195,7 +201,7 @@ export function ProductImageGallery({
             <AnimatePresence>
               {lightboxOpen ? (
                 <motion.div
-                  className="fixed inset-0 z-[140] flex items-center justify-center bg-black/85 p-3 backdrop-blur-sm sm:p-6"
+                  className="fixed inset-0 z-140 flex items-center justify-center bg-black/85 p-3 backdrop-blur-sm sm:p-6"
                   role="dialog"
                   aria-modal="true"
                   aria-label={`گالری ${productName}`}
@@ -249,13 +255,16 @@ export function ProductImageGallery({
                             exit="exit"
                             transition={imageTransition}
                           >
-                            <Image
+                            <ImageWithFallback
                               src={activeImage.url}
                               alt={activeImage.alt ?? productName}
                               fill
                               className="object-contain"
                               sizes="100vw"
                               priority
+                              fallback={
+                                <ProductImagePlaceholder label="تصویر محصول موجود نیست" />
+                              }
                             />
                           </motion.div>
                         ) : (
@@ -306,12 +315,18 @@ export function ProductImageGallery({
                               aria-current={index === safeIndex}
                             >
                               {image.url ? (
-                                <Image
+                                <ImageWithFallback
                                   src={image.url}
                                   alt={image.alt ?? productName}
                                   fill
                                   className="object-cover"
                                   sizes="80px"
+                                  fallback={
+                                    <ProductImagePlaceholder
+                                      compact
+                                      label="بدون تصویر"
+                                    />
+                                  }
                                 />
                               ) : (
                                 <ProductImagePlaceholder

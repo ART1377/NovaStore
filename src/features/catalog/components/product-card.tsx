@@ -1,13 +1,13 @@
 // src/features/catalog/components/product-card.tsx
 'use client';
 
+import { ImageWithFallback } from '@/components/shared/image-with-fallback';
 import { ProductCartActions } from '@/features/cart/components/product-cart-actions';
 import { useCartItem } from '@/features/cart/hooks/use-cart';
 import { useCompare } from '@/features/compare/hooks/use-compare';
 import { WishlistToggle } from '@/features/wishlist/components/wishlist-toggle';
 import { formatPrice } from '@/lib/utils';
 import { ArrowUpLeft, GitCompareArrows, Star } from 'lucide-react';
-import Image from 'next/image';
 import Link from 'next/link';
 import { memo, useState } from 'react';
 import toast from 'react-hot-toast';
@@ -37,12 +37,13 @@ export const ProductCard = memo(function ProductCard({
       <div className="bg-nova-soft relative aspect-[.94] shrink-0 overflow-hidden">
         <Link href={`/products/${product.slug}`} className="block h-full">
           {product.images[0]?.url ? (
-            <Image
+            <ImageWithFallback
               src={product.images[0].url}
               alt={product.images[0].alt ?? product.name}
               fill
               className="object-cover transition duration-700 group-hover/card:scale-[1.045]"
               sizes="(max-width:768px) 50vw, 25vw"
+              fallback={<ProductImagePlaceholder />}
             />
           ) : (
             <ProductImagePlaceholder />
@@ -120,11 +121,11 @@ export const ProductCard = memo(function ProductCard({
           </h3>
         </Link>
         <div className="mt-4 min-w-0">
-          <div className="text-nova-ink text-[clamp(.95rem,1.8vw,1.125rem)] leading-6 font-black tracking-[-.02em] [overflow-wrap:anywhere]">
+          <div className="text-nova-ink text-[clamp(.95rem,1.8vw,1.125rem)] leading-6 font-black tracking-[-.02em] wrap-anywhere">
             {formatPrice(price)}
           </div>
           {discounted ? (
-            <div className="text-nova-muted mt-0.5 text-xs [overflow-wrap:anywhere] line-through">
+            <div className="text-nova-muted mt-0.5 text-xs wrap-anywhere line-through">
               {formatPrice(product.compareAtPrice!)}
             </div>
           ) : null}

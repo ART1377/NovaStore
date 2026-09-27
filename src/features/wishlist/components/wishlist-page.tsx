@@ -1,13 +1,13 @@
 // src/features/wishlist/components/wishlist-page.tsx
 'use client';
 import { EmptyState, ProductImagePlaceholder } from '@/components/shared';
+import { ImageWithFallback } from '@/components/shared/image-with-fallback';
 import { QueryError } from '@/components/shared/query-state';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
 import { getClientErrorMessage } from '@/lib/client-error';
 import { formatPrice } from '@/lib/utils';
 import { Heart, ShoppingBag, Trash2 } from 'lucide-react';
-import Image from 'next/image';
 import Link from 'next/link';
 import { useWishlist, useWishlistActions } from '../hooks/use-wishlist';
 export function WishlistPage() {
@@ -69,12 +69,15 @@ export function WishlistPage() {
               <Link href={`/products/${item.product.slug}`}>
                 <div className="relative aspect-square">
                   {item.product.images[0]?.url ? (
-                    <Image
+                    <ImageWithFallback
                       src={item.product.images[0].url}
                       alt={item.product.name}
                       fill
                       className="object-cover"
                       sizes="25vw"
+                      fallback={
+                        <ProductImagePlaceholder compact label="بدون تصویر" />
+                      }
                     />
                   ) : (
                     <ProductImagePlaceholder compact label="بدون تصویر" />

@@ -1,6 +1,7 @@
 // src/features/cart/components/cart-page.tsx
 'use client';
 import { EmptyState } from '@/components/shared/empty-state';
+import { ImageWithFallback } from '@/components/shared/image-with-fallback';
 import { ProductImagePlaceholder } from '@/components/shared/product-image-placeholder';
 import { QueryError } from '@/components/shared/query-state';
 import { Button } from '@/components/ui/button';
@@ -9,7 +10,6 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { getClientErrorMessage } from '@/lib/client-error';
 import { formatNumber, formatPrice } from '@/lib/utils';
 import { ArrowLeft, ShieldCheck, ShoppingBag } from 'lucide-react';
-import Image from 'next/image';
 import Link from 'next/link';
 import { useCart } from '../hooks/use-cart';
 import { CartQuantityControls } from './cart-quantity-controls';
@@ -76,12 +76,15 @@ export function CartPage() {
                 <CardContent className="flex gap-4">
                   <div className="bg-nova-soft relative h-24 w-24 shrink-0 overflow-hidden rounded-xl">
                     {item.product.images[0]?.url ? (
-                      <Image
+                      <ImageWithFallback
                         src={item.product.images[0].url}
                         alt={item.product.name}
                         fill
                         className="object-cover"
                         sizes="96px"
+                        fallback={
+                          <ProductImagePlaceholder compact label="بدون تصویر" />
+                        }
                       />
                     ) : (
                       <ProductImagePlaceholder compact label="بدون تصویر" />

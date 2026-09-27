@@ -1,6 +1,7 @@
 // src/features/home/components/home-hero.tsx
 'use client';
 
+import { ImageWithFallback } from '@/components/shared/image-with-fallback';
 import { ProductImagePlaceholder } from '@/components/shared/product-image-placeholder';
 import { Button } from '@/components/ui/button';
 import { motion, useReducedMotion } from 'framer-motion';
@@ -12,7 +13,6 @@ import {
   Star,
   Truck,
 } from 'lucide-react';
-import Image from 'next/image';
 import Link from 'next/link';
 import { useSyncExternalStore } from 'react';
 import type { HomePageData } from '../api/home.api';
@@ -176,13 +176,19 @@ export function HomeHero({ hero }: { hero: HeroData }) {
                 className="absolute inset-0"
               >
                 {image ? (
-                  <Image
+                  <ImageWithFallback
                     src={image}
                     alt={hero?.name ?? 'محصول منتخب نووا استور'}
                     fill
                     priority
                     className="nova-hero-product object-contain p-7 sm:p-12 lg:p-14"
                     sizes="(max-width:1024px) 92vw, 56vw"
+                    fallback={
+                      <ProductImagePlaceholder
+                        label="تصویر محصول منتخب موجود نیست"
+                        className="bg-transparent"
+                      />
+                    }
                   />
                 ) : (
                   <ProductImagePlaceholder

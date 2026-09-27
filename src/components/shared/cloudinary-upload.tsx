@@ -1,10 +1,10 @@
 'use client';
 
+import { ImageWithFallback } from '@/components/shared/image-with-fallback';
 import { Button } from '@/components/ui/button';
 import { ConfirmDialog } from '@/components/ui/dialog';
 import { formatFileSize } from '@/lib/utils';
 import { Check, Loader2, Star, Trash2, UploadCloud } from 'lucide-react';
-import Image from 'next/image';
 import { useState } from 'react';
 import type { CloudinaryImageValue } from './cloudinary-types';
 import { useCloudinaryUpload } from './use-cloudinary-upload';
@@ -74,8 +74,8 @@ export function CloudinaryUpload({
                       : 'border-nova-line-strong'
                   }`}
                 >
-                  <div className="relative aspect-[4/3] bg-[#f4f2ed]">
-                    <Image
+                  <div className="relative aspect-4/3 bg-[#f4f2ed]">
+                    <ImageWithFallback
                       src={image.url}
                       alt={`تصویر محصول ${index + 1}`}
                       fill

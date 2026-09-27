@@ -1,6 +1,7 @@
 // src/features/admin/components/products-page.tsx
 'use client';
 import { SearchField } from '@/components/shared';
+import { ImageWithFallback } from '@/components/shared/image-with-fallback';
 import { ProductImagePlaceholder } from '@/components/shared/product-image-placeholder';
 import { QueryEmpty } from '@/components/shared/query-state';
 import { Badge } from '@/components/ui/badge';
@@ -14,7 +15,6 @@ import {
 } from '@/constants/constants';
 import { formatNumber, formatPrice } from '@/lib/utils';
 import { Archive, Edit3, Plus, Star } from 'lucide-react';
-import Image from 'next/image';
 import Link from 'next/link';
 import { useState } from 'react';
 import { useAdminProductActions, useAdminProducts } from '../hooks/use-admin';
@@ -91,12 +91,18 @@ export function AdminProductsPage() {
                   <div className="flex min-w-0 flex-1 items-center gap-3">
                     <div className="bg-nova-soft relative h-14 w-14 shrink-0 overflow-hidden rounded-xl">
                       {p.images[0]?.url ? (
-                        <Image
+                        <ImageWithFallback
                           src={p.images[0].url}
                           alt={p.name}
                           fill
                           className="object-cover"
                           sizes="56px"
+                          fallback={
+                            <ProductImagePlaceholder
+                              compact
+                              label="بدون تصویر"
+                            />
+                          }
                         />
                       ) : (
                         <ProductImagePlaceholder compact label="بدون تصویر" />

@@ -1,11 +1,11 @@
 // src/features/recently-viewed/components/recently-viewed-section.tsx
 'use client';
 
+import { ImageWithFallback } from '@/components/shared/image-with-fallback';
 import { ProductImagePlaceholder } from '@/components/shared/product-image-placeholder';
 import { SectionHeading } from '@/components/shared/section-heading';
 import { formatPrice } from '@/lib/utils';
 import { ArrowLeft, Clock3 } from 'lucide-react';
-import Image from 'next/image';
 import Link from 'next/link';
 import { useSyncExternalStore } from 'react';
 import {
@@ -35,12 +35,15 @@ export function RecentlyViewedSection() {
           >
             <div className="bg-nova-hover relative aspect-square overflow-hidden">
               {item.image ? (
-                <Image
+                <ImageWithFallback
                   src={item.image}
                   alt={item.name}
                   fill
                   className="object-cover transition group-hover:scale-105"
                   sizes="25vw"
+                  fallback={
+                    <ProductImagePlaceholder compact label="بدون تصویر" />
+                  }
                 />
               ) : (
                 <ProductImagePlaceholder compact label="بدون تصویر" />
